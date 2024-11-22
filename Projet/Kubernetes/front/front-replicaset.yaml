@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: frontend-replicaset
+  labels:
+    app: frontend
+spec:
+  containers:
+    - name: frontend_container
+      image: Image
+
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: Title
+  labels:
+    app: Title
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: Title
+  template:
+    metadata:
+      name: Title
+      labels:
+        app: Title
+    spec:
+      containers:
+        - name: Title
+          image: Image
+          imagePullPolicy: IfNotPresent
+      restartPolicy: Always
