@@ -1,4 +1,9 @@
-FROM ubuntu:latest
-LABEL authors="noure"
+FROM nginx:latest
 
-ENTRYPOINT ["top", "-b"]
+COPY . /usr/share/nginx/html
+
+LABEL app="frontend"
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

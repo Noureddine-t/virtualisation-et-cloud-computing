@@ -36,11 +36,11 @@ resource "scaleway_registry_namespace" "container_registry" {
 
 # Databases
 resource "scaleway_rdb_instance" "database" {
-  for_each           = var.environments
-  name               = "${each.value}-database"
-  region             = var.region
-  engine             = "Redis"
-  node_type          = "DEV1-S"
+  for_each  = var.environments
+  name      = "${each.value}-database"
+  region    = var.region
+  engine    = "Redis"
+  node_type = "DEV1-S"
 }
 
 #loadbalancer

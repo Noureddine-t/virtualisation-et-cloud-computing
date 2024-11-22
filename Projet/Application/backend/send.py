@@ -37,7 +37,6 @@ def calculate():
     }
     channel.basic_publish(exchange='', routing_key='calculation_queue', body=json.dumps(message))
     print(" [x] Sent 'Calculation data'")
-    connection.close()
 
     return jsonify({"id": calc_id}), 200
 
