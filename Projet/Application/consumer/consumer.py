@@ -10,11 +10,11 @@ app = Flask(__name__)
 CORS(app)
 
 # Connection to RabbitMQ
-connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+connection = pika.BlockingConnection(pika.ConnectionParameters('host.docker.internal'))
 channel = connection.channel()
 channel.queue_declare(queue='calculation_queue')
 
-redis_client = redis.Redis(host='localhost', port=6379, db=0)
+redis_client = redis.Redis(host='host.docker.internal', port=6379, db=0)
 
 
 def callback(ch, method, properties, body):
@@ -58,7 +58,7 @@ channel.start_consuming()
 
 if __name__ == '__main__':
     try:
-        app.run(debug=True)
+        app.run(host='0.0.0.0', port=5000, debug=True)
     except KeyboardInterrupt:
         print('Interrupted')
         try:

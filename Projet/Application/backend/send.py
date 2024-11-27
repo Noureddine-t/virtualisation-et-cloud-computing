@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Connection to RabbitMQ
-connection = pika.BlockingConnection(pika.ConnectionParameters('localhost'))
+connection = pika.BlockingConnection(pika.ConnectionParameters('host.docker.internal'))
 channel = connection.channel()
 
 channel.queue_declare(queue='calculation_queue')
@@ -42,7 +42,7 @@ def calculate():
 
 
 # Connection to Redis
-redis_client = redis.Redis(host='localhost', port=6379, db=0)
+redis_client = redis.Redis(host='host.docker.internal', port=6379, db=0)
 
 """endpoint to get the result of a calculation from redis using its ID"""
 
@@ -56,4 +56,4 @@ def get_result(calc_id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)

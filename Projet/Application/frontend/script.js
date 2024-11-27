@@ -1,4 +1,6 @@
-// Gestion de l'envoi du calcul
+/**
+ * Manage the form submission to calculate an operation and get the operation ID
+ */
 document.getElementById('calcForm').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -20,13 +22,32 @@ document.getElementById('calcForm').addEventListener('submit', function(event) {
             } else {
                 // Afficher l'ID de l'opération
                 document.getElementById('resultId').textContent = "ID de l'opération : " + data.id;
-                document.getElementById('resultForm').style.display = 'block'; // Montrer le formulaire pour récupérer le résultat
+                document.getElementById('copyIdButton').style.display = 'inline-block';
+                document.getElementById('resultForm').style.display = 'block';
             }
         })
         .catch(error => console.error('Erreur:', error));
 });
 
-// Gestion de la récupération du résultat
+/**
+ * Manage the copy of the operation ID to the clipboard
+ */document.getElementById('copyIdButton').addEventListener('click', function() {
+    // Récupérer l'ID à partir du texte affiché dans resultId
+    const idText = document.getElementById('resultId').textContent.replace("ID de l'opération : ", "");
+
+    // Copier l'ID dans le presse-papiers
+    navigator.clipboard.writeText(idText)
+        .then(() => {
+            console.log("ID copied to clipboard!");
+        })
+        .catch(err => {
+            console.error('Error copying:', err);
+        });
+});
+
+/**
+ * Manage the form submission to get the result of an operation using the operation ID
+ */
 document.getElementById('resultForm').addEventListener('submit', function(event) {
     event.preventDefault();
 

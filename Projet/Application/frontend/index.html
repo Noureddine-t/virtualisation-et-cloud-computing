@@ -1,47 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Calculator</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<h1>Polytech Dijon Calculator</h1>
+    <head>
+        <meta charset="UTF-8">
+        <title>Calculator</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <h1>Polytech Dijon Calculator</h1>
 
+        <form id="calcForm" method="post">
+            <label>Nombre 1:</label>
+            <input type="text" name="number1" placeholder="Number 1" required>
+            <br>
+            <label>Nombre 2:</label>
+            <input type="text" name="number2" placeholder="Number 2" required>
+            <br>
+            <label>Opérateur:</label>
+            <select name="operator">
 
-<form id="calcForm" method="post">
-    <label>Nombre 1:</label>
-    <input type="text" name="number1" placeholder="Number 1" required>
-    <br>
-    <label>Nombre 2:</label>
-    <input type="text" name="number2" placeholder="Number 2" required>
-    <br>
-    <label>Opérateur:</label>
-    <select name="operator">
+                <option value="add">Add</option>
+                <option value="subtract">Subtract</option>
+                <option value="multiply">Multiply</option>
+                <option value="divide">Divide</option>
+            </select>
+            <br>
+            <button type="submit" name="submit">Calculate</button>
+        </form>
 
-        <option value="add">Add</option>
-        <option value="subtract">Subtract</option>
-        <option value="multiply">Multiply</option>
-        <option value="divide">Divide</option>
-    </select>
-    <br>
-    <button type="submit" name="submit">Calculate</button>
-</form>
+        <p id="resultId"></p>
 
-<p id="resultId"></p>
+        <button id="copyIdButton" style="display: none;">Copier l'ID</button>
 
-<form id="resultForm" style="display: none;" method="get">
-    <h2>Obtenir un résultat</h2>
-    <label>ID de l'opération:</label>
-    <input type="text" name="operationId" required>
-    <br>
-    <button type="submit">Récupérer le résultat</button>
-</form>
+        <form id="resultForm" style="display: none;" method="get">
+            <h2>Obtenir un résultat</h2>
+            <label>ID de l'opération:</label>
+            <input type="text" name="operationId" required>
+            <br>
+            <button type="submit">Récupérer le résultat</button>
+        </form>
 
-<p id="finalResult"></p>
+        <p id="finalResult"></p>
 
-
-
-<script src="script.js" type="module"></script>
-</body>
+        <script src="script.js" type="module"></script>
+    </body>
 </html>
