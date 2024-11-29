@@ -5,30 +5,22 @@ metadata:
   labels:
     app: frontend
 spec:
-  containers:
-    - name: frontend_container
-      image: Image
-
-
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: Title
-  labels:
-    app: Title
-spec:
   replicas: 1
   selector:
     matchLabels:
-      app: Title
+      app: frontend
   template:
     metadata:
-      name: Title
       labels:
-        app: Title
+        app: frontend
     spec:
       containers:
-        - name: Title
-          image: Image
-          imagePullPolicy: IfNotPresent
-      restartPolicy: Always
+        - name: frontend-container
+          image: app-frontend
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+            - name: http
+              containerPort: 8080
+              protocol: TCP

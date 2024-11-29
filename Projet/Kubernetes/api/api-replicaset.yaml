@@ -1,23 +1,24 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: ReplicaSet
 metadata:
-  name: Title
+  name: api-replicaset
   labels:
-    app: Title
+    app: api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: Title
+      app: api
   template:
     metadata:
-      name: Title
       labels:
-        app: Title
+        app: api
     spec:
       containers:
-        - name: Title
-          image: Image
-          imagePullPolicy: IfNotPresent
-      restartPolicy: Always
+        - name: api-container
+          image: backend-api
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
       
