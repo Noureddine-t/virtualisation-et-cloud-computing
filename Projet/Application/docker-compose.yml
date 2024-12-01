@@ -1,14 +1,14 @@
 services:
   redis:
     image: redis
-    container_name: redis
+    container_name: myRedis
     ports:
       - "6379:6379"
 
 
   rabbitmq:
     image: rabbitmq:3.12-management
-    container_name: rabbitmq
+    container_name: myRabbitmq
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -17,11 +17,10 @@ services:
   backend-api:
     build:
       context: ./backend
+    image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:taleb
     container_name: backend-api
     ports:
       - "5000:5000"
-    environment:
-      - REDIS_HOST=redis
     depends_on:
       - redis
       - rabbitmq
@@ -29,6 +28,7 @@ services:
   backend-consumer:
     build:
       context: ./consumer
+    image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:taleb
     container_name: backend-consumer
     depends_on:
       - redis
@@ -37,6 +37,7 @@ services:
   app-frontend:
     build:
       context: ./frontend
+    image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:taleb
     container_name: app-frontend
     ports:
       - "8080:80"

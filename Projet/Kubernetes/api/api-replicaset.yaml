@@ -16,9 +16,8 @@ spec:
     spec:
       containers:
         - name: api-container
-          image: backend-api
+          image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:talebv2
           ports:
             - name: http
               containerPort: 5000
               protocol: TCP
-      

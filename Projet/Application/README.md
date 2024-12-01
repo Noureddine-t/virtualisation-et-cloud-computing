@@ -1,12 +1,12 @@
 pour lancer redis
 ```bash
-docker run --rm -d -p 6379:6379 --name redis redis
+docker run --rm -p 6379:6379 --name myRedis redis
 
 ```
 
 pour lancer rabbitmq
 ```bash 
-docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.12-management
+docker run -it --rm --name myRabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.12-management
 
 ```
 
@@ -21,18 +21,18 @@ je suis passer a dockerfile : mon backend le reconnait pas localhost, j ai du ch
 
 
 ```bash
-docker build . -t backend-api 
-docker run --rm --name backend-api -p 5000:5000 backend-api
+docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:talebv2
+docker run --rm --name backend-api -p 5000:5000 europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:taleb
 
 ```
 ```bash
-docker build . -t backend-consumer
-docker run  --rm --name backend-consumer backend-consumer
+docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv2
+docker run  --rm --name backend-consumer europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:taleb
 
 ```
 ```bash
-docker build . -t app-frontend
-docker run  --rm --name app-frontend -p 8080:80 app-frontend
+docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv2
+docker run  --rm --name app-frontend -p 8080:80 europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:taleb
 
 ```
 a force de lancer plusioeeurs commandes dans différents terminal plusiiur fois afin de debuggere j ai décidé de créer un docker-compose pour lancer les 3 containers en meme temps.
@@ -46,4 +46,16 @@ en utilisant docker-compose, j ai pu lancer mes 3 containers en meme temps et le
 docker-compose up 
 #docker-compose construire les images et lancer les containers
 docker-compose up --build
+```
+
+```bash
+# pousser les images dans le registry
+docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:talebv2
+docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv2
+docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv2
+```
+
+```bash
+# verifier que les images sont bien poussées
+gcloud artifacts docker images list europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon
 ```

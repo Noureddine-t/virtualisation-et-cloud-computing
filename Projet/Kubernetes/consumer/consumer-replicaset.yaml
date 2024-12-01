@@ -16,9 +16,5 @@ spec:
     spec:
       containers:
         - name: consumer-container
-          image: backend-consumer
-          ports:
-            - name: http
-              containerPort: 5000
-              protocol: TCP
+          image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv2
       

@@ -10,11 +10,11 @@ app = Flask(__name__)
 CORS(app)
 
 # Connection to RabbitMQ
-connection = pika.BlockingConnection(pika.ConnectionParameters('host.docker.internal'))
+connection = pika.BlockingConnection(pika.ConnectionParameters('svc-rabbitmq'))
 channel = connection.channel()
 channel.queue_declare(queue='calculation_queue')
 
-redis_client = redis.Redis(host='host.docker.internal', port=6379, db=0)
+redis_client = redis.Redis(host='svc-redis', port=6379, db=0)
 
 
 def callback(ch, method, properties, body):
@@ -47,10 +47,6 @@ def callback(ch, method, properties, body):
     # Set the result in Redis
     if result is not None:
         redis_client.set(calc_id, result)
-
-    # Acknowledge the message
-    #ch.basic_ack(delivery_tag=method.delivery_tag)
-
 
 channel.basic_consume(queue='calculation_queue', on_message_callback=callback, auto_ack=True)
 print(' [*] Waiting for messages. To exit press CTRL+C')

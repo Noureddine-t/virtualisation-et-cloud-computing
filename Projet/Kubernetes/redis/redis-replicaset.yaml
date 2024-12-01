@@ -19,6 +19,6 @@ spec:
           image: redis
           ports:
             - name: http
-              containerPort: 8080
+              containerPort: 6379
               protocol: TCP
       

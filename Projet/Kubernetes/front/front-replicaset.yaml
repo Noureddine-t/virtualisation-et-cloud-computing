@@ -16,11 +16,8 @@ spec:
     spec:
       containers:
         - name: frontend-container
-          image: app-frontend
+          image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv2
           ports:
             - name: http
               containerPort: 80
-              protocol: TCP
-            - name: http
-              containerPort: 8080
               protocol: TCP
