@@ -77,6 +77,9 @@ kubectl delete -f api-service.yaml
 kubectl delete -f rabbitmq-replicaset.yaml
 kubectl delete -f rabbitmq-service.yaml
 
+kubectl delete -f redis-replicaset.yaml
+kubectl delete -f redis-service.yaml
+
 kubectl delete -f consumer-replicaset.yaml
 
 

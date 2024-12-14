@@ -17,3 +17,10 @@ spec:
                 name: svc-front
                 port:
                   number: 80
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: svc-api
+                port:
+                  number: 5000
