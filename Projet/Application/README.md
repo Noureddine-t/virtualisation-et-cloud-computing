@@ -21,18 +21,18 @@ je suis passer a dockerfile : mon backend le reconnait pas localhost, j ai du ch
 
 
 ```bash
-docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:talebv2
-docker run --rm --name backend-api -p 5000:5000 europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:taleb
+docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:talebv3
+docker run --rm --name backend-api -p 5000:5000 europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:talebv3
 
 ```
 ```bash
-docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv2
-docker run  --rm --name backend-consumer europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:taleb
+docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv3
+docker run  --rm --name backend-consumer europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv3
 
 ```
 ```bash
 docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv3
-docker run  --rm --name app-frontend -p 8080:80 europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:taleb
+docker run  --rm --name app-frontend -p 8080:80 europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv3
 
 ```
 a force de lancer plusioeeurs commandes dans différents terminal plusiiur fois afin de debuggere j ai décidé de créer un docker-compose pour lancer les 3 containers en meme temps.
@@ -50,8 +50,8 @@ docker-compose up --build
 
 ```bash
 # pousser les images dans le registry
-docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:talebv2
-docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv2
+docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:talebv3
+docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv3
 docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv3
 ```
 

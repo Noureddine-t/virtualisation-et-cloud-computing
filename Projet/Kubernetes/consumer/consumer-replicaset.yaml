@@ -16,5 +16,5 @@ spec:
     spec:
       containers:
         - name: consumer-container
-          image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv2
+          image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv3
       

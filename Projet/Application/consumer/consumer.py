@@ -10,7 +10,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Connection to RabbitMQ
-connection = pika.BlockingConnection(pika.ConnectionParameters('svc-rabbitmq'))
+connection = pika.BlockingConnection(pika.ConnectionParameters('svc-rabbitmq', heartbeat=0))
 channel = connection.channel()
 channel.queue_declare(queue='calculation_queue')
 
