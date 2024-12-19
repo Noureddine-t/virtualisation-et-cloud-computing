@@ -3,11 +3,10 @@ kind: Ingress
 metadata:
   name: front-ingress
   namespace: taleb
-  annotations:
-    ingressClassName: "nginx"
 spec:
+  ingressClassName: nginx
   rules:
-    - host: calculatrice-taleb-polytech-dijon.kiowy.net
+    - host: calculatrice-taleb.polytech-dijon.kiowy.net
       http:
         paths:
           - path: /

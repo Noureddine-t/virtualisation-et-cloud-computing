@@ -42,16 +42,16 @@ europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/frontend-2024:nom1-nom
 kubectl create ns taleb
 kubectl config set-context --current --namespace=taleb
 
-kubectl apply -f front-replicaset.yaml
-kubectl apply -f front-service.yaml
-
-kubectl apply -f nginx-ingress.yaml
+kubectl apply -f redis-replicaset.yaml
+kubectl apply -f redis-service.yaml
 
 kubectl apply -f rabbitmq-replicaset.yaml
 kubectl apply -f rabbitmq-service.yaml
 
-kubectl apply -f redis-replicaset.yaml
-kubectl apply -f redis-service.yaml
+kubectl apply -f front-replicaset.yaml
+kubectl apply -f front-service.yaml
+
+kubectl apply -f nginx-ingress.yaml
 
 kubectl apply -f api-replicaset.yaml
 kubectl apply -f api-service.yaml
@@ -60,11 +60,11 @@ kubectl apply -f consumer-replicaset.yaml
 
 kubectl port-forward service/svc-front 8080:80
 
-
-
 kubectl get replicasets
 kubectl get pods
 kubectl get svc
+
+kubectl describe pod frontend-replicaset-5blbn
 
 kubectl delete -f nginx-ingress.yaml
 
@@ -96,6 +96,9 @@ kubectl get ingress front-ingress -o=jsonpath='{.metadata.namespace}'
 kubectl rollout restart deployment ingress-nginx-controller -n ingress-nginx
 
 kubectl describe ingress front-ingress -n taleb
+kubectl get svc -n ingress-nginx
+kubectl get ingress -n taleb
+
 
 kubectl get ingressclass
 
@@ -104,6 +107,8 @@ kubectl delete all --all -n taleb
 kubectl logs <pod-name> -n taleb -f
 
 ------------------------------------------------------------------------------------------------
+kubectl get pods -o yaml
+kubectl get pod -n do-not-touch
 
 kubectl logs consumer-replicaset-dz2rm
 

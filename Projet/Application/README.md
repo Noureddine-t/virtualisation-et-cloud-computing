@@ -31,8 +31,8 @@ docker run  --rm --name backend-consumer europe-west1-docker.pkg.dev/polytech-di
 
 ```
 ```bash
-docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv3
-docker run  --rm --name app-frontend -p 8080:80 europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv3
+docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv5
+docker run  --rm --name app-frontend -p 8080:80 europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv4
 
 ```
 a force de lancer plusioeeurs commandes dans différents terminal plusiiur fois afin de debuggere j ai décidé de créer un docker-compose pour lancer les 3 containers en meme temps.
@@ -52,7 +52,7 @@ docker-compose up --build
 # pousser les images dans le registry
 docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:talebv3
 docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv3
-docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv3
+docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv5
 ```
 
 ```bash
