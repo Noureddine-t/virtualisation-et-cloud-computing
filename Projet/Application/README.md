@@ -11,13 +11,10 @@ docker run -it --rm --name myRabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.12-
 ```
 
 dans un premier temps j ai crée mon frontend (html,css,js), et mon backend avec flask (proposé).
-j ai créer mon premier fichier python pour envoyer résultat a l'utilisateur et le stocker dans redis, le stocker sur redis.
+j ai créer mon premier fichier python pour envoyer résultat a l'utilisateur et le stocker dans redis.
 ensuite j ai intégré rabbitmq et la logique demdandée pour le traitement des données.
 
-
-
-
-je suis passer a dockerfile : mon backend le reconnait pas localhost, j ai du changer l'adresse ip de redis et rabbitmq pour que mon backend puisse les reconnaitre.
+je suis passer a dockerfile : mon backend ne reconnait pas localhost, j ai du changer l'adresse ip de redis et rabbitmq pour que mon backend puisse les reconnaitre.
 
 
 ```bash
