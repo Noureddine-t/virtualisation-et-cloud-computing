@@ -36,13 +36,17 @@ document.getElementById('calcForm').addEventListener('submit', function(event) {
     const idText = document.getElementById('resultId').textContent.replace("ID de l'opération : ", "");
 
     // Copier l'ID dans le presse-papiers
-    navigator.clipboard.writeText(idText)
-        .then(() => {
-            console.log("ID copied to clipboard!");
-        })
-        .catch(err => {
-            console.error('Error copying:', err);
-        });
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(idText)
+            .then(() => {
+                console.log("ID copié dans le presse-papiers !");
+            })
+            .catch(err => {
+                console.error("Erreur lors de la copie :", err);
+            });
+    } else {
+        console.error("L'API du presse-papiers n'est pas supportée ou accessible. (HTTPS requis)");
+    }
 });
 
 /**
