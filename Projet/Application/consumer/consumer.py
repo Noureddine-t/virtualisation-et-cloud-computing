@@ -28,13 +28,13 @@ def callback(ch, method, properties, body):
 
     # Perform the calculation
     try:
-        if operator == 'add':
+        if operator == 'Addition':
             result = num1 + num2
-        elif operator == 'subtract':
+        elif operator == 'Soustraction':
             result = num1 - num2
-        elif operator == 'multiply':
+        elif operator == 'Multiplication':
             result = num1 * num2
-        elif operator == 'divide':
+        elif operator == 'Division':
             if num2 == 0:
                 raise ValueError("Dividing by zero is not allowed")
             result = num1 / num2

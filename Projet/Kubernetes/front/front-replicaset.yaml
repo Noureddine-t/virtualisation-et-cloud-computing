@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: frontend-container
-          image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv6
+          image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv7
           resources:
             requests:
               cpu: 50m
