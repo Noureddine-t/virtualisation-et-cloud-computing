@@ -23,5 +23,5 @@ variable "environments" {
 
 variable "student" {
   type    = string
-  default = "Taleb"
+  default = "taleb"
 }

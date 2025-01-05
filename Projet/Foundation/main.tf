@@ -17,7 +17,6 @@ resource "scaleway_vpc_private_network" "vpc" {
   name   = "my-vpc"
   region = var.region
 }
-
 # Kubernetes Cluster
 resource "scaleway_k8s_cluster" "cluster" {
   name                        = "my-cluster"
@@ -34,7 +33,7 @@ resource "scaleway_registry_namespace" "container_registry" {
   region = var.region
 }
 
-# Databases
+# Databases for development and production environments
 resource "scaleway_rdb_instance" "database" {
   for_each  = var.environments
   name      = "${each.value}-database"
@@ -43,12 +42,11 @@ resource "scaleway_rdb_instance" "database" {
   node_type = "DEV1-S"
 }
 
-#loadbalancer
 # LoadBalancer IPs
 resource "scaleway_lb_ip" "loadbalancer_ip" {
   for_each = var.environments
 }
-
+# LoadBalancers for development and production environments
 resource "scaleway_lb" "loadbalancer" {
   for_each = var.environments
   name     = "${each.value}-loadbalancer"
@@ -57,7 +55,7 @@ resource "scaleway_lb" "loadbalancer" {
 }
 
 
-# DNS Entries
+# DNS Entries for development and production environments to associate with the LoadBalancers
 resource "scaleway_domain_record" "dns_record" {
   for_each = var.environments
   name     = "calculatrice-${each.value == "prod" ? "" : "dev-"}${var.student}-polytech-dijon.kiowy.net"

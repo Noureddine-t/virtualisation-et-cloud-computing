@@ -1,3 +1,60 @@
+### Ressources Déployées
+
+- **Réseau privé virtuel (VPC)** : Fournit un réseau privé pour les ressources cloud.
+- **Cluster Kubernetes** : Gère les conteneurs de l'application.
+- **Container Registry** : Stocke les images Docker nécessaires pour le déploiement de l'application.
+- **Base de Données (Redis)** : Déployée en environnement `dev` et `prod` pour le stockage.
+- **Load Balancer** : Assure la répartition du trafic pour chaque environnement (`dev` et `prod`).
+- **DNS** : Crée des enregistrements DNS pour l'accès à l'application en fonction de l'environnement.
+
+### Variables Utilisées
+
+- `project_id` : Identifiant du projet.
+- `zone` et `region` : Zone et région pour le déploiement (`fr-par`).
+- `environments` : Environnement de déploiement (`dev` ou `prod`).
+- `student` : Nom de l'étudiant utilisé pour les noms DNS.
+
+
+
+### Schéma Descriptif
+
+Voici un aperçu de l'architecture déployée :
+
+```mermaid
+graph LR
+    subgraph vpc ["VPC : my-vpc"]
+        direction TB
+        k8s
+        
+    end
+    subgraph k8s ["Cluster :my-cluster"]
+        direction TB
+        node1
+        node2
+        node3
+    end
+    lbA["LoadBalancer : 
+    prod-loadbalancer"] --> k8s
+    lbB["LoadBalancer : 
+    dev-loadbalancer"]  --> k8s
+    dns1(["DNS record : 
+    calculatrice-dev-taleb.polytech-dijon.kiowy.net"]) --> lbB
+    dns2(["DNS record : 
+    calculatrice-taleb.polytech-dijon.kiowy.net"]) --> lbA
+    k8s --> db1["Database : 
+    prod-database"]
+    k8s --> reg["Container Registry : 
+    my-container-registry"]
+    k8s --> db2["Database : 
+    dev-database"]
+
+```
+
+
+
+### Résultat de terraform Plan
+
+
 ```hcl
 Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
   + create
@@ -11,7 +68,7 @@ Terraform will perform the following actions:
       + fqdn            = (known after apply)
       + id              = (known after apply)
       + keep_empty_zone = false
-      + name            = "calculatrice-dev-Taleb-polytech-dijon.kiowy.net"
+      + name            = "calculatrice-dev-taleb-polytech-dijon.kiowy.net"
       + priority        = (known after apply)
       + project_id      = (known after apply)
       + root_zone       = (known after apply)
@@ -26,7 +83,7 @@ Terraform will perform the following actions:
       + fqdn            = (known after apply)
       + id              = (known after apply)
       + keep_empty_zone = false
-      + name            = "calculatrice-Taleb-polytech-dijon.kiowy.net"
+      + name            = "calculatrice-taleb-polytech-dijon.kiowy.net"
       + priority        = (known after apply)
       + project_id      = (known after apply)
       + root_zone       = (known after apply)
