@@ -1,3 +1,5 @@
+# Terraform - Foundation
+
 ### Ressources Déployées
 
 - **Réseau privé virtuel (VPC)** : Fournit un réseau privé pour les ressources cloud.
@@ -14,46 +16,35 @@
 - `environments` : Environnement de déploiement (`dev` ou `prod`).
 - `student` : Nom de l'étudiant utilisé pour les noms DNS.
 
-
-
 ### Schéma Descriptif
 
 Voici un aperçu de l'architecture déployée :
 
 ```mermaid
 graph LR
-    subgraph vpc ["VPC : my-vpc"]
+    
+    subgraph vpc ["VPC : \n my-vpc"]
         direction TB
         k8s
-        
     end
-    subgraph k8s ["Cluster :my-cluster"]
+    
+    subgraph k8s ["Cluster : my-cluster"]
         direction TB
         node1
         node2
         node3
     end
-    lbA["LoadBalancer : 
-    prod-loadbalancer"] --> k8s
-    lbB["LoadBalancer : 
-    dev-loadbalancer"]  --> k8s
-    dns1(["DNS record : 
-    calculatrice-dev-taleb.polytech-dijon.kiowy.net"]) --> lbB
-    dns2(["DNS record : 
-    calculatrice-taleb.polytech-dijon.kiowy.net"]) --> lbA
-    k8s --> db1["Database : 
-    prod-database"]
-    k8s --> reg["Container Registry : 
-    my-container-registry"]
-    k8s --> db2["Database : 
-    dev-database"]
-
+    
+    lbA["LoadBalancer : \n prod-loadbalancer"] --> k8s
+    lbB["LoadBalancer :\n dev-loadbalancer"]  --> k8s
+    dns1(["DNS record : \n calculatrice-dev-taleb.polytech-dijon.kiowy.net"]) --> lbB
+    dns2(["DNS record : \n calculatrice-taleb.polytech-dijon.kiowy.net"]) --> lbA
+    k8s --> db1["Database : \n prod-database"]
+    k8s --> reg["Container Registry : \n my-container-registry"]
+    k8s --> db2["Database : \n dev-database"]
 ```
 
-
-
 ### Résultat de terraform Plan
-
 
 ```hcl
 Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:

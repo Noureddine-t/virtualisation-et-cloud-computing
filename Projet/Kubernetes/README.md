@@ -1,131 +1,194 @@
-apres avoir fini mon application et la tester avec des conteneur docker, j ai décidé de passer a kubernetes.
+# Kubernetes
 
-1. Initialiser `gcloud`
+### Schema récapitulatif (services et replicasets)
 
-    ```shell
-    gcloud init
-    ```
+```mermaid
+graph LR
+    
+    subgraph "Kubernetes"
+        subgraph "Taleb"
+            subgraph "front-replicaset"
+                pod-front
+            end
+            
+            subgraph "api-replicaset"
+                pod-api
+            end
+            
+            subgraph "redis-replicaset"
+                pod-redis[("Redis \n pod")]
+            end
+            
+            subgraph "rabbitmq-replicaset"
+                pod-rabbitmq[\" RabbitMQ \n pod"/]
+            end
+            
+            subgraph "consumer-replicaset"
+                pod-consumer
+            end
+            
+            svc-api([svc-api]) --> pod-api
+            svc-redis([svc-redis]) --> pod-redis
+            svc-rabbitmq([svc-rabbitmq]) --> pod-rabbitmq
+            pod-consumer -.-> svc-rabbitmq
+            pod-consumer -.-> svc-redis
+            pod-api -.-> svc-redis
+            pod-api -.-> svc-rabbitmq
+            ing -->|"calculatrice-taleb.polytech-dijon.kiowy.net/api"| svc-api
+            ing(Ingress NGINX rules) -->|"calculatrice-taleb.polytech-dijon.kiowy.net/"| svc-front
+            svc-front([svc-front]) --> pod-front
+        end
+    end
+```
+### Fonctionnement
+#### Etape 1 : Demande de calcul
 
-   Aux question posées, répondez :
-    * Pick a configuration to use :  **[1] Re-initialize this configuration (default) with new settings**
-    * Select an account : **Skip this step**
-
-2. S'authentifier
-
-    ```shell
-    gcloud auth login
-    ```
-
-   Connectez-vous avec l'adresse email Google que vous aviez saisie dans le Google Sheet
-
-3. Configurer le projet
-    ```shell
-    gcloud config set project polytech-dijon
-    ```
-
-   Do you want to continue (Y/n) ? **Y**
-
-4. Configurer l'outil `docker` pour pousser dans **Artifact Registry**.
-
-    ```shell
-    gcloud auth configure-docker europe-west1-docker.pkg.dev
-    ```
-
-**Vous pouvez maintenant pousser les images.** Utiliser les tags adaptés pour faire fonctionner la commande `docker push`
-
-###### Exemple pour le frontend
-
-```shell
-europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/frontend-2024:nom1-nom2
+```mermaid
+graph LR
+    user([Utilisateur]) -->|choisit une opération \n et saisit deux nombres| F[Frontend]
+    F -->|"HTTP POST /api/calculate"| A[API]
+    A -->|"{id, calcul à faire}"| Q[\ RabbitMQ /]
+    A -.->|HTTP 200 OK \n id| F
+    C[Consumer] -->|"récupére le dernier message"| Q[\ RabbitMQ /]
+    C -->|"redis.set(id, resultat du calcul)"| R[(Redis DB)]
 ```
 
+#### Etape 2 : Récupération du résultat du calcul
+
+```mermaid
+graph LR
+    user([Utilisateur]) -->|saisit id du calcul à récupérer| F[Frontend]
+    F -->|"HTTP GET /api/result/{id}"| A[API]
+    A -->|"redis.get(id)"| R[(Redis DB)]
+    R -.->|"résultat ou null"| A
+    A -.->|HTTP 200 + Résultat| F
+    A -.->|HTTP 404 Not Found| F
+    F -.->|Affiche le résultat ou l'erreur| user
+```
+### Commandes utiles
+
+#### Namespace Kubernetes
+
+```shell
 kubectl create ns taleb
+```
+```shell
 kubectl config set-context --current --namespace=taleb
+```
 
+#### Déploiement Redis
+
+```shell
 kubectl apply -f redis-replicaset.yaml
+```
+```shell
 kubectl apply -f redis-service.yaml
+```
 
+#### Déploiement RabbitMQ
+
+```shell
 kubectl apply -f rabbitmq-replicaset.yaml
+```
+```shell
 kubectl apply -f rabbitmq-service.yaml
+```
 
+#### Déploiement Frontend
+
+```shell
 kubectl apply -f front-replicaset.yaml
+```
+```shell
 kubectl apply -f front-service.yaml
+```
 
+#### Déploiement Ingress
+
+```shell
 kubectl apply -f nginx-ingress.yaml
+```
 
+#### Déploiement Backend API
+
+```shell
 kubectl apply -f api-replicaset.yaml
+```
+```shell
 kubectl apply -f api-service.yaml
+```
 
+#### Déploiement Consumer
+```shell
 kubectl apply -f consumer-replicaset.yaml
+```
 
-kubectl port-forward service/svc-front 8080:80
-
-kubectl get replicasets
+#### Debugging
+```shell
 kubectl get pods
+```
+```shell
+kubectl get replicasets
+```
+```shell
 kubectl get svc
+```
+```shell
+kubectl get ingress
+```
+```shell
+kubectl logs <pod-name>
+```
+```shell
+kubectl describe pod <pod-name>
+```
+```shell
+kubectl describe ingress
+```
 
-kubectl describe pod frontend-replicaset-5blbn
+#### Suppression des replicasets
 
+```shell
 kubectl delete -f nginx-ingress.yaml
-
+```
+```shell
 kubectl delete -f front-replicaset.yaml
-kubectl delete -f front-service.yaml
-
+```
+```shell
 kubectl delete -f api-replicaset.yaml
-kubectl delete -f api-service.yaml
-
+```
+```shell
 kubectl delete -f rabbitmq-replicaset.yaml
-kubectl delete -f rabbitmq-service.yaml
-
+```
+```shell
 kubectl delete -f redis-replicaset.yaml
-kubectl delete -f redis-service.yaml
-
+```
+```shell
 kubectl delete -f consumer-replicaset.yaml
+```
 
+#### Suppression des services
 
----------------------------------------------------------------------------
-kubectl logs frontend-replicaset-5blbn
-kubectl get endpoints svc-front
+```shell
+kubectl delete -f front-service.yaml
+```
+```shell
+kubectl delete -f api-service.yaml
+```
+```shell
+kubectl delete -f rabbitmq-service.yaml
+```
+```shell
+kubectl delete -f redis-service.yaml
+```
 
-kubectl get pods -n ingress-nginx
-kubectl logs -n ingress-nginx ingress-nginx-controller-586f4794cb-nn62d
+#### Suppression de toutes les resources
 
-kubectl get svc svc-front -o=jsonpath='{.metadata.namespace}'ace}'
-kubectl get ingress front-ingress -o=jsonpath='{.metadata.namespace}'
-
-kubectl rollout restart deployment ingress-nginx-controller -n ingress-nginx
-
-kubectl describe ingress front-ingress -n taleb
-kubectl get svc -n ingress-nginx
-kubectl get ingress -n taleb
-
-
-kubectl get ingressclass
-
+```shell
 kubectl delete all --all -n taleb
-   
-kubectl logs <pod-name> -n taleb -f
+```
 
-------------------------------------------------------------------------------------------------
-kubectl get pods -o yaml
-kubectl get pod -n do-not-touch
-
-kubectl logs consumer-replicaset-dz2rm
-
-
-remplacer 127.0.0.1 (localhost) par le nom du service "svc-api"
-remplacer host.docker.internal "svc-rabbitmq"
-remplacer localhost "svc-redis"
-j ai du modifire mes fichier par conséquent créer de nouvbelle iumage et les pousser sauf que mes modification n'etait pas prise en cvompte. j ai du tout supprimer de mon namespacee et ajoutre une nouvlle tag a mes images pour eviter confusion taleb->talebv2
-calculatrice-taleb-polytech-dijon.kiowy.net
-
-supposition
-apres plusieurs echecs et tentatives. 
-vu que je peux pas acceder a mon application depuis "calculatrice-taleb-polytech-dijon.kiowy.net" avec ingress (intrieur) , je redirige le 8080 a 80 pour acceder a mon application depuiis localhost:8080 (extérieur)
-maitenant que l'acces a mon application est fait. j arrive a envoyer mes requetes a l'api via serevice tant que CLUSTERIP j ai conclu que cela n est pas possible car la source de la requete via de l'extreieur.
-au final j ai utilisé postman pour envoyer des requetes directement a mon api.
-j ai changé type du service a loadbalancer pour que je puisse acceder a mon api depuis l'exterieur.
-et j ai bien recu les reponses de mon api.
-
-autres problemes:
-- le channel de rabbitmq se ferme automatiquement apres 60s ce qui fait que mon cluster est tjrs 'running' pareil pour les pods mais y a pas de communication dernire.
+### Problèmes rencontrés
+- Remplacer `127.0.0.1` par `svc-api`, `svc-rabbitmq`, et `svc-redis`.
+- Problème résolu en changeant le type de service de ClusterIP à LoadBalancer.
+- Postman utilisé pour tester les requêtes API.
