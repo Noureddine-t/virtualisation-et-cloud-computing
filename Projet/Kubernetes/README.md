@@ -16,11 +16,11 @@ graph LR
             end
             
             subgraph "redis-replicaset"
-                pod-redis[("Redis \n pod")]
+                pod-redis[("Redis <br> pod")]
             end
             
             subgraph "rabbitmq-replicaset"
-                pod-rabbitmq[\" RabbitMQ \n pod"/]
+                pod-rabbitmq[\" RabbitMQ <br> pod"/]
             end
             
             subgraph "consumer-replicaset"
@@ -45,10 +45,10 @@ graph LR
 
 ```mermaid
 graph LR
-    user([Utilisateur]) -->|choisit une opération \n et saisit deux nombres| F[Frontend]
+    user([Utilisateur]) -->|choisit une opération <br> et saisit deux nombres| F[Frontend]
     F -->|"HTTP POST /api/calculate"| A[API]
     A -->|"{id, calcul à faire}"| Q[\ RabbitMQ /]
-    A -.->|HTTP 200 OK \n id| F
+    A -.->|HTTP 200 OK <br> id| F
     C[Consumer] -->|"récupére le dernier message"| Q[\ RabbitMQ /]
     C -->|"redis.set(id, resultat du calcul)"| R[(Redis DB)]
 ```
@@ -192,3 +192,5 @@ kubectl delete all --all -n taleb
 - Remplacer `127.0.0.1` par `svc-api`, `svc-rabbitmq`, et `svc-redis`.
 - Problème résolu en changeant le type de service de ClusterIP à LoadBalancer.
 - Postman utilisé pour tester les requêtes API.
+
+

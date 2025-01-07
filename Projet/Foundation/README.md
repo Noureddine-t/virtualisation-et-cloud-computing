@@ -23,7 +23,7 @@ Voici un aperçu de l'architecture déployée :
 ```mermaid
 graph LR
     
-    subgraph vpc ["VPC : \n my-vpc"]
+    subgraph vpc ["VPC : <br> my-vpc"]
         direction TB
         k8s
     end
@@ -35,13 +35,13 @@ graph LR
         node3
     end
     
-    lbA["LoadBalancer : \n prod-loadbalancer"] --> k8s
-    lbB["LoadBalancer :\n dev-loadbalancer"]  --> k8s
-    dns1(["DNS record : \n calculatrice-dev-taleb.polytech-dijon.kiowy.net"]) --> lbB
-    dns2(["DNS record : \n calculatrice-taleb.polytech-dijon.kiowy.net"]) --> lbA
-    k8s --> db1["Database : \n prod-database"]
-    k8s --> reg["Container Registry : \n my-container-registry"]
-    k8s --> db2["Database : \n dev-database"]
+    lbA["LoadBalancer : <br> prod-loadbalancer"] --> k8s
+    lbB["LoadBalancer :<br> dev-loadbalancer"]  --> k8s
+    dns1(["DNS record : <br> calculatrice-dev-taleb.polytech-dijon.kiowy.net"]) --> lbB
+    dns2(["DNS record : <br> calculatrice-taleb.polytech-dijon.kiowy.net"]) --> lbA
+    k8s --> db1["Database : <br> prod-database"]
+    k8s --> reg["Container Registry : <br> my-container-registry"]
+    k8s --> db2["Database : <br> dev-database"]
 ```
 
 ### Résultat de terraform Plan

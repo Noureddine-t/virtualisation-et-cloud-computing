@@ -3,8 +3,9 @@
 Projet de virtualisation utilisant Docker, Docker Compose, et Kubernetes pour déployer une application de calculatrice cloud native.
 
 ## Technologies utilisées
-- **Backend :** Flask (Python)
+
 - **Frontend :** HTML, CSS, JS
+- **Backend :** Flask (Python)
 - **Base de données :** Redis
 - **Queue de message :** RabbitMQ
 - **Serveur web :** Nginx
@@ -32,7 +33,7 @@ Projet de virtualisation utilisant Docker, Docker Compose, et Kubernetes pour d�
   ```mermaid
   graph TB;
       A(Utilisateur) --> B[Frontend]
-      B -->|"Envoi du calcul \n ou \n Demande d'un résultat"| C[API]
+      B -->|"Envoi du calcul <br> ou <br> Demande d'un résultat"| C[API]
       C -->|Transmission du calcul à faire | E[\RabbitMQ/] -.-> F(["Consumer( calcul )"]) -->|Récupèration d'un calcul| E
       F -->|Stockage du résultat| D
       C <-->|Accès aux résultats| D[(Redis)]

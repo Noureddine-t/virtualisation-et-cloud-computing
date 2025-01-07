@@ -89,4 +89,3 @@ gcloud artifacts docker images list europe-west1-docker.pkg.dev/polytech-dijon/p
 - Solution : Remplacement par `host.docker.internal` + modification IP de Redis et RabbitMQ.
 - Problème CORS Policy 
 
-
