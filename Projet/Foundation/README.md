@@ -263,6 +263,6 @@ Terraform will perform the following actions:
 Plan: 11 to add, 0 to change, 0 to destroy.
 ```
 ## Voir aussi
-- [`Application/`](./Application) : Fichiers de l'application web (front-end, back-end, consumer), Dockerfiles associés et docker-compose.
-- [`Kubernetes/`](./Kubernetes) : Manifests Kubernetes (Replicaset, Service, Ingress)
-- [`Sujet.md`](./Sujet.md)
+- [`Application/`](../Application) : Fichiers de l'application web (front-end, back-end, consumer), Dockerfiles associés et docker-compose.
+- [`Kubernetes/`](../Kubernetes) : Manifests Kubernetes (Replicaset, Service, Ingress)
+- [`Sujet.md`](../Sujet.md)
