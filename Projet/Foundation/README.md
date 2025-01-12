@@ -265,5 +265,6 @@ Plan: 11 to add, 0 to change, 0 to destroy.
 ## Voir aussi
 - [`Application/`](../Application) : Fichiers de l'application web (front-end, back-end, consumer), Dockerfiles associés et docker-compose.
 - [`Kubernetes/`](../Kubernetes) : Manifests Kubernetes (Replicaset, Service, Ingress)
+- [`Projet.md`](../README.md) : Description du projet
 - [`Sujet.md`](../Sujet.md) ou [source](https://github.com/JeromeMSD/module_virtualisation-et-cloud-computing/blob/main/projet.md)
 - [🔼 Back to Top](#foundation---terraform---scaleway)

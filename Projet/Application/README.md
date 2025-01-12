@@ -147,5 +147,6 @@ gcloud artifacts docker images list europe-west1-docker.pkg.dev/polytech-dijon/p
 ## Voir aussi
 - [`Kubernetes/`](../Kubernetes) : Manifests Kubernetes (Replicaset, Service, Ingress)
 - [`Foundation/`](../Foundation) : Terraform (provisionnement de l'infrastructure)
+- [`Projet.md`](../README.md) : Description du projet
 - [`Sujet.md`](../Sujet.md) ou [source](https://github.com/JeromeMSD/module_virtualisation-et-cloud-computing/blob/main/projet.md)
 - [🔼 Back to Top](#application)
