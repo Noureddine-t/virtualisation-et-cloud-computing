@@ -72,24 +72,20 @@ app.run(host='0.0.0.0', port=5000, debug=True)
 
 ### Docker Compose :
 - **RabbitMQ :** une fois le conteneur prêt, la création des conteneurs pour l'API et le consumer commence, mais le service RabbitMQ n'est pas encore lancé. Cela entraîne un échec dans la création des conteneurs pour l'API et le consumer qui dépendent de ce dernier.
-
-## Docker
-
-### Création des images Docker
-
-- #### Création de l'image app-frontend
-```bash
-docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv8
+- **Solution :** Ajout de l'option `healthcheck` pour attendre que RabbitMQ soit prêt. Ajout l'option `depends_on` pour vérifier les conditions de démarrage avant de lancer le conteneur de l'API et celui du consumer
+```yaml
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "status" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
 ```
-
-- #### Création de l'image backend-api
-```bash
-docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:talebv3
-```
-
-- #### Création de l'image backend-consumer
-```bash
-docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv4
+```yaml
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_started
 ```
 
 ### Lancement des conteneurs
