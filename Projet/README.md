@@ -12,8 +12,8 @@
   - [5. Orchestration avec Kubernetes](#5-orchestration-avec-kubernetes)
   - [6. Accès à l'application](#6-accès-à-lapplication)
 - [Remarques](#remarques)
-- [Auteur](#auteur)
 - [Application](#application)
+- [Auteur](#auteur)
 ## Description
 Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une application de calculatrice cloud native. [sujet](Sujet.md)
 
