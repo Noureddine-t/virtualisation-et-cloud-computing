@@ -1,42 +1,9 @@
 services:
-  redis:
-    image: redis
-    container_name: myRedis
-    ports:
-      - "6379:6379"
-
-
-  rabbitmq:
-    image: rabbitmq:3.12-management
-    container_name: myRabbitmq
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-
-
-  backend-api:
-    build:
-      context: ./backend
-    image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:taleb
-    container_name: backend-api
-    ports:
-      - "5000:5000"
-    depends_on:
-      - redis
-      - rabbitmq
-
-  backend-consumer:
-    build:
-      context: ./consumer
-    image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:taleb
-    container_name: backend-consumer
-    depends_on:
-      - redis
-      - rabbitmq
 
   app-frontend:
     build:
       context: ./frontend
+      dockerfile: Dockerfile
     image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:taleb
     container_name: app-frontend
     ports:
@@ -45,4 +12,46 @@ services:
       - backend-api
       - backend-consumer
 
+  redis:
+    image: redis
+    container_name: myRedis
+    ports:
+      - "6379:6379"
 
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: myRabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "status" ]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
+  backend-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:taleb
+    container_name: backend-api
+    ports:
+      - "5000:5000"
+    depends_on:
+      redis:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+
+  backend-consumer:
+    build:
+      context: ./consumer
+      dockerfile: Dockerfile
+    image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:taleb
+    container_name: backend-consumer
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_started
