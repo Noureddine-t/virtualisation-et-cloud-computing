@@ -26,7 +26,7 @@
         - [Récupérer l'endpoint d'un service](#récuperer-lenpoint-dun-service)
         - [Récupérer l'ingressclass](#récupérer-lingressclass)
         - [Redirection de port](#redirection-de-port)
-
+- [Voir aussi](#voir-aussi)
 ## Schema récapitulatif (services et replicasets)
 
 ```mermaid
@@ -115,7 +115,7 @@ const response = await fetch(`http://svc-api:5000/api/result/${operationId}`, {
 ### Accès à l'application depuis l'extérieur :
 
 - Problème de communication entre le Frontend et le Backend.
-- **Solution :** Utilisation de l'Ingress NGINX pour rediriger les requêtes arrivant sur l'URL du Frontend quand le chemin est "/api" vers le service API. Plus de details [ici](Autre/Modification.md).
+- **Solution :** Utilisation de l'Ingress NGINX pour rediriger les requêtes arrivant sur l'URL du Frontend quand le chemin est "/api" vers le service API. Plus de details [ici](../docs/Autre/Modification.md).
 ```javascript
 const response = await fetch(`http://calculatrice-taleb.polytech-dijon.kiowy.net/api/calculate`, {
     // ...
@@ -262,7 +262,10 @@ kubectl get ingressclass
 kubectl port-forward service/svc-front 8080:80
 ```
 
-
+## Voir aussi
+- [`Application/`](./Application) : Fichiers de l'application web (front-end, back-end, consumer), Dockerfiles associés et docker-compose.
+- [`Foundation/`](./Foundation) : Terraform (provisionnement de l'infrastructure)
+- [`Sujet.md`](./Sujet.md)
 
 
 

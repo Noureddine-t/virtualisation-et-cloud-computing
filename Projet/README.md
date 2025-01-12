@@ -31,9 +31,10 @@ Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une
 - **Cloud :** Google Cloud Platform
 
 ## Contenu
--  [`Application/`](./Application) : Fichiers de l'application web (front-end, back-end, consumer), Dockerfiles associés et docker-compose.
+- [`Application/`](./Application) : Fichiers de l'application web (front-end, back-end, consumer), Dockerfiles associés et docker-compose.
 - [`Kubernetes/`](./Kubernetes) : Manifests Kubernetes (Replicaset, Service, Ingress)
 - [`Foundation/`](./Foundation) : Terraform (provisionnement de l'infrastructure)
+- [`Sujet.md`](./Sujet.md)
 
 ## Déroulement du projet
 

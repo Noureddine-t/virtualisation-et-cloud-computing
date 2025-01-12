@@ -31,7 +31,8 @@
         - [Pousser backend-api](#pousser-backend-api)
         - [Pousser backend-consumer](#pousser-backend-consumer)
     - [Vérification des images poussées](#vérification-des-images-poussées)
-
+- [Voir aussi](#voir-aussi)
+- 
 ## Développement de l'application
 
 - **Frontend :** HTML, CSS, JS
@@ -143,3 +144,7 @@ docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-co
 gcloud artifacts docker images list europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon
 ```
 
+## Voir aussi
+- [`Kubernetes/`](./Kubernetes) : Manifests Kubernetes (Replicaset, Service, Ingress)
+- [`Foundation/`](./Foundation) : Terraform (provisionnement de l'infrastructure)
+- [`Sujet.md`](./Sujet.md)

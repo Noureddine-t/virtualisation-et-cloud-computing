@@ -7,6 +7,7 @@
 - [Variables Utilisées](#variables-utilisées)
 - [Schéma Descriptif](#schéma-descriptif)
 - [Résultat de terraform Plan](#Résultat de terraform Plan)
+- [Voir aussi](#voir-aussi)
 
 ## Ressources Déployées
 
@@ -261,3 +262,7 @@ Terraform will perform the following actions:
 
 Plan: 11 to add, 0 to change, 0 to destroy.
 ```
+## Voir aussi
+- [`Application/`](./Application) : Fichiers de l'application web (front-end, back-end, consumer), Dockerfiles associés et docker-compose.
+- [`Kubernetes/`](./Kubernetes) : Manifests Kubernetes (Replicaset, Service, Ingress)
+- [`Sujet.md`](./Sujet.md)
