@@ -1,7 +1,21 @@
-# Projet de Virtualisation et Cloud - Calculatrice Cloud Native
+# Projet de Virtualisation & Cloud Computing - Calculatrice Cloud Native
 
+## Sommaire
+- [Description](#description)
+- [Technologies utilisées](#technologies-utilisées)
+- [Contenu](#contenu)
+- [Déroulement du projet](#déroulement-du-projet)
+  - [1. Terraform](#1-terraform)
+  - [2. Développement de l'application](#2-développement-de-lapplication)
+  - [3. Intégration de la logique demandée](#3-intégration-de-la-logique-demandée)
+  - [4. Containerisation](#4-containerisation)
+  - [5. Orchestration avec Kubernetes](#5-orchestration-avec-kubernetes)
+  - [6. Accès à l'application](#6-accès-à-lapplication)
+- [Remarques](#remarques)
+- [Auteur](#auteur)
+- [Application](#application)
 ## Description
-Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une application de calculatrice cloud native.
+Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une application de calculatrice cloud native. [sujet](Sujet.md)
 
 ## Technologies utilisées
 
@@ -10,9 +24,10 @@ Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une
 - **Base de données :** Redis
 - **Queue de message :** RabbitMQ
 - **Serveur web :** Nginx
+- **Provisionnement :** Terraform
+- **Provider :** Scaleway
 - **Containerisation :** Docker
 - **Orchestration :** Kubernetes
-- **Provisionnement :** Terraform
 - **Cloud :** Google Cloud Platform
 
 ## Contenu
@@ -52,7 +67,7 @@ Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une
   - **Docker Compose :** Mise en place d'un fichier `docker-compose.yml` pour faciliter le lancement des 5 conteneurs (frontend, backend, consumer, Redis, RabbitMQ).
 
 ### 5. Orchestration avec Kubernetes :
-  - Création des manifests Kubernetes pour déployer l'application et y accéder via un nom de domaine.
+  - Création des manifests Kubernetes pour déployer l'application et y accéder via ce lien : [Calculatrice Cloud Native](http://calculatrice-taleb.polytech-dijon.kiowy.net).
 
 ### 6. Accès à l'application :
 
@@ -60,12 +75,16 @@ Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une
 
 > [!NOTE]
 > L'ensemble des problématiques rencontrées et des solutions apportées sont détaillées dans les fichiers `README.md` de chaque partie du projet.
+> - [Application](./Application/README.md)
+> - [Kubernetes](./Kubernetes/README.md)
+> - [Foundation](./Foundation/README.md)
 
-## Notes
-- L'application est désormais accessible via ce lien : [Calculatrice Cloud Native](http://calculatrice-taleb.polytech-dijon.kiowy.net).
-- Veuillez ajouter la ligne suivante `34.77.144.136 calculatrice-taleb.polytech-dijon.kiowy.net` dans votre fichier `hosts` :
-  - **Windows :** `C:\Windows\System32\drivers\etc\hosts`
-  - **Linux :** `/etc/hosts`
+## Application
+> [!IMPORTANT]
+> - L'application est désormais accessible via ce lien : [Calculatrice Cloud Native](http://calculatrice-taleb.polytech-dijon.kiowy.net).
+> - Veuillez ajouter la ligne suivante `34.77.144.136 calculatrice-taleb.polytech-dijon.kiowy.net` dans votre fichier `hosts` :
+>  - **Windows :** `C:\Windows\System32\drivers\etc\hosts`
+>  - **Linux :** `/etc/hosts`
 
 ## Auteur
 **Nour Eddine TALEB**
