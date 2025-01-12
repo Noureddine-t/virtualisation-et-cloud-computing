@@ -1,5 +1,5 @@
-| [![uBe](./docs/Autre/img/UB-Europe.png)](https://www.ube.fr) | Polytech Dijon - 4A - ILIA/SQR <br/> Projet de Virtualisation & Cloud Computing <br/> Calculatrice Cloud Native <br/><br/> **[ EXAMEN PRATIQUE ]** | [![Polytech Dijon](./docs/Autre/img/logo_polytech.png)](https://polytech.u-bourgogne.fr) |
-|:-------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------:|-----------------------------------------------------------------------------------------:|
+| [![uBe](./docs/Autre/img/UB-Europe.png)](https://www.ube.fr) | Polytech Dijon - 4A - ILIA/SQR <br/> Projet&nbsp;de&nbsp;Virtualisation&nbsp;&amp;&nbsp;Cloud&nbsp;Computing <br/> Calculatrice Cloud Native <br/><br/> **[ EXAMEN PRATIQUE ]** | [![Polytech Dijon](./docs/Autre/img/logo_polytech.png)](https://polytech.u-bourgogne.fr) |
+|:-------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|-----------------------------------------------------------------------------------------:|
 
 ## Sommaire
 - [Description](#description)
