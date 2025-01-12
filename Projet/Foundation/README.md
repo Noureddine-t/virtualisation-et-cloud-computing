@@ -1,6 +1,14 @@
-# Terraform - Foundation
+# Foundation - Terraform - Scaleway
+[![terraform](https://img.shields.io/badge/terraform-%235835CC.svg?style=for-the-badge&logo=terraform&logoColor=white)](https://developer.hashicorp.com/terraform/docs)
+[![scaleway](https://img.shields.io/badge/scaleway-663399?style=for-the-badge&logo=scaleway&logoColor=white)](https://registry.terraform.io/providers/scaleway/scaleway/latest/docs)
 
-### Ressources Déployées
+## Sommaire
+- [Ressources Déployées](#ressources-déployées)
+- [Variables Utilisées](#variables-utilisées)
+- [Schéma Descriptif](#schéma-descriptif)
+- [Résultat de terraform Plan](#Résultat de terraform Plan)
+
+## Ressources Déployées
 
 - **Réseau privé virtuel (VPC)** : Fournit un réseau privé pour les ressources cloud.
 - **Cluster Kubernetes** : Gère les conteneurs de l'application.
@@ -9,14 +17,14 @@
 - **Load Balancer** : Assure la répartition du trafic pour chaque environnement (`dev` et `prod`).
 - **DNS** : Crée des enregistrements DNS pour l'accès à l'application en fonction de l'environnement.
 
-### Variables Utilisées
+## Variables Utilisées
 
 - `project_id` : Identifiant du projet.
 - `zone` et `region` : Zone et région pour le déploiement (`fr-par`).
 - `environments` : Environnement de déploiement (`dev` ou `prod`).
 - `student` : Nom de l'étudiant utilisé pour les noms DNS.
 
-### Schéma Descriptif
+## Schéma Descriptif
 
 Voici un aperçu de l'architecture déployée :
 
@@ -44,7 +52,7 @@ graph LR
     k8s --> db2["Database : <br> dev-database"]
 ```
 
-### Résultat de terraform Plan
+## Résultat de terraform Plan
 
 ```hcl
 Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
