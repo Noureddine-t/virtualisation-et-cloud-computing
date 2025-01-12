@@ -8,31 +8,13 @@
 ## Sommaire
 - [Développement de l'application](#développement-de-lapplication)
 - [Problème rencontré](#problème-rencontré)
-    - [Politique CORS](#politique-cors)
-    - [RabbitMQ](#rabbitmq)
-    - [Docker](#docker)
-        - [RabbitMQ et Redis](#rabbitmq-et-redis)
-        - [Conteneur](#conteneur)
-    - [Docker Compose](#docker-compose)
 - [Docker](#docker)
     - [Création des images Docker](#création-des-images-docker)
-        - [Création de l'image app-frontend](#création-de-limage-app-frontend)
-        - [Création de l'image backend-api](#création-de-limage-backend-api)
-        - [Création de l'image backend-consumer](#création-de-limage-backend-consumer)
     - [Lancement des conteneurs](#lancement-des-conteneurs)
-        - [En utilisant Docker Compose](#en-utilisant-docker-compose)
-        - [Lancement du service Redis](#lancement-du-service-redis)
-        - [Lancement du service RabbitMQ](#lancement-du-service-rabbitmq)
-        - [Lancement du app-frontend](#lancement-du-app-frontend)
-        - [Lancement du backend-api](#lancement-du-backend-api)
-        - [Lancement du backend-consumer](#lancement-du-backend-consumer)
     - [Pousser les images dans le registry](#pousser-les-images-dans-le-registry)
-        - [Pousser app-frontend](#pousser-app-frontend)
-        - [Pousser backend-api](#pousser-backend-api)
-        - [Pousser backend-consumer](#pousser-backend-consumer)
     - [Vérification des images poussées](#vérification-des-images-poussées)
 - [Voir aussi](#voir-aussi)
-- 
+
 ## Développement de l'application
 
 - **Frontend :** HTML, CSS, JS
@@ -87,6 +69,24 @@ app.run(host='0.0.0.0', port=5000, debug=True)
         condition: service_healthy
       redis:
         condition: service_started
+```
+## Docker
+
+### Création des images Docker
+
+- #### Création de l'image app-frontend
+```bash
+docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv8
+```
+
+- #### Création de l'image backend-api
+```bash
+docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:talebv3
+```
+
+- #### Création de l'image backend-consumer
+```bash
+docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv4
 ```
 
 ### Lancement des conteneurs
@@ -147,4 +147,5 @@ gcloud artifacts docker images list europe-west1-docker.pkg.dev/polytech-dijon/p
 ## Voir aussi
 - [`Kubernetes/`](../Kubernetes) : Manifests Kubernetes (Replicaset, Service, Ingress)
 - [`Foundation/`](../Foundation) : Terraform (provisionnement de l'infrastructure)
-- [`Sujet.md`](../Sujet.md)
+- [`Sujet.md`](../Sujet.md) ou [source](https://github.com/JeromeMSD/module_virtualisation-et-cloud-computing/blob/main/projet.md)
+- [🔼 Back to Top](#application)

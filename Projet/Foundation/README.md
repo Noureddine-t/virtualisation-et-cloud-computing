@@ -6,7 +6,7 @@
 - [Ressources Déployées](#ressources-déployées)
 - [Variables Utilisées](#variables-utilisées)
 - [Schéma Descriptif](#schéma-descriptif)
-- [Résultat de terraform Plan](#Résultat de terraform Plan)
+- [Résultat de terraform Plan](#résultat-de-terraform-plan)
 - [Voir aussi](#voir-aussi)
 
 ## Ressources Déployées
@@ -265,4 +265,5 @@ Plan: 11 to add, 0 to change, 0 to destroy.
 ## Voir aussi
 - [`Application/`](../Application) : Fichiers de l'application web (front-end, back-end, consumer), Dockerfiles associés et docker-compose.
 - [`Kubernetes/`](../Kubernetes) : Manifests Kubernetes (Replicaset, Service, Ingress)
-- [`Sujet.md`](../Sujet.md)
+- [`Sujet.md`](../Sujet.md) ou [source](https://github.com/JeromeMSD/module_virtualisation-et-cloud-computing/blob/main/projet.md)
+- [🔼 Back to Top](#foundation---terraform---scaleway)

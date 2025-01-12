@@ -11,11 +11,11 @@
   - [4. Containerisation](#4-containerisation)
   - [5. Orchestration avec Kubernetes](#5-orchestration-avec-kubernetes)
   - [6. Accès à l'application](#6-accès-à-lapplication)
-- [Remarques](#remarques)
 - [Application](#application)
 - [Auteur](#auteur)
 ## Description
-Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une application de calculatrice cloud native. [sujet](Sujet.md)
+Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une application de calculatrice cloud native. [Sujet](Sujet.md) ou [source](https://github.com/JeromeMSD/module_virtualisation-et-cloud-computing/blob/main/projet.md)
+
 
 ## Technologies utilisées
 
@@ -38,10 +38,10 @@ Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une
 
 ## Déroulement du projet
 
-### 1. Terraform 
+### 1. Terraform
 - J'ai commencé par utiliser Terraform pour le provisionnement de l'infrastructure.
 
-### 2. Développement de l'application :
+### 2. Développement de l'application
 - **Frontend (HTML, CSS, JS) :** Création de l'interface utilisateur.
 - **Backend avec Flask (Python) :** Mise en place de l'API pour envoyer les résultats à l'utilisateur comme affiché dans le schéma suivant :
 
@@ -51,7 +51,7 @@ Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une
        B -->|"Envoi du calcul"| C[API] -->|Envoi du résultat| B
  ```
 
-### 3. Intégration de la logique demandée :
+### 3. Intégration de la logique demandée
 - J'ai intégré RabbitMQ pour gérer la queue de messages et organiser le traitement des calculs via des consommateurs en plus de stocker les résultats dans Redis comme indiqué dans le schéma suivant :
 
 ```mermaid
@@ -63,15 +63,14 @@ Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une
         C <-->|Accès aux résultats| D[(Redis)]
 ```
 
-### 4. Containerisation :
+### 4. Containerisation
   - **Docker :** Création des Dockerfiles pour chaque partie de l'application (frontend, backend, consumer).
   - **Docker Compose :** Mise en place d'un fichier `docker-compose.yml` pour faciliter le lancement des 5 conteneurs (frontend, backend, consumer, Redis, RabbitMQ).
 
-### 5. Orchestration avec Kubernetes :
+### 5. Orchestration avec Kubernetes
   - Création des manifests Kubernetes pour déployer l'application et y accéder via ce lien : [Calculatrice Cloud Native](http://calculatrice-taleb.polytech-dijon.kiowy.net).
 
-### 6. Accès à l'application :
-
+### 6. Accès à l'application
   - Une fois l'application fonctionnelle avec Docker et Kubernetes, l'application est accessible via un nom de domaine.
 
 > [!NOTE]
@@ -82,8 +81,8 @@ Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une
 
 ## Application
 > [!IMPORTANT]
-> - L'application est désormais accessible via ce lien : [Calculatrice Cloud Native](http://calculatrice-taleb.polytech-dijon.kiowy.net).
-> - Veuillez ajouter la ligne suivante `34.77.144.136 calculatrice-taleb.polytech-dijon.kiowy.net` dans votre fichier `hosts` :
+> L'application est désormais accessible via ce lien : [Calculatrice Cloud Native](http://calculatrice-taleb.polytech-dijon.kiowy.net).
+> Veuillez ajouter la ligne suivante `34.77.144.136 calculatrice-taleb.polytech-dijon.kiowy.net` dans votre fichier `hosts` :
 >  - **Windows :** `C:\Windows\System32\drivers\etc\hosts`
 >  - **Linux :** `/etc/hosts`
 

@@ -5,27 +5,11 @@
 
 - [Schema récapitulatif (services et replicasets)](#schema-récapitulatif-services-et-replicasets)
 - [Fonctionnement](#fonctionnement)
-    - [Etape 1 : Demande de calcul](#etape-1-demande-de-calcul)
-    - [Etape 2 : Récupération du résultat du calcul](#etape-2-récupération-du-résultat-du-calcul)
+    - [Etape 1 : Demande de calcul](#etape-1--demande-de-calcul)
+    - [Etape 2 : Récupération du résultat du calcul](#etape-2--récupération-du-résultat-du-calcul)
 - [Difficultés rencontrées](#difficultés-rencontrées)
-    - [Kubernetes services](#kubernetes-services)
-    - [Accès à l'application depuis l'extérieur](#accès-à-lapplication-depuis-lextérieur)
 - [Commandes utiles](#commandes-utiles)
-    - [Namespace Kubernetes](#namespace-kubernetes)
-    - [Déploiement Redis](#déploiement-redis)
-    - [Déploiement RabbitMQ](#déploiement-rabbitmq)
-    - [Déploiement Frontend](#déploiement-frontend)
-    - [Déploiement Ingress](#déploiement-ingress)
-    - [Déploiement Backend API](#déploiement-backend-api)
-    - [Déploiement Consumer](#déploiement-consumer)
-    - [Debugging](#debugging)
-    - [Suppression des replicasets](#suppression-des-replicasets)
-    - [Suppression des services](#suppression-des-services)
-    - [Suppression de toutes les resources](#suppression-de-toutes-les-resources)
     - [Autres commandes utiles](#autres-commandes-utiles)
-        - [Récupérer l'endpoint d'un service](#récuperer-lenpoint-dun-service)
-        - [Récupérer l'ingressclass](#récupérer-lingressclass)
-        - [Redirection de port](#redirection-de-port)
 - [Voir aussi](#voir-aussi)
 ## Schema récapitulatif (services et replicasets)
 
@@ -265,7 +249,8 @@ kubectl port-forward service/svc-front 8080:80
 ## Voir aussi
 - [`Application/`](../Application) : Fichiers de l'application web (front-end, back-end, consumer), Dockerfiles associés et docker-compose.
 - [`Foundation/`](../Foundation) : Terraform (provisionnement de l'infrastructure)
-- [`Sujet.md`](../Sujet.md)
+- [`Sujet.md`](../Sujet.md) ou [source](https://github.com/JeromeMSD/module_virtualisation-et-cloud-computing/blob/main/projet.md)
+- [🔼 Back to Top](#kubernetes)
 
 
 
