@@ -1,9 +1,12 @@
 # Application
 [![docker](https://img.shields.io/badge/DOCKER-blue?style=for-the-badge&logo=docker&logoColor=white)](https://docs.docker.com/)
+[![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/fr/docs/Web/HTML)
+[![CSS](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/fr/docs/Web/CSS)
+[![JS](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/fr/docs/Web/JavaScript)
 [![flask](https://img.shields.io/badge/FLASK-000000?style=for-the-badge&logo=flask&logoColor=white)](https://flask.palletsprojects.com/)
 [![redis](https://img.shields.io/badge/REDIS-DC382D?style=for-the-badge&logo=redis&logoColor=white)](https://redis.io/)
-[![rabbitmq](https://img.shields.io/badge/RABBITMQ-FF6600?style=for-the-badge&logo=rabbitmq&logoColor=white)](https://www.rabbitmq.com/)
-[![nginx](https://img.shields.io/badge/NGINX-009639?style=for-the-badge&logo=nginx&logoColor=white)](https://www.nginx.com/)
+[![LapinMQ](https://img.shields.io/badge/rabbitmq-%23FF6600.svg?&style=for-the-badge&logo=rabbitmq&logoColor=white)](https://rabbitmq.com/)
+[![nginx](https://img.shields.io/badge/NGINX-009639?style=for-the-badge&logo=nginx&logoColor=white)](https://nginx.org/)
 
 ## Sommaire
 - [Développement de l'application](#développement-de-lapplication)
@@ -41,7 +44,7 @@ connection = pika.BlockingConnection(pika.ConnectionParameters(host='rabbitmq', 
 
 ### Docker :
 - **RabbitMQ et Redis :** Ils ne reconnaissaient pas `localhost`.
-- **Solution :** Remplacement par `host.docker.internal` dans `host` de connexion de Redis et RabbitMQ.
+- **Solution :** Remplacement par `host.docker.internal` dans `host` de connexion de Redis et RabbitMQ afin de tester l'application en local avant de la déployer à l'aide de Kubernetes.
 ```python
 redis = Redis(host='host.docker.internal', port=6379, db=0)
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='host.docker.internal'))
