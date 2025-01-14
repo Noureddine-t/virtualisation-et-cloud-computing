@@ -100,7 +100,7 @@ docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/back
 
 - #### Création de l'image backend-consumer
 ```bash
-docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv4
+docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv5
 ```
 
 ### Lancement des conteneurs
@@ -135,7 +135,7 @@ docker run --rm --name backend-api -p 5000:5000 europe-west1-docker.pkg.dev/poly
 
 - #### Lancement du backend-consumer
 ```bash
-docker run --rm --name backend-consumer europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv4
+docker run --rm --name backend-consumer europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv5
 ```
 ### Pousser les images dans le registry
 - #### Pousser app-frontend
@@ -150,7 +150,7 @@ docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-ap
 
 - #### Pousser backend-consumer
 ```bash
-docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv4
+docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv5
 ```
 
 ### Vérification des images poussées

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: consumer-container
-          image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv4
+          image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv5
           resources:
             requests:
               cpu: 50m
