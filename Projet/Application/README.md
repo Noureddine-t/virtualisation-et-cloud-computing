@@ -10,6 +10,7 @@
 
 ## Sommaire
 - [Développement de l'application](#développement-de-lapplication)
+- [Structure de données pour le stockage des calculs](#structure-de-données-pour-le-stockage-des-calculs)
 - [Problème rencontré](#problème-rencontré)
 - [Docker](#docker)
     - [Création des images Docker](#création-des-images-docker)
@@ -25,6 +26,16 @@
 - **Base de données :** Redis
 - **Queue de message :** RabbitMQ
 - **Serveur web :** Nginx
+
+## Structure de données pour le stockage des calculs
+
+Les calculs effectués par l'application sont stockés dans **Redis**, une base de données clé-valeur. La structure utilisée est la suivante :
+
+- **Clé :** Un identifiant unique (UUID) `calc_id` généré pour chaque calcul.
+- **Valeur :** le résultat `resul` du calcul.
+```python
+    redis_client.set(calc_id, result)
+```
 
 ## Problème rencontré
 
@@ -58,7 +69,7 @@ app.run(host='0.0.0.0', port=5000, debug=True)
 
 ### Docker Compose :
 - **RabbitMQ :** une fois le conteneur prêt, la création des conteneurs pour l'API et le consumer commence, mais le service RabbitMQ n'est pas encore lancé. Cela entraîne un échec dans la création des conteneurs pour l'API et le consumer qui dépendent de ce dernier.
-- **Solution :** Ajout de l'option `healthcheck` pour attendre que RabbitMQ soit prêt. Ajout l'option `depends_on` pour vérifier les conditions de démarrage avant de lancer le conteneur de l'API et celui du consumer
+- **Solution :** Ajout de l'option `healthcheck` pour attendre que RabbitMQ soit prêt. Ajout l'option `depends_on` pour vérifier les conditions de démarrage avant de lancer le conteneur de l'API et celui du consumer.
 ```yaml
     healthcheck:
       test: [ "CMD", "rabbitmq-diagnostics", "status" ]
@@ -148,8 +159,8 @@ gcloud artifacts docker images list europe-west1-docker.pkg.dev/polytech-dijon/p
 ```
 
 ## Voir aussi
-- [`Kubernetes/`](../Kubernetes) : Manifests Kubernetes (Replicaset, Service, Ingress)
-- [`Foundation/`](../Foundation) : Terraform (provisionnement de l'infrastructure)
-- [`Projet.md`](../README.md) : Description du projet
-- [`Sujet.md`](../Sujet.md) ou [source](https://github.com/JeromeMSD/module_virtualisation-et-cloud-computing/blob/main/projet.md)
+- [`Kubernetes/`](../Kubernetes) : Manifests Kubernetes (Replicaset, Service, Ingress).
+- [`Foundation/`](../Foundation) : Terraform (provisionnement de l'infrastructure).
+- [`Projet.md`](../README.md) : Description du projet.
+- [`Sujet.md`](../Sujet.md) ou [source](https://github.com/JeromeMSD/module_virtualisation-et-cloud-computing/blob/main/projet.md).
 - [🔼 Back to Top](#application)

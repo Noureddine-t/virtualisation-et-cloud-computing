@@ -248,9 +248,9 @@ kubectl port-forward service/svc-front 8080:80
 
 ## Voir aussi
 - [`Application/`](../Application) : Fichiers de l'application web (front-end, back-end, consumer), Dockerfiles associés et docker-compose.
-- [`Foundation/`](../Foundation) : Terraform (provisionnement de l'infrastructure)
-- [`Projet.md`](../README.md) : Description du projet
-- [`Sujet.md`](../Sujet.md) ou [source](https://github.com/JeromeMSD/module_virtualisation-et-cloud-computing/blob/main/projet.md)
+- [`Foundation/`](../Foundation) : Terraform (provisionnement de l'infrastructure).
+- [`Projet.md`](../README.md) : Description du projet.
+- [`Sujet.md`](../Sujet.md) ou [source](https://github.com/JeromeMSD/module_virtualisation-et-cloud-computing/blob/main/projet.md).
 - [🔼 Back to Top](#kubernetes)
 
 
