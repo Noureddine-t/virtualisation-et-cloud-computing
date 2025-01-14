@@ -11,7 +11,7 @@
 ## Sommaire
 - [Développement de l'application](#développement-de-lapplication)
 - [Structure de données pour le stockage des calculs](#structure-de-données-pour-le-stockage-des-calculs)
-- [Problème rencontré](#problème-rencontré)
+- [Problèmes rencontrés](#problèmes-rencontrés)
 - [Docker](#docker)
     - [Création des images Docker](#création-des-images-docker)
     - [Lancement des conteneurs](#lancement-des-conteneurs)
@@ -37,7 +37,7 @@ Les calculs effectués par l'application sont stockés dans **Redis**, une base 
     redis_client.set(calc_id, result)
 ```
 
-## Problème rencontré
+## Problèmes rencontrés
 
 ### Politique CORS :
 - Les requêtes HTTP effectuées vers un domaine différent de celui de la page déclenchent un blocage par le navigateur. Cela est dû aux restrictions de sécurité qui limitent, par défaut, les échanges aux seules requêtes provenant de la même origine.
