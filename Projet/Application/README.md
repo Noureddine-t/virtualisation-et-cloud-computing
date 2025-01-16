@@ -14,6 +14,7 @@
 - [Problèmes rencontrés](#problèmes-rencontrés)
 - [Docker](#docker)
     - [Création des images Docker](#création-des-images-docker)
+    - [Scan des images avec Trivy](#scan-des-images-avec-trivy)
     - [Lancement des conteneurs](#lancement-des-conteneurs)
     - [Pousser les images dans le registry](#pousser-les-images-dans-le-registry)
     - [Vérification des images poussées](#vérification-des-images-poussées)
@@ -102,6 +103,28 @@ docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/back
 ```bash
 docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv5
 ```
+### Scan des images avec Trivy
+
+- #### Scan de l'image app-frontend
+```bash
+trivy europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv8
+```
+- #### Résultat du scan de l'image app-frontend
+![Scan de l'image app-frontend](../docs/Autre/img/trivy_scan_front.png)
+
+- #### Scan de l'image backend-api
+```bash
+trivy europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:talebv3
+```
+- #### Résultat du scan de l'image backend-api
+![Scan de l'image backend-api](../docs/Autre/img/trivy_scan_api.png)
+
+- #### Scan de l'image backend-consumer
+```bash
+trivy europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv5
+```
+- #### Résultat du scan de l'image backend-consumer
+![Scan de l'image backend-consumer](../docs/Autre/img/trivy_scan_consumer.png)
 
 ### Lancement des conteneurs
 

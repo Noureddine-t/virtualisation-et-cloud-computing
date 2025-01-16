@@ -24,6 +24,7 @@
   - [4. Containerisation](#4-containerisation)
   - [5. Orchestration avec Kubernetes](#5-orchestration-avec-kubernetes)
   - [6. Accès à l'application](#6-accès-à-lapplication)
+  - [7. Scan des images avec Trivy](#7-scan-des-images-avec-trivy)
 - [Application](#application)
 - [Auteur](#auteur)
 ## Description
@@ -87,6 +88,8 @@ Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une
 ### 6. Accès à l'application
   - Une fois l'application fonctionnelle avec Docker et Kubernetes, l'application est accessible via un nom de domaine.
 
+### 7. Scan des images avec Trivy
+  - J'ai également scanné les images Docker avec Trivy pour identifier les vulnérabilités. [ici](./Application/README.md)
 > [!NOTE]
 > L'ensemble des problématiques rencontrées et des solutions apportées sont détaillées dans les fichiers `README.md` de chaque partie du projet.
 > - [Application](./Application/README.md)
