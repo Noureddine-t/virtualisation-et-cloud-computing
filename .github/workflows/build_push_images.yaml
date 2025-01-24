@@ -8,12 +8,12 @@ on:
 env:
   PROJECT_ID: polytech-dijon
   REGION: europe-west1
-  FRONT_WORKING_DIRECTORY: ./Projet/Application/frontend/Dockerfile
-  API_WORKING_DIRECTORY: ./Projet/Application/backend/Dockerfile
-  CONSUMER_WORKING_DIRECTORY: ./Projet/Application/consumer/Dockerfile
-  FRONT_LOCATION: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/polytech-dijon/app-frontend:taleb.latest
-  API_LOCATION: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/polytech-dijon/backend-api:taleb.latest
-  CONSUMER_LOCATION: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/polytech-dijon/backend-consumer:taleb.latest
+  FRONT_WORKING_DIRECTORY: Projet/Application/frontend
+  API_WORKING_DIRECTORY: Projet/Application/backend
+  CONSUMER_WORKING_DIRECTORY: Projet/Application/consumer
+  FRONT_LOCATION: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:taleb.latest
+  API_LOCATION: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:taleb.latest
+  CONSUMER_LOCATION: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:taleb.latest
 
 jobs:
   build-and-push-front:
