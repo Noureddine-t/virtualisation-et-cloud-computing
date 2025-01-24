@@ -1,0 +1,114 @@
+name: Build and Push Docker Images to Artifact Registry
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  PROJECT_ID: polytech-dijon
+  REGION: europe-west1
+  FRONT_WORKING_DIRECTORY: ./Projet/Application/frontend/Dockerfile
+  API_WORKING_DIRECTORY: ./Projet/Application/backend/Dockerfile
+  CONSUMER_WORKING_DIRECTORY: ./Projet/Application/consumer/Dockerfile
+  FRONT_LOCATION: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/polytech-dijon/app-frontend:taleb.latest
+  API_LOCATION: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/polytech-dijon/backend-api:taleb.latest
+  CONSUMER_LOCATION: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/polytech-dijon/backend-consumer:taleb.latest
+
+jobs:
+  build-and-push-front:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout code"
+        uses: "actions/checkout@v4"
+
+      - id: "auth"
+        uses: "google-github-actions/auth@v2"
+        with:
+          credentials_json: "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}"
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v2"
+
+      - name: "Verify gcloud CLI setup"
+        run: gcloud info
+
+      - name: "Configure Docker authentication for GCP"
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
+      - name: Check Dockerfile existence
+        run: test -f Dockerfile
+        working-directory: ${{ env.FRONT_WORKING_DIRECTORY }}
+
+      - name: "Build Docker image"
+        run: docker build . --file Dockerfile --tag ${{ env.FRONT_LOCATION }}
+        working-directory: ${{ env.FRONT_WORKING_DIRECTORY }}
+
+      - name: "Push Docker image to Artifact Registry"
+        run: docker push ${{ env.FRONT_LOCATION }}
+
+  build-and-push-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout code"
+        uses: "actions/checkout@v4"
+
+      - id: "auth"
+        uses: "google-github-actions/auth@v2"
+        with:
+          credentials_json: "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}"
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v2"
+
+      - name: "Verify gcloud CLI setup"
+        run: gcloud info
+
+      - name: "Configure Docker authentication for GCP"
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
+      - name: Check Dockerfile existence
+        run: test -f Dockerfile
+        working-directory: ${{ env.API_WORKING_DIRECTORY }}
+
+      - name: "Build Docker image"
+        run: docker build . --file Dockerfile --tag ${{ env.API_LOCATION }}
+        working-directory: ${{ env.API_WORKING_DIRECTORY }}
+
+      - name: "Push Docker image to Artifact Registry"
+        run: docker push ${{ env.API_LOCATION }}
+
+  build-and-push-consumer:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout code"
+        uses: "actions/checkout@v4"
+
+      - id: "auth"
+        uses: "google-github-actions/auth@v2"
+        with:
+          credentials_json: "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}"
+
+      - name: "Set up Cloud SDK"
+        uses: "google-github-actions/setup-gcloud@v2"
+
+      - name: "Verify gcloud CLI setup"
+        run: gcloud info
+
+      - name: "Configure Docker authentication for GCP"
+        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
+      - name: Check Dockerfile existence
+        run: test -f Dockerfile
+        working-directory: ${{ env.CONSUMER_WORKING_DIRECTORY }}
+
+      - name: "Build Docker image"
+        run: docker build . --file Dockerfile --tag ${{ env.CONSUMER_LOCATION }}
+        working-directory: ${{ env.CONSUMER_WORKING_DIRECTORY }}
+
+      - name: "Push Docker image to Artifact Registry"
+        run: docker push ${{ env.CONSUMER_LOCATION }}
+
+
+
+

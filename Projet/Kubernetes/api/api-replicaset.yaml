@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: api-container
-          image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:talebv3
+          image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:taleb.latest
           resources:
             requests:
               cpu: 50m

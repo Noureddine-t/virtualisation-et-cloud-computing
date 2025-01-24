@@ -91,37 +91,37 @@ app.run(host='0.0.0.0', port=5000, debug=True)
 
 - #### Création de l'image app-frontend
 ```bash
-docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv8
+docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:taleb.latest
 ```
 
 - #### Création de l'image backend-api
 ```bash
-docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:talebv3
+docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:taleb.latest
 ```
 
 - #### Création de l'image backend-consumer
 ```bash
-docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv5
+docker build . -t europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:taleb.latest
 ```
 ### Scan des images avec Trivy
 
 - #### Scan de l'image app-frontend
 ```bash
-trivy europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv8
+trivy europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:taleb.latest
 ```
 - #### Résultat du scan de l'image app-frontend
 ![Scan de l'image app-frontend](../docs/Autre/img/trivy_scan_front.png)
 
 - #### Scan de l'image backend-api
 ```bash
-trivy europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:talebv3
+trivy europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:taleb.latest
 ```
 - #### Résultat du scan de l'image backend-api
 ![Scan de l'image backend-api](../docs/Autre/img/trivy_scan_api.png)
 
 - #### Scan de l'image backend-consumer
 ```bash
-trivy europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv5
+trivy europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:taleb.latest
 ```
 - #### Résultat du scan de l'image backend-consumer
 ![Scan de l'image backend-consumer](../docs/Autre/img/trivy_scan_consumer.png)
@@ -148,32 +148,32 @@ docker run -it --rm --name myRabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.12-
 
 - #### Lancement du app-frontend
 ```bash
-docker run --rm --name app-frontend -p 8080:80 europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv8
+docker run --rm --name app-frontend -p 8080:80 europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:taleb.latest
 ```
 
 - #### Lancement du backend-api
 ```bash
-docker run --rm --name backend-api -p 5000:5000 europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:talebv3
+docker run --rm --name backend-api -p 5000:5000 europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:taleb.latest
 ```
 
 - #### Lancement du backend-consumer
 ```bash
-docker run --rm --name backend-consumer europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv5
+docker run --rm --name backend-consumer europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:taleb.latest
 ```
 ### Pousser les images dans le registry
 - #### Pousser app-frontend
 ```bash
-docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:talebv8
+docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:taleb.latest
 ```
 
 - #### Pousser backend-api
 ```bash
-docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:talebv3
+docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:taleb.latest
 ```
 
 - #### Pousser backend-consumer
 ```bash
-docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:talebv5
+docker push europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:taleb.latest
 ```
 
 ### Vérification des images poussées

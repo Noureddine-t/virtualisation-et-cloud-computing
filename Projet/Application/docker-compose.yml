@@ -4,7 +4,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:taleb
+    image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:taleb.latest
     container_name: app-frontend
     ports:
       - "8080:80"
@@ -34,7 +34,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:taleb
+    image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:taleb.latest
     container_name: backend-api
     ports:
       - "5000:5000"
@@ -48,7 +48,7 @@ services:
     build:
       context: ./consumer
       dockerfile: Dockerfile
-    image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:taleb
+    image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:taleb.latest
     container_name: backend-consumer
     depends_on:
       rabbitmq:
