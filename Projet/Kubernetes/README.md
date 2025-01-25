@@ -9,6 +9,7 @@
     - [Etape 2 : Récupération du résultat du calcul](#etape-2--récupération-du-résultat-du-calcul)
 - [Difficultés rencontrées](#difficultés-rencontrées)
 - [Commandes utiles](#commandes-utiles)
+- [Automatisation du déploiement](#automatisation-du-déploiement)
     - [Autres commandes utiles](#autres-commandes-utiles)
 - [Voir aussi](#voir-aussi)
 ## Schema récapitulatif (services et replicasets)
@@ -108,6 +109,11 @@ const response = await fetch(`http://calculatrice-taleb.polytech-dijon.kiowy.net
     // ...
 });
 ```
+
+## Automatisation du déploiement
+
+> [!NOTE]
+> Le déploiement de l'application est automotisé à l'aide de GitHub Actions. Plus de détails [workflow](../../.github/workflows/deploy_images.yaml).
 
 ## Commandes utiles
 

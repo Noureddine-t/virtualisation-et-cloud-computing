@@ -12,6 +12,7 @@
 - [Développement de l'application](#développement-de-lapplication)
 - [Structure de données pour le stockage des calculs](#structure-de-données-pour-le-stockage-des-calculs)
 - [Problèmes rencontrés](#problèmes-rencontrés)
+- [Automatisation](#automatisation)
 - [Docker](#docker)
     - [Création des images Docker](#création-des-images-docker)
     - [Scan des images avec Trivy](#scan-des-images-avec-trivy)
@@ -85,6 +86,12 @@ app.run(host='0.0.0.0', port=5000, debug=True)
       redis:
         condition: service_started
 ```
+
+## Automatisation
+
+> [!NOTE]
+> La création et le poussage des images Docker se font à l'aide de GitHub Actions. Plus de détails [workflow](../../.github/workflows/build_push_images.yaml).
+
 ## Docker
 
 ### Création des images Docker

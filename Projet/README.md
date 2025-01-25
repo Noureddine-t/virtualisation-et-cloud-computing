@@ -25,6 +25,7 @@
   - [5. Orchestration avec Kubernetes](#5-orchestration-avec-kubernetes)
   - [6. Accès à l'application](#6-accès-à-lapplication)
   - [7. Scan des images avec Trivy](#7-scan-des-images-avec-trivy)
+  - [8. Automatisation du déploiement (CI/CD)](#8-automatisation-du-déploiement-cicd)
 - [Application](#application)
 - [Auteur](#auteur)
 ## Description
@@ -90,11 +91,18 @@ Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une
 
 ### 7. Scan des images avec Trivy
   - J'ai également scanné les images Docker avec Trivy pour identifier les vulnérabilités. [ici](./Application/README.md)
+
+### 8. Automatisation du déploiement (CI/CD)
+- J'ai automatisé le build et le push des images Docker sur le registry de Google Cloud Platform en utilisant GitHub Actions. [ici](../.github/workflows/build_push_images.yaml)
+- J'ai également automatisé le déploiement de l'application avec Kubernetes en utilisant GitHub Actions. [ici](../.github/workflows/deploy_images.yaml)
+
 > [!NOTE]
 > L'ensemble des problématiques rencontrées et des solutions apportées sont détaillées dans les fichiers `README.md` de chaque partie du projet.
 > - [Application](./Application/README.md)
 > - [Kubernetes](./Kubernetes/README.md)
 > - [Foundation](./Foundation/README.md)
+
+
 
 ## Application
 > [!IMPORTANT]
