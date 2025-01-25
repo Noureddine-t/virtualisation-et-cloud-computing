@@ -4,10 +4,8 @@ COPY . /app
 
 WORKDIR /app
 
-RUN pip install flask
-RUN pip install redis
-RUN python -m pip install pika --upgrade
-RUN pip install -U flask-cors
+RUN pip install --upgrade pip \
+&& pip install -r requirements.txt
 
 LABEL app="backend-api"
 
