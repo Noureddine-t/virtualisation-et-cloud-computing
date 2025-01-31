@@ -8,9 +8,9 @@ on:
 env:
   PROJECT_ID: polytech-dijon
   REGION: europe-west1
-  FRONT_WORKING_DIRECTORY: Projet/Application/frontend
-  API_WORKING_DIRECTORY: Projet/Application/backend
-  CONSUMER_WORKING_DIRECTORY: Projet/Application/consumer
+  FRONT_WORKING_DIRECTORY: Application/frontend
+  API_WORKING_DIRECTORY: Application/backend
+  CONSUMER_WORKING_DIRECTORY: Application/consumer
   FRONT_LOCATION: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:taleb.latest
   API_LOCATION: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:taleb.latest
   CONSUMER_LOCATION: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-consumer:taleb.latest
@@ -56,7 +56,7 @@ jobs:
       - id: "auth"
         uses: "google-github-actions/auth@v2"
         with:
-          credentials_json: "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}" #FIXME: Ajouter le secret GOOGLE_APPLICATION_CREDENTIALS
+          credentials_json: "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}"
 
       - name: "Set up Cloud SDK"
         uses: "google-github-actions/setup-gcloud@v2"

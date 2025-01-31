@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      REDIS_PATH: Projet/Kubernetes/redis
-      RABBITMQ_PATH: Projet/Kubernetes/rabbitMQ
-      FRONT_PATH: Projet/Kubernetes/front
-      NGINX_INGRESS_PATH: "Projet/Kubernetes/ingress-nginx"
+      REDIS_PATH: Kubernetes/redis
+      RABBITMQ_PATH: Kubernetes/rabbitMQ
+      FRONT_PATH: Kubernetes/front
+      NGINX_INGRESS_PATH: "Kubernetes/ingress-nginx"
       API_PATH: Projet/Kubernetes/api
       CONSUMER_PATH: Projet/Kubernetes/consumer
       NAMESPACE: taleb
