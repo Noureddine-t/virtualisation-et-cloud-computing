@@ -14,8 +14,8 @@ jobs:
       RABBITMQ_PATH: Kubernetes/rabbitMQ
       FRONT_PATH: Kubernetes/front
       NGINX_INGRESS_PATH: "Kubernetes/ingress-nginx"
-      API_PATH: Projet/Kubernetes/api
-      CONSUMER_PATH: Projet/Kubernetes/consumer
+      API_PATH: Kubernetes/api
+      CONSUMER_PATH: Kubernetes/consumer
       NAMESPACE: taleb
 
     steps:
