@@ -1,6 +1,6 @@
 # Virtualisation-et-cloud-computing
 
-Contient le projet le module de Virtualisation & Cloud Computing et les travaux dirigés et réalisés à Polytech Dijon.
+Contient le projet du module de Virtualisation & Cloud Computing et les travaux dirigés et réalisés à Polytech Dijon.
 
 - **Travaux dirigés 👉 [ici](TD)**
 - **Projet de Calculatrice Cloud Native ci-dessous 👇 ou 👉 [ici](.)**
@@ -56,7 +56,7 @@ Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une
 - [`Application/`](./Application) : Fichiers de l'application web (front-end, back-end, consumer), Dockerfiles associés et docker-compose.
 - [`Kubernetes/`](./Kubernetes) : Manifests Kubernetes (Replicaset, Service, Ingress).
 - [`Foundation/`](./Foundation) : Terraform (provisionnement de l'infrastructure).
-- [`.github/workflows/`](../.github/workflows) : Fichiers GitHub Actions pour automatiser le build, le push des images Docker et le déploiement de l'application.
+- [`.github/workflows/`](./.github/workflows) : Fichiers GitHub Actions pour automatiser le build, le push des images Docker et le déploiement de l'application.
 - [`Sujet.md`](./Sujet.md) [source](https://github.com/JeromeMSD/module_virtualisation-et-cloud-computing/blob/main/projet.md).
 
 ## Déroulement du projet
@@ -101,8 +101,8 @@ Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une
   - J'ai également scanné les images Docker avec Trivy pour identifier les vulnérabilités. [ici](./Application/README.md)
 
 ### 8. Automatisation du déploiement (CI/CD)
-- J'ai automatisé le build et le push des images Docker sur le registry de Google Cloud Platform en utilisant GitHub Actions. [ici](../.github/workflows/build_push_images.yaml)
-- J'ai également automatisé le déploiement de l'application avec Kubernetes en utilisant GitHub Actions. [ici](../.github/workflows/deploy_images.yaml)
+- J'ai automatisé le build et le push des images Docker sur le registry de Google Cloud Platform en utilisant GitHub Actions. [ici](./.github/workflows/build_push_images.yaml)
+- J'ai également automatisé le déploiement de l'application avec Kubernetes en utilisant GitHub Actions. [ici](./.github/workflows/deploy_images.yaml)
 
 > [!NOTE]
 > L'ensemble des problématiques rencontrées et des solutions apportées sont détaillées dans les fichiers `README.md` de chaque partie du projet.
