@@ -1,6 +1,6 @@
 # Virtualisation-et-cloud-computing
 
-Contient le projet du module de Virtualisation & Cloud Computing et les travaux dirigés et réalisés à Polytech Dijon.
+Contient le projet du module de Virtualisation & Cloud Computing et les travaux dirigés réalisés à Polytech Dijon.
 
 - **Travaux dirigés 👉 [ici](TD)**
 - **Projet de Calculatrice Cloud Native ci-dessous 👇 ou 👉 [ici](.)**
