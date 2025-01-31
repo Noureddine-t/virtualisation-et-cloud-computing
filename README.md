@@ -19,7 +19,9 @@ Contient le projet du module de Virtualisation & Cloud Computing et les travaux 
 [![HTML](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/fr/docs/Web/HTML)
 [![CSS](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/fr/docs/Web/CSS)
 [![JS](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/fr/docs/Web/JavaScript)
-
+[![GitHub Actions](https://img.shields.io/badge/GITHUB_ACTIONS-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)](https://docs.github.com/en/actions)
+[![Google Cloud Platform](https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)](https://cloud.google.com/)
+[![Trivy](https://img.shields.io/badge/TRIVY-353839?style=for-the-badge&logo=trivy&logoColor=white)](https://github.com/aquasecurity/trivy)
 ## Sommaire
 - [Description](#description)
 - [Technologies utilisées](#technologies-utilisées)
@@ -49,7 +51,9 @@ Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une
 - **Provisionnement :** Terraform
 - **Provider :** Scaleway
 - **Containerisation :** Docker
+- **Scan des images :** Trivy
 - **Orchestration :** Kubernetes
+- **CI/CD :** GitHub Actions
 - **Cloud :** Google Cloud Platform
 
 ## Contenu
