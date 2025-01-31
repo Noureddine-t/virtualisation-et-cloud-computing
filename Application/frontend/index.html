@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Calculatrice PoDi</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="icon" type="image/png" sizes="16x16" href="images/icone-calculatrice-bouton-de-l-application-removebg-preview.png">
+
+    </head>
+    <body>
+        <h1>Calculatrice Polytech Dijon</h1>
+
+        <form id="calcForm" method="post">
+            <label>Nombre 1:</label>
+            <input type="text" name="number1" placeholder="Number 1" required>
+            <br>
+            <label>Nombre 2:</label>
+            <input type="text" name="number2" placeholder="Number 2" required>
+            <br>
+            <label>Opérateur:</label>
+            <select name="operator">
+
+                <option value="add">Addition</option>
+                <option value="subtract">Soustraction</option>
+                <option value="multiply">Multiplication</option>
+                <option value="divide">Division</option>
+            </select>
+            <br>
+            <button type="submit" name="submit">Calculer</button>
+        </form>
+
+        <p id="resultId"></p>
+
+        <button id="copyIdButton" style="display: none;">Copier l'ID</button>
+
+        <form id="resultForm" style="display: none;" method="get">
+            <h2>Obtenir un résultat</h2>
+            <label>ID de l'opération:</label>
+            <input type="text" name="operationId" required>
+            <br>
+            <button type="submit">Récupérer le résultat</button>
+        </form>
+
+        <p id="finalResult"></p>
+
+        <script src="script.js" type="module"></script>
+    </body>
+</html>

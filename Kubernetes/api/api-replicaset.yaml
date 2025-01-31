@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: api-replicaset
+  labels:
+    app: api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api-container
+          image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/backend-api:taleb.latest
+          resources:
+            requests:
+              cpu: 50m
+              memory: 56Mi
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
