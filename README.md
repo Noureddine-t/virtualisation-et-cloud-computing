@@ -3,7 +3,7 @@
 Contient le projet du module de Virtualisation & Cloud Computing et les travaux dirigés réalisés à Polytech Dijon.
 
 - **Travaux dirigés 👉 [ici](TD)**
-- **Projet de Calculatrice Cloud Native ci-dessous 👇 ou 👉 [ici](.)**
+- **Projet de Calculatrice Cloud Native ci-dessous 👇**
 
 | [![uBe](./docs/Autre/img/UB-Europe.png)](https://www.ube.fr) | Polytech Dijon - 4A - ILIA/SQR <br/> Projet&nbsp;de&nbsp;Virtualisation&nbsp;&amp;&nbsp;Cloud&nbsp;Computing <br/> Calculatrice Cloud Native <br/><br/> **[ EXAMEN PRATIQUE ]** | [![Polytech Dijon](./docs/Autre/img/logo_polytech.png)](https://polytech.u-bourgogne.fr) |
 |:-------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|-----------------------------------------------------------------------------------------:|
