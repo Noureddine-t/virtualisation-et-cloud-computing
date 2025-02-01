@@ -36,7 +36,7 @@ Contient le projet du module de Virtualisation & Cloud Computing et les travaux 
   - [7. Scan des images avec Trivy](#7-scan-des-images-avec-trivy)
   - [8. Automatisation du déploiement (CI/CD)](#8-automatisation-du-déploiement-cicd)
 - [Application](#application)
-- [Auteur](#auteur)
+
 ## Description
 Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une application de calculatrice cloud native. [Sujet](Sujet.md) ou [source](https://github.com/JeromeMSD/module_virtualisation-et-cloud-computing/blob/main/projet.md)
 
@@ -66,7 +66,7 @@ Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une
 ## Déroulement du projet
 
 ### 1. Terraform
-- J'ai commencé par utiliser Terraform pour le provisionnement de l'infrastructure. [ici](./Foundation/README.md)
+- J'ai commencé par utiliser Terraform pour le provisionnement de l'infrastructure. [ici](./Foundation)
 
 ### 2. Développement de l'application
 - **Frontend (HTML, CSS, JS) :** Création de l'interface utilisateur.
@@ -91,18 +91,18 @@ Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une
 ```
 
 ### 4. Containerisation
-  - **Docker :** Création des Dockerfiles pour chaque partie de l'application (frontend, backend, consumer). [ici](./Application/README.md)
+  - **Docker :** Création des Dockerfiles pour chaque partie de l'application (frontend, backend, consumer). [ici](./Application)
 
     - **Docker Compose :** Mise en place d'un fichier `docker-compose.yml` pour faciliter le lancement des 5 conteneurs (frontend, backend, consumer, Redis, RabbitMQ).
 
 ### 5. Orchestration avec Kubernetes
-  - Création des manifests Kubernetes pour déployer l'application [ici](./Kubernetes/README.md) et y accéder via ce lien : [Calculatrice Cloud Native](http://calculatrice-taleb.polytech-dijon.kiowy.net).
+  - Création des manifests Kubernetes pour déployer l'application. [ici](./Kubernetes)
 
 ### 6. Accès à l'application
-  - Une fois l'application fonctionnelle avec Docker et Kubernetes, l'application est accessible via un nom de domaine.
+  - Une fois l'application fonctionnelle avec Docker et Kubernetes, l'application est accessible. [voir](#application)
 
 ### 7. Scan des images avec Trivy
-  - J'ai également scanné les images Docker avec Trivy pour identifier les vulnérabilités. [ici](./Application/README.md)
+  - J'ai également scanné les images Docker avec Trivy pour identifier les vulnérabilités. [ici](./Application/README.md/#scan-des-images-avec-trivy)
 
 ### 8. Automatisation du déploiement (CI/CD)
 - J'ai automatisé le build et le push des images Docker sur le registry de Google Cloud Platform en utilisant GitHub Actions. [ici](./.github/workflows/build_push_images.yaml)
@@ -118,12 +118,11 @@ Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une
 
 ## Application
 > [!IMPORTANT]
-> L'application est désormais accessible via ce lien : [Calculatrice Cloud Native](http://calculatrice-taleb.polytech-dijon.kiowy.net).
+> L'application est désormais accessible via ce lien : [Calculatrice Cloud Native](http://calculatrice-taleb.polytech-dijon.kiowy.net)
 > 
 > Veuillez ajouter la ligne suivante `34.77.144.136 calculatrice-taleb.polytech-dijon.kiowy.net` dans votre fichier `hosts` :
 >  - **Windows :** `C:\Windows\System32\drivers\etc\hosts`
 >  - **Linux :** `/etc/hosts`
 
-## Auteur
-**Nour Eddine TALEB**
+- [🔼 Back to Top](#virtualisation-et-cloud-computing)
 
