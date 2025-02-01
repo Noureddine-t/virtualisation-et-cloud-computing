@@ -99,7 +99,7 @@ Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une
   - Création des manifests Kubernetes pour déployer l'application. [ici](./Kubernetes)
 
 ### 6. Accès à l'application
-  - Une fois l'application fonctionnelle avec Docker et Kubernetes, l'application est accessible. [voir](#application)
+  - Une fois l'application fonctionnelle avec Docker et Kubernetes, l'application est accessible. [voir la section application](#application)
 
 ### 7. Scan des images avec Trivy
   - J'ai également scanné les images Docker avec Trivy pour identifier les vulnérabilités. [ici](./Application/README.md/#scan-des-images-avec-trivy)
