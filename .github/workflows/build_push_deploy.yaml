@@ -33,7 +33,6 @@ env:
 jobs:
   build-and-push-front:
     runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.modified, 'Application/frontend/') || contains(github.event.head_commit.modified, '.github/workflows/')
     steps:
       - name: "Checkout code"
         uses: "actions/checkout@v4"
@@ -52,20 +51,16 @@ jobs:
       - name: "Configure Docker authentication for GCP"
         run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
 
-      - name: Check Dockerfile existence
-        run: test -f Dockerfile
+      - name: "Build and push Frontend image"
+        if: contains(github.event.head_commit.modified, 'Application/frontend/') || contains(github.event.head_commit.modified, '.github/workflows/')
+        run: |
+          test -f Dockerfile || exit 1
+          docker build . --file Dockerfile --tag ${{ env.FRONT_LOCATION }}
+          docker push ${{ env.FRONT_LOCATION }}
         working-directory: ${{ env.FRONT_WORKING_DIRECTORY }}
-
-      - name: "Build Docker image"
-        run: docker build . --file Dockerfile --tag ${{ env.FRONT_LOCATION }}
-        working-directory: ${{ env.FRONT_WORKING_DIRECTORY }}
-
-      - name: "Push Docker image to Artifact Registry"
-        run: docker push ${{ env.FRONT_LOCATION }}
 
   build-and-push-api:
     runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.modified, 'Application/backend/') || contains(github.event.head_commit.modified, '.github/workflows/')
     steps:
       - name: "Checkout code"
         uses: "actions/checkout@v4"
@@ -84,20 +79,16 @@ jobs:
       - name: "Configure Docker authentication for GCP"
         run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
 
-      - name: Check Dockerfile existence
-        run: test -f Dockerfile
+      - name: "Build and push API image"
+        if: contains(github.event.head_commit.modified, 'Application/backend/') || contains(github.event.head_commit.modified, '.github/workflows/')
+        run: |
+          test -f Dockerfile || exit 1
+          docker build . --file Dockerfile --tag ${{ env.API_LOCATION }}
+          docker push ${{ env.API_LOCATION }}
         working-directory: ${{ env.API_WORKING_DIRECTORY }}
-
-      - name: "Build Docker image"
-        run: docker build . --file Dockerfile --tag ${{ env.API_LOCATION }}
-        working-directory: ${{ env.API_WORKING_DIRECTORY }}
-
-      - name: "Push Docker image to Artifact Registry"
-        run: docker push ${{ env.API_LOCATION }}
 
   build-and-push-consumer:
     runs-on: ubuntu-latest
-    if: contains(github.event.head_commit.modified, 'Application/consumer/') || contains(github.event.head_commit.modified, '.github/workflows/')
     steps:
       - name: "Checkout code"
         uses: "actions/checkout@v4"
@@ -116,16 +107,13 @@ jobs:
       - name: "Configure Docker authentication for GCP"
         run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
 
-      - name: Check Dockerfile existence
-        run: test -f Dockerfile
+      - name: "Build and push Consumer image"
+        if: contains(github.event.head_commit.modified, 'Application/consumer/') || contains(github.event.head_commit.modified, '.github/workflows/')
+        run: |
+          test -f Dockerfile || exit 1
+          docker build . --file Dockerfile --tag ${{ env.CONSUMER_LOCATION }}
+          docker push ${{ env.CONSUMER_LOCATION }}
         working-directory: ${{ env.CONSUMER_WORKING_DIRECTORY }}
-
-      - name: "Build Docker image"
-        run: docker build . --file Dockerfile --tag ${{ env.CONSUMER_LOCATION }}
-        working-directory: ${{ env.CONSUMER_WORKING_DIRECTORY }}
-
-      - name: "Push Docker image to Artifact Registry"
-        run: docker push ${{ env.CONSUMER_LOCATION }}
 
   deploy-with-kubernetes:
     runs-on: ubuntu-latest
