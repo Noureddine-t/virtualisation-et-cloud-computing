@@ -113,7 +113,7 @@ const response = await fetch(`http://calculatrice-taleb.polytech-dijon.kiowy.net
 ## Automatisation du déploiement
 
 > [!NOTE]
-> Le déploiement de l'application est automotisé à l'aide de GitHub Actions. Plus de détails [workflow](../.github/workflows/deploy_images.yaml).
+> Le déploiement de l'application est automotisé à l'aide de GitHub Actions. Plus de détails [workflow](../.github/workflows/build_push_deploy.yaml).
 
 ## Commandes utiles
 

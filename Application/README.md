@@ -90,7 +90,7 @@ app.run(host='0.0.0.0', port=5000, debug=True)
 ## Automatisation
 
 > [!NOTE]
-> La création et le poussage des images Docker se font à l'aide de GitHub Actions. Plus de détails [workflow](../.github/workflows/build_push_images.yaml).
+> La création et le poussage des images Docker se font à l'aide de GitHub Actions. Plus de détails [workflow](../.github/workflows/build_push_deploy.yaml).
 
 ## Docker
 

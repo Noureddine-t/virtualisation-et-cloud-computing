@@ -105,8 +105,7 @@ Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une
   - J'ai également scanné les images Docker avec Trivy pour identifier les vulnérabilités. [ici](./Application/README.md/#scan-des-images-avec-trivy)
 
 ### 8. Automatisation du déploiement (CI/CD)
-- J'ai automatisé le build et le push des images Docker sur le registry de Google Cloud Platform en utilisant GitHub Actions. [ici](./.github/workflows/build_push_images.yaml)
-- J'ai également automatisé le déploiement de l'application avec Kubernetes en utilisant GitHub Actions. [ici](./.github/workflows/deploy_images.yaml)
+- J'ai automatisé le build et le push des images Docker sur le registry de Google Cloud Platform mais également le déploiement de l'application avec Kubernetes en utilisant GitHub Actions. [ici](./.github/workflows/build_push_deploy.yaml)
 
 > [!NOTE]
 > L'ensemble des problématiques rencontrées et des solutions apportées sont détaillées dans les fichiers `README.md` de chaque partie du projet.
