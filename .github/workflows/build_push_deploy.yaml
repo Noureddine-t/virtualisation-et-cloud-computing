@@ -7,7 +7,6 @@ on:
     paths:
       - "Application/**"
       - "Kubernetes/**"
-      - ".github/workflows/**"
       - "!Application/README.md"
       - "!Application/docker-compose.yaml"
       - "!Kubernetes/README.md"
