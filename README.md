@@ -5,8 +5,8 @@ Contient le projet du module de Virtualisation & Cloud Computing et les travaux 
 - **Travaux dirigés 👉 [ici](TD)**
 - **Projet de Calculatrice Cloud Native ci-dessous 👇**
 
-| [![uBe](./docs/Autre/img/UB-Europe.png)](https://www.ube.fr) | Polytech Dijon - 4A - ILIA/SQR <br/> Projet&nbsp;de&nbsp;Virtualisation&nbsp;&amp;&nbsp;Cloud&nbsp;Computing <br/> Calculatrice Cloud Native <br/><br/> **[ EXAMEN PRATIQUE ]** | [![Polytech Dijon](./docs/Autre/img/logo_polytech.png)](https://polytech.ube.fr) |
-|:-------------------------------------------------------------|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|-----------------------------------------------------------------------------------------:|
+| [![uBe](./docs/Autre/img/UB-Europe.png)](https://www.ube.fr) |     | Polytech Dijon - 4A - ILIA/SQR <br/> Projet&nbsp;de&nbsp;Virtualisation&nbsp;&amp;&nbsp;Cloud&nbsp;Computing <br/> Calculatrice Cloud Native <br/><br/> **[ EXAMEN PRATIQUE ]** | [![Polytech Dijon](./docs/Autre/img/logo_polytech.png)](https://polytech.ube.fr) |
+|:-------------------------------------------------------------|:----|:-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|---------------------------------------------------------------------------------:|
 
 [![docker](https://img.shields.io/badge/DOCKER-blue?style=for-the-badge&logo=docker&logoColor=white)](https://docs.docker.com/)
 [![kubernetes](https://img.shields.io/badge/KUBERNETES-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)](https://kubernetes.io/)
@@ -60,7 +60,7 @@ Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une
 - [`Application/`](./Application) : Fichiers de l'application web (front-end, back-end, consumer), Dockerfiles associés et docker-compose.
 - [`Kubernetes/`](./Kubernetes) : Manifests Kubernetes (Replicaset, Service, Ingress).
 - [`Foundation/`](./Foundation) : Terraform (provisionnement de l'infrastructure).
-- [`.github/workflows/`](./.github/workflows) : Fichiers GitHub Actions pour automatiser le build, le push des images Docker et le déploiement de l'application.
+- [`.github/workflows/`](./.github/workflows) : Fichier GitHub Actions pour automatiser le build, le push des images Docker et le déploiement de l'application.
 - [`Sujet.md`](./Sujet.md) [source](https://github.com/JeromeMSD/module_virtualisation-et-cloud-computing/blob/main/projet.md).
 
 ## Déroulement du projet

@@ -7,6 +7,9 @@
 [![redis](https://img.shields.io/badge/REDIS-DC382D?style=for-the-badge&logo=redis&logoColor=white)](https://redis.io/)
 [![LapinMQ](https://img.shields.io/badge/rabbitmq-%23FF6600.svg?&style=for-the-badge&logo=rabbitmq&logoColor=white)](https://rabbitmq.com/)
 [![nginx](https://img.shields.io/badge/NGINX-009639?style=for-the-badge&logo=nginx&logoColor=white)](https://nginx.org/)
+[![GitHub Actions](https://img.shields.io/badge/GITHUB_ACTIONS-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)](https://docs.github.com/en/actions)
+[![Google Cloud Platform](https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)](https://cloud.google.com/)
+[![Trivy](https://img.shields.io/badge/TRIVY-353839?style=for-the-badge&logo=trivy&logoColor=white)](https://github.com/aquasecurity/trivy)
 
 ## Sommaire
 - [Développement de l'application](#développement-de-lapplication)
@@ -28,6 +31,10 @@
 - **Base de données :** Redis
 - **Queue de message :** RabbitMQ
 - **Serveur web :** Nginx
+- **Containerisation :** Docker
+- **Scan des images :** Trivy
+- **Automatisation :** GitHub Actions
+- **Cloud :** Google Cloud Platform
 
 ## Structure de données pour le stockage des calculs
 
