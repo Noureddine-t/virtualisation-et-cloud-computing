@@ -10,8 +10,8 @@
     - [Etape 1 : Demande de calcul](#etape-1--demande-de-calcul)
     - [Etape 2 : Récupération du résultat du calcul](#etape-2--récupération-du-résultat-du-calcul)
 - [Difficultés rencontrées](#difficultés-rencontrées)
-- [Commandes utiles](#commandes-utiles)
 - [Automatisation du déploiement](#automatisation-du-déploiement)
+- [Commandes utiles](#commandes-utiles)
     - [Autres commandes utiles](#autres-commandes-utiles)
 - [Voir aussi](#voir-aussi)
 ## Schema récapitulatif (services et replicasets)
@@ -257,6 +257,7 @@ kubectl port-forward service/svc-front 8080:80
 ## Voir aussi
 - [`Application/`](../Application) : Fichiers de l'application web (front-end, back-end, consumer), Dockerfiles associés et docker-compose.
 - [`Foundation/`](../Foundation) : Terraform (provisionnement de l'infrastructure).
+- [`.github/workflows/`](../.github/workflows) : Fichier GitHub Actions pour automatiser le déploiement de l'application.
 - [`Projet.md`](../README.md) : Description du projet.
 - [`Sujet.md`](../Sujet.md) ou [source](https://github.com/JeromeMSD/module_virtualisation-et-cloud-computing/blob/main/projet.md).
 - [🔼 Back to Top](#kubernetes)
