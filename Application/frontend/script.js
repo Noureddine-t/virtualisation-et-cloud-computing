@@ -8,7 +8,7 @@ document.getElementById('calcForm').addEventListener('submit', function(event) {
     const number2 = document.querySelector('input[name="number2"]').value;
     const operator = document.querySelector('select[name="operator"]').value;
 
-    fetch('http://calculatrice-taleb.polytech-dijon.kiowy.net/api/calculate', {
+    fetch('http://127.0.0.1:5000/api/calculate', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ document.getElementById('resultForm').addEventListener('submit', function(event)
 
     const operationId = document.querySelector('input[name="operationId"]').value;
 
-    fetch(`http://calculatrice-taleb.polytech-dijon.kiowy.net/api/result/${operationId}`, {
+    fetch(`http://127.0.0.1:5000/api/result/${operationId}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
