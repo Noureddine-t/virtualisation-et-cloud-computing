@@ -1,26 +1,36 @@
-variable "project_id" {
+# Identifiants Oracle Cloud Infrastructure (OCI)
+variable "tenancy_ocid" {
+  description = "OCID de votre location (Tenancy)"
   type        = string
-  description = "L'ID du projet Google Cloud (GCP)"
-  default     = "Calculatrice Cloud Native"
 }
 
-variable "zone" {
-  type    = string
-  default = "europe-west1-b"
+variable "user_ocid" {
+  description = "OCID de votre utilisateur"
+  type        = string
+}
+
+variable "fingerprint" {
+  description = "Empreinte de votre clé API"
+  type        = string
+}
+
+variable "private_key_path" {
+  description = "Chemin local vers votre clé privée API (ex: ~/.oci/oci_api_key.pem)"
+  type        = string
 }
 
 variable "region" {
-  type    = string
-  default = "europe-west1" # Belgique (Faible latence et écologique)
-}
-
-variable "billing_account_id" {
+  description = "Région Oracle (ex: eu-paris-1)"
   type        = string
-  description = "L'ID du compte de facturation GCP (ex: 012345-6789AB-CDEF01) pour activer le Kill-Switch"
-  default     = "" 
+  default     = "eu-paris-1"
 }
 
-variable "student" {
-  type    = string
-  default = "taleb"
+variable "compartment_ocid" {
+  description = "OCID de votre compartiment"
+  type        = string
+}
+
+variable "ssh_public_key" {
+  description = "Votre clé publique SSH (ex: ssh-rsa AAAAB3N...) pour vous connecter au serveur"
+  type        = string
 }

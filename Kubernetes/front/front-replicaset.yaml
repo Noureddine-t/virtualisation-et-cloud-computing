@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: frontend-container
-          image: europe-west1-docker.pkg.dev/polytech-dijon/polytech-dijon/app-frontend:taleb.latest
+          image: ghcr.io/noureddine-t./calculatrice-front:latest
           resources:
             requests:
               cpu: 50m

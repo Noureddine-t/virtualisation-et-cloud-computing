@@ -4,7 +4,6 @@
 # Local .terraform directories
 **/.terraform/*
 # .tfstate files
-*.tfstate
 *.tfstate.*
 
 # Crash log files
@@ -77,3 +76,8 @@ fabric.properties
 .idea
 __pycache__
 __pycache__/*
+
+*.pem
+**/ssh_key
+**/ssh_key.pub
+**/tfplan

@@ -13,14 +13,13 @@ on:
       - "!Kubernetes/README.md"
 
 env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  REGION: europe-west1
   FRONT_WORKING_DIRECTORY: Application/frontend
   API_WORKING_DIRECTORY: Application/backend
   CONSUMER_WORKING_DIRECTORY: Application/consumer
-  FRONT_LOCATION: europe-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/calculatrice-repo/app-frontend:latest
-  API_LOCATION: europe-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/calculatrice-repo/backend-api:latest
-  CONSUMER_LOCATION: europe-west1-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/calculatrice-repo/backend-consumer:latest
+  # Use GitHub Container Registry (GHCR)
+  FRONT_LOCATION: ghcr.io/${{ github.repository_owner }}/calculatrice-front:latest
+  API_LOCATION: ghcr.io/${{ github.repository_owner }}/calculatrice-api:latest
+  CONSUMER_LOCATION: ghcr.io/${{ github.repository_owner }}/calculatrice-consumer:latest
 
   REDIS_PATH: Kubernetes/redis
   RABBITMQ_PATH: Kubernetes/rabbitMQ
@@ -33,110 +32,104 @@ env:
 jobs:
   build-and-push-front:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
-      - name: "Checkout code"
-        uses: "actions/checkout@v4"
-
-      - id: "auth"
-        uses: "google-github-actions/auth@v2"
+      - uses: actions/checkout@v4
+      - name: Set up QEMU (pour architecture ARM)
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
         with:
-          credentials_json: "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}"
-
-      - name: "Set up Cloud SDK"
-        uses: "google-github-actions/setup-gcloud@v2"
-
-      - name: "Verify gcloud CLI setup"
-        run: gcloud info
-
-      - name: "Configure Docker authentication for GCP"
-        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
-
-      - name: "Build and push Frontend image"
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push Frontend (ARM64)
         if: contains(github.event.head_commit.modified, 'Application/frontend/')
-        run: |
-          test -f Dockerfile || exit 1
-          docker build . --file Dockerfile --tag ${{ env.FRONT_LOCATION }}
-          docker push ${{ env.FRONT_LOCATION }}
-        working-directory: ${{ env.FRONT_WORKING_DIRECTORY }}
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ env.FRONT_WORKING_DIRECTORY }}
+          push: true
+          platforms: linux/arm64
+          tags: ${{ env.FRONT_LOCATION }}
 
   build-and-push-api:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
-      - name: "Checkout code"
-        uses: "actions/checkout@v4"
-
-      - id: "auth"
-        uses: "google-github-actions/auth@v2"
+      - uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
         with:
-          credentials_json: "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}"
-
-      - name: "Set up Cloud SDK"
-        uses: "google-github-actions/setup-gcloud@v2"
-
-      - name: "Verify gcloud CLI setup"
-        run: gcloud info
-
-      - name: "Configure Docker authentication for GCP"
-        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
-
-      - name: "Build and push API image"
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push API (ARM64)
         if: contains(github.event.head_commit.modified, 'Application/backend/')
-        run: |
-          test -f Dockerfile || exit 1
-          docker build . --file Dockerfile --tag ${{ env.API_LOCATION }}
-          docker push ${{ env.API_LOCATION }}
-        working-directory: ${{ env.API_WORKING_DIRECTORY }}
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ env.API_WORKING_DIRECTORY }}
+          push: true
+          platforms: linux/arm64
+          tags: ${{ env.API_LOCATION }}
 
   build-and-push-consumer:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
-      - name: "Checkout code"
-        uses: "actions/checkout@v4"
-
-      - id: "auth"
-        uses: "google-github-actions/auth@v2"
+      - uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
         with:
-          credentials_json: "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}"
-
-      - name: "Set up Cloud SDK"
-        uses: "google-github-actions/setup-gcloud@v2"
-
-      - name: "Verify gcloud CLI setup"
-        run: gcloud info
-
-      - name: "Configure Docker authentication for GCP"
-        run: gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
-
-      - name: "Build and push Consumer image"
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push Consumer (ARM64)
         if: contains(github.event.head_commit.modified, 'Application/consumer/')
-        run: |
-          test -f Dockerfile || exit 1
-          docker build . --file Dockerfile --tag ${{ env.CONSUMER_LOCATION }}
-          docker push ${{ env.CONSUMER_LOCATION }}
-        working-directory: ${{ env.CONSUMER_WORKING_DIRECTORY }}
+        uses: docker/build-push-action@v5
+        with:
+          context: ${{ env.CONSUMER_WORKING_DIRECTORY }}
+          push: true
+          platforms: linux/arm64
+          tags: ${{ env.CONSUMER_LOCATION }}
 
   deploy-with-kubernetes:
     runs-on: ubuntu-latest
     needs: [build-and-push-front, build-and-push-api, build-and-push-consumer]
     steps:
       - name: "Checkout repository"
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@v4"
 
-      - id: "auth"
-        uses: "google-github-actions/auth@v2"
-        with:
-          credentials_json: "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}"
+      - name: "Create .kube directory"
+        run: mkdir -p $HOME/.kube
 
-      - name: "Set up GKE credentials"
-        uses: "google-github-actions/get-gke-credentials@v2"
-        with:
-          cluster_name: "calculatrice-cluster"
-          location: "${{ env.REGION }}"
+      - name: "Set up Kubernetes configuration"
+        run: |
+          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
 
       - name: "Deploy to Kubernetes"
         run: |
+          # Création du namespace s'il n'existe pas
+          kubectl create namespace ${{ env.NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -
           kubectl config set-context --current --namespace=${{ env.NAMESPACE }}
 
+          # Appliquer les manifests
           kubectl apply -f ${{ env.RABBITMQ_PATH }}/rabbitmq-replicaset.yaml
           kubectl apply -f ${{ env.RABBITMQ_PATH }}/rabbitmq-service.yaml
 
