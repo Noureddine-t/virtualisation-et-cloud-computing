@@ -131,21 +131,28 @@ resource "oci_core_instance" "arm_instance" {
 
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
-    # Cloud-init : Installation automatique de K3s (Kubernetes léger) au démarrage
+    # Cloud-init : Installation automatique et configuration
     user_data = base64encode(<<EOF
 #!/bin/bash
-# Installation de K3s
-curl -sfL https://get.k3s.io | sh -
 
-# Ouverture des ports dans le pare-feu interne Ubuntu (iptables)
-iptables -I INPUT 6 -m state --state NEW -p tcp --dport 80 -j ACCEPT
-iptables -I INPUT 6 -m state --state NEW -p tcp --dport 443 -j ACCEPT
-iptables -I INPUT 6 -m state --state NEW -p tcp --dport 6443 -j ACCEPT
+# 1. Ouverture des ports dans le pare-feu interne Ubuntu (iptables)
+# On insère sans numéro de ligne pour les mettre tout en haut (avant la règle REJECT d'Oracle)
+iptables -I INPUT -p tcp -m state --state NEW --dport 80 -j ACCEPT
+iptables -I INPUT -p tcp -m state --state NEW --dport 443 -j ACCEPT
+iptables -I INPUT -p tcp -m state --state NEW --dport 6443 -j ACCEPT
 netfilter-persistent save
 
-# Donner les droits au fichier kubeconfig pour l'utilisateur ubuntu
+# 2. Installation de K3s (K3s rajoutera ses propres règles réseau par-dessus les nôtres, ce qui est parfait)
+curl -sfL https://get.k3s.io | sh -
+
+# 3. Préparation automatique du fichier Kubeconfig
+mkdir -p /home/ubuntu/.kube
 cp /etc/rancher/k3s/k3s.yaml /home/ubuntu/.kube/config
 chown ubuntu:ubuntu /home/ubuntu/.kube/config
+
+# Remplacement automatique de l'IP locale par l'IP publique pour GitHub Actions
+PUBLIC_IP=$(curl -s ifconfig.me)
+sed -i "s/127.0.0.1/$PUBLIC_IP/g" /home/ubuntu/.kube/config
 EOF
     )
   }
