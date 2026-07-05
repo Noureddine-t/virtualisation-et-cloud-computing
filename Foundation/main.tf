@@ -1,66 +1,84 @@
 terraform {
   required_providers {
-    scaleway = {
-      source = "scaleway/scaleway"
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 5.0"
     }
   }
-  required_version = ">= 0.13"
+  required_version = ">= 1.0.0"
 }
 
-provider "scaleway" {
-  zone   = var.zone
-  region = var.region
+provider "google" {
+  project = var.project_id
+  region  = var.region
+  zone    = var.zone
 }
 
-# VPC - Virtual Private Cloud
-resource "scaleway_vpc_private_network" "vpc" {
-  name   = "my-vpc"
-  region = var.region
-}
-# Kubernetes Cluster
-resource "scaleway_k8s_cluster" "cluster" {
-  name                        = "my-cluster"
-  region                      = var.region
-  cni                         = "cilium"
-  version                     = "1.21.4"
-  delete_additional_resources = false
-  private_network_id          = scaleway_vpc_private_network.vpc.id
+# VPC and Subnet
+resource "google_compute_network" "vpc_network" {
+  name                    = "calculatrice-vpc"
+  auto_create_subnetworks = false
 }
 
-# Container Registry
-resource "scaleway_registry_namespace" "container_registry" {
-  name   = "my-container-registry"
-  region = var.region
+resource "google_compute_subnetwork" "subnet" {
+  name          = "calculatrice-subnet"
+  region        = var.region
+  network       = google_compute_network.vpc_network.name
+  ip_cidr_range = "10.0.0.0/16"
 }
 
-# Databases for development and production environments
-resource "scaleway_rdb_instance" "database" {
-  for_each  = var.environments
-  name      = "${each.value}-database"
-  region    = var.region
-  engine    = "Redis"
-  node_type = "DEV1-S"
+# GKE Autopilot Cluster
+# Autopilot gère automatiquement les noeuds et bénéficie d'un tier gratuit pour le control plane.
+resource "google_container_cluster" "primary" {
+  name     = "calculatrice-cluster"
+  location = var.region
+
+  enable_autopilot = true
+
+  network    = google_compute_network.vpc_network.name
+  subnetwork = google_compute_subnetwork.subnet.name
+
+  # Désactivé pour permettre de détruire facilement le cluster pour un projet étudiant
+  deletion_protection = false
 }
 
-# LoadBalancer IPs
-resource "scaleway_lb_ip" "loadbalancer_ip" {
-  for_each = var.environments
-}
-# LoadBalancers for development and production environments
-resource "scaleway_lb" "loadbalancer" {
-  for_each = var.environments
-  name     = "${each.value}-loadbalancer"
-  ip_id    = scaleway_lb_ip.loadbalancer_ip[each.key].id
-  type     = "lb-s"
+# Artifact Registry pour stocker les images Docker
+resource "google_artifact_registry_repository" "docker_repo" {
+  location      = var.region
+  repository_id = "calculatrice-repo"
+  description   = "Docker repository pour Calculatrice Native"
+  format        = "DOCKER"
 }
 
-
-# DNS Entries for development and production environments to associate with the LoadBalancers
-resource "scaleway_domain_record" "dns_record" {
-  for_each = var.environments
-  name     = "calculatrice-${each.value == "prod" ? "" : "dev-"}${var.student}-polytech-dijon.kiowy.net"
-  type     = "A"
-  dns_zone = "polytech-dijon.kiowy.net"
-  data     = scaleway_lb_ip.loadbalancer_ip[each.key].ip_address
+# ==============================================================================
+# KILL-SWITCH / ALERTE BUDGETAIRE
+# Permet d'éviter les factures imprévues.
+# Ne sera créé que si l'ID du compte de facturation est fourni.
+# ==============================================================================
+resource "google_pubsub_topic" "billing_alerts" {
+  count = var.billing_account_id != "" ? 1 : 0
+  name  = "billing-alerts"
 }
 
+resource "google_billing_budget" "budget" {
+  count           = var.billing_account_id != "" ? 1 : 0
+  billing_account = var.billing_account_id
+  display_name    = "Calculatrice Kill-Switch Budget (5$)"
+  
+  amount {
+    specified_amount {
+      currency_code = "USD"
+      units         = "5" # Limite de 5$
+    }
+  }
+
+  threshold_rules {
+    threshold_percent = 1.0 # Alerte à 100% de la limite
+  }
+
+  all_updates_rule {
+    # Envoie une alerte dans Pub/Sub. (Nécessite une Cloud Function pour désactiver réellement le projet, 
+    # mais l'alerte budgétaire est la première étape obligatoire).
+    pubsub_topic_name = google_pubsub_topic.billing_alerts[0].id
+  }
+}
