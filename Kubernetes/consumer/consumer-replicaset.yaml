@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: consumer-container
-          image: ghcr.io/noureddine-t./calculatrice-consumer:latest
+          image: ghcr.io/noureddine-t/calculatrice-consumer:latest
           resources:
             requests:
               cpu: 50m
