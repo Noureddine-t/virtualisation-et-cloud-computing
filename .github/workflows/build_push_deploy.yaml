@@ -139,6 +139,11 @@ jobs:
 
           kubectl apply -f ${{ env.FRONT_PATH }}/front-replicaset.yaml
           kubectl apply -f ${{ env.FRONT_PATH }}/front-service.yaml
+          
+          # Installer cert-manager (pour HTTPS)
+          kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.16.1/cert-manager.yaml
+          sleep 20 # Attendre que les webhooks de cert-manager soient prêts
+          kubectl apply -f Kubernetes/cert-manager/cluster-issuer.yaml
 
           kubectl apply -f ${{ env.NGINX_INGRESS_PATH }}/nginx-ingress.yaml
 
