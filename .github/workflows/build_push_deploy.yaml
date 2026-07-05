@@ -18,9 +18,9 @@ env:
   API_WORKING_DIRECTORY: Application/backend
   CONSUMER_WORKING_DIRECTORY: Application/consumer
   # Use GitHub Container Registry (GHCR)
-  FRONT_LOCATION: ghcr.io/${{ github.repository_owner }}/calculatrice-front:latest
-  API_LOCATION: ghcr.io/${{ github.repository_owner }}/calculatrice-api:latest
-  CONSUMER_LOCATION: ghcr.io/${{ github.repository_owner }}/calculatrice-consumer:latest
+  FRONT_LOCATION: ghcr.io/noureddine-t/calculatrice-front:latest
+  API_LOCATION: ghcr.io/noureddine-t/calculatrice-api:latest
+  CONSUMER_LOCATION: ghcr.io/noureddine-t/calculatrice-consumer:latest
 
   REDIS_PATH: Kubernetes/redis
   RABBITMQ_PATH: Kubernetes/rabbitMQ
