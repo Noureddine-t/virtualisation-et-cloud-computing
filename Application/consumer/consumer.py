@@ -10,11 +10,11 @@ app = Flask(__name__)
 CORS(app)
 
 # Connection to RabbitMQ
-connection = pika.BlockingConnection(pika.ConnectionParameters('host.docker.internal', heartbeat=0))
+connection = pika.BlockingConnection(pika.ConnectionParameters('svc-rabbitmq', heartbeat=0))
 channel = connection.channel()
 channel.queue_declare(queue='calculation_queue')
 
-redis_client = redis.Redis(host='host.docker.internal', port=6379, db=0)
+redis_client = redis.Redis(host='svc-redis', port=6379, db=0)
 
 
 def callback(ch, method, properties, body):
