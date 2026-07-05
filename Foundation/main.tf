@@ -136,14 +136,14 @@ resource "oci_core_instance" "arm_instance" {
 #!/bin/bash
 
 # 1. Ouverture des ports dans le pare-feu interne Ubuntu (iptables)
-# On insère sans numéro de ligne pour les mettre tout en haut (avant la règle REJECT d'Oracle)
 iptables -I INPUT -p tcp -m state --state NEW --dport 80 -j ACCEPT
 iptables -I INPUT -p tcp -m state --state NEW --dport 443 -j ACCEPT
 iptables -I INPUT -p tcp -m state --state NEW --dport 6443 -j ACCEPT
 netfilter-persistent save
 
-# 2. Installation de K3s (K3s rajoutera ses propres règles réseau par-dessus les nôtres, ce qui est parfait)
-curl -sfL https://get.k3s.io | sh -
+# 2. Installation de K3s avec prise en charge de l'IP publique pour le certificat SSL
+PUBLIC_IP=$(curl -s ifconfig.me)
+curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="server --tls-san $PUBLIC_IP" sh -s -
 
 # 3. Préparation automatique du fichier Kubeconfig
 mkdir -p /home/ubuntu/.kube
@@ -151,7 +151,6 @@ cp /etc/rancher/k3s/k3s.yaml /home/ubuntu/.kube/config
 chown ubuntu:ubuntu /home/ubuntu/.kube/config
 
 # Remplacement automatique de l'IP locale par l'IP publique pour GitHub Actions
-PUBLIC_IP=$(curl -s ifconfig.me)
 sed -i "s/127.0.0.1/$PUBLIC_IP/g" /home/ubuntu/.kube/config
 EOF
     )
