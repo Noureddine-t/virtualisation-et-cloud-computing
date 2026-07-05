@@ -80,6 +80,14 @@ resource "oci_core_default_security_list" "security_list" {
       max = 443
     }
   }
+  ingress_security_rules {
+    protocol = "6" # TCP
+    source   = "0.0.0.0/0"
+    tcp_options {
+      min = 6443
+      max = 6443
+    }
+  }
 }
 
 # ==============================================================================
@@ -132,6 +140,7 @@ curl -sfL https://get.k3s.io | sh -
 # Ouverture des ports dans le pare-feu interne Ubuntu (iptables)
 iptables -I INPUT 6 -m state --state NEW -p tcp --dport 80 -j ACCEPT
 iptables -I INPUT 6 -m state --state NEW -p tcp --dport 443 -j ACCEPT
+iptables -I INPUT 6 -m state --state NEW -p tcp --dport 6443 -j ACCEPT
 netfilter-persistent save
 
 # Donner les droits au fichier kubeconfig pour l'utilisateur ubuntu
