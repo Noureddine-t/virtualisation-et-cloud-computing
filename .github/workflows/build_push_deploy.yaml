@@ -49,7 +49,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push Frontend (ARM64)
-        if: contains(github.event.head_commit.modified, 'Application/frontend/')
         uses: docker/build-push-action@v5
         with:
           context: ${{ env.FRONT_WORKING_DIRECTORY }}
@@ -75,7 +74,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push API (ARM64)
-        if: contains(github.event.head_commit.modified, 'Application/backend/')
         uses: docker/build-push-action@v5
         with:
           context: ${{ env.API_WORKING_DIRECTORY }}
@@ -101,7 +99,6 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push Consumer (ARM64)
-        if: contains(github.event.head_commit.modified, 'Application/consumer/')
         uses: docker/build-push-action@v5
         with:
           context: ${{ env.CONSUMER_WORKING_DIRECTORY }}
