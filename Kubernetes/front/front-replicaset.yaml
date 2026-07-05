@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: frontend-container
-          image: ghcr.io/noureddine-t./calculatrice-front:latest
+          image: ghcr.io/noureddine-t/calculatrice-front:latest
           resources:
             requests:
               cpu: 50m
