@@ -1,0 +1,21 @@
+# Default values for the calculatrice app
+
+replicaCount: 1
+
+image:
+  repositoryPrefix: "ghcr.io/noureddine-t"
+  tag: "latest"
+  pullPolicy: Always
+
+ingress:
+  enabled: true
+  className: traefik
+  host: calculatrice-taleb.duckdns.org
+  certManagerIssuer: letsencrypt-prod
+
+redis:
+  port: 6379
+
+rabbitmq:
+  amqpPort: 5672
+  managementPort: 15672
