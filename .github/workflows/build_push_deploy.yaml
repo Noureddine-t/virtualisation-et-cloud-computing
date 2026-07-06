@@ -18,10 +18,10 @@ env:
   FRONT_WORKING_DIRECTORY: Application/frontend
   API_WORKING_DIRECTORY: Application/backend
   CONSUMER_WORKING_DIRECTORY: Application/consumer
-  # Use GitHub Container Registry (GHCR)
-  FRONT_LOCATION: ghcr.io/noureddine-t/calculatrice-front:latest
-  API_LOCATION: ghcr.io/noureddine-t/calculatrice-api:latest
-  CONSUMER_LOCATION: ghcr.io/noureddine-t/calculatrice-consumer:latest
+  # Use GitHub Container Registry (GHCR) and Git SHA for tagging
+  FRONT_LOCATION: ghcr.io/noureddine-t/calculatrice-front:${{ github.sha }}
+  API_LOCATION: ghcr.io/noureddine-t/calculatrice-api:${{ github.sha }}
+  CONSUMER_LOCATION: ghcr.io/noureddine-t/calculatrice-consumer:${{ github.sha }}
 
   REDIS_PATH: Kubernetes/redis
   RABBITMQ_PATH: Kubernetes/rabbitMQ
@@ -109,6 +109,8 @@ jobs:
 
   deploy-with-kubernetes:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     needs: [build-and-push-front, build-and-push-api, build-and-push-consumer]
     steps:
       - name: "Checkout repository"
@@ -122,11 +124,26 @@ jobs:
           echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
           chmod 600 $HOME/.kube/config
 
-      - name: "Deploy to Kubernetes"
+      - name: Update Helm values.yaml with new tags and push to Git
         run: |
-          # Installer cert-manager (pour HTTPS)
+          # Installation de yq pour manipuler le YAML facilement
+          sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          sudo chmod a+x /usr/local/bin/yq
+
+          # Mise à jour du tag dans values.yaml
+          yq e '.image.tag = "${{ github.sha }}"' -i Helm/calculatrice/values.yaml
+
+          # Commit et push (avec [skip ci] pour éviter une boucle infinie de workflows)
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add Helm/calculatrice/values.yaml
+          git commit -m "chore: update docker tags to ${{ github.sha }} [skip ci]" || echo "No changes to commit"
+          git push
+
+      - name: "Bootstrap ArgoCD and apply dependencies"
+        run: |
+          # Installer cert-manager (pour HTTPS) car ArgoCD gère l'application, pas les certs globaux
           kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.16.1/cert-manager.yaml
-          sleep 20 # Attendre que les webhooks de cert-manager soient prêts
           
-          # Déployer l'application avec Helm
-          helm upgrade --install calculatrice ./Helm/calculatrice --namespace ${{ env.NAMESPACE }} --create-namespace
+          # Initialiser l'application ArgoCD (GitOps)
+          kubectl apply -f GitOps/argocd-app.yaml

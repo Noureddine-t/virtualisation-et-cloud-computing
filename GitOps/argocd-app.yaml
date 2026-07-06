@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: calculatrice-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/Noureddine-t/virtualisation-et-cloud-computing.git'
+    path: Helm/calculatrice
+    targetRevision: main
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: taleb
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
