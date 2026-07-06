@@ -1,21 +1,17 @@
 # Default values for the calculatrice app
 
 replicaCount: 1
-
 image:
   repositoryPrefix: "ghcr.io/noureddine-t"
-  tag: "latest"
+  tag: "75f8449839de07e2af3e35c5bc8ce9b03dcc7f8a"
   pullPolicy: Always
-
 ingress:
   enabled: true
   className: traefik
   host: calculatrice-taleb.duckdns.org
   certManagerIssuer: letsencrypt-prod
-
 redis:
   port: 6379
-
 rabbitmq:
   amqpPort: 5672
   managementPort: 15672
