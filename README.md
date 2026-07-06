@@ -1,3 +1,6 @@
+> [!NOTE]
+> This README.md is not update to date with latest changes made to the project.
+
 # Virtualisation-et-cloud-computing
 
 Contient le projet du module de Virtualisation & Cloud Computing et les travaux dirigés réalisés à Polytech Dijon.
@@ -117,7 +120,7 @@ Projet de virtualisation et cloud effectué à Polytech Dijon pour déployer une
 
 ## Application
 > [!IMPORTANT]
-> ~~L'application est désormais accessible via ce lien : [Calculatrice Cloud Native](http://calculatrice-taleb.polytech-dijon.kiowy.net)~~
+> L'application est désormais accessible via ce lien : [Calculatrice Cloud Native](https://calculatrice-taleb.duckdns.org/)
 > 
 > ~~Veuillez ajouter la ligne suivante `34.77.144.136 calculatrice-taleb.polytech-dijon.kiowy.net` dans votre fichier `hosts` :~~
 >  - ~~**Windows :** `C:\Windows\System32\drivers\etc\hosts`~~
