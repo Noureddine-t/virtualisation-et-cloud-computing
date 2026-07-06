@@ -152,6 +152,11 @@ chown ubuntu:ubuntu /home/ubuntu/.kube/config
 
 # Remplacement automatique de l'IP locale par l'IP publique pour GitHub Actions
 sed -i "s/127.0.0.1/$PUBLIC_IP/g" /home/ubuntu/.kube/config
+
+# 4. Installation de ArgoCD (GitOps)
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
 EOF
     )
   }
