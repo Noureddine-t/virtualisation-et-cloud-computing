@@ -166,3 +166,25 @@ output "public_ip" {
   description = "L'adresse IP publique de votre serveur (A renseigner sur DuckDNS)"
   value       = oci_core_instance.arm_instance.public_ip
 }
+
+# ==============================================================================
+# GESTION DES COÛTS (Budget et Alerte)
+# IMPORTANT: already created manually from the console no need
+# ==============================================================================
+# resource "oci_budget_budget" "mon_budget_alerte" {
+#   compartment_id = var.tenancy_ocid
+#   amount         = 1
+#   reset_period   = "MONTHLY"
+#   description    = "Budget mensuel de sécurité (1 euro/dollar)"
+#   display_name   = "Budget-1-Max"
+#   targets        = [var.tenancy_ocid]
+# }
+#
+# resource "oci_budget_alert_rule" "alerte_depassement" {
+#   budget_id      = oci_budget_budget.mon_budget_alerte.id
+#   type           = "ACTUAL"
+#   threshold_type = "PERCENTAGE"
+#   threshold      = 10
+#   message        = "ATTENTION : Le budget de 1 a été atteint sur OCI !"
+#   recipients     = var.alert_email
+# }

@@ -34,3 +34,9 @@ variable "ssh_public_key" {
   description = "Votre clé publique SSH (ex: ssh-rsa AAAAB3N...) pour vous connecter au serveur"
   type        = string
 }
+
+# IMPORTANT: already created manually from the console no need
+# variable "alert_email" {
+#   description = "Adresse e-mail pour recevoir les alertes de budget OCI"
+#   type        = string
+# }
