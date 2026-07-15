@@ -3,7 +3,7 @@
 replicaCount: 1
 image:
   repositoryPrefix: "ghcr.io/noureddine-t"
-  tag: "acf10c80cd81850f32e4220980005becf570caca"
+  tag: "96d6bdea2d5f829613da7dc7e6b0a5bbd599fe7e"
   pullPolicy: Always
 ingress:
   enabled: true
