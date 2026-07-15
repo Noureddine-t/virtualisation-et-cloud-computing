@@ -1,4 +1,4 @@
-name: CI/CD Workflow (build, push, and deploy)
+name: Application CI/CD (Build & Update Helm)
 
 on:
   push:
@@ -6,40 +6,51 @@ on:
       - main
     paths:
       - "Application/**"
-      - "Kubernetes/**"
-      - "Foundation/**"
       - "Helm/**"
-      - ".github/workflows/**"
-      - "!Application/README.md"
-      - "!Application/docker-compose.yaml"
-      - "!Kubernetes/README.md"
+      - ".github/workflows/app.yaml"
 
 env:
   FRONT_WORKING_DIRECTORY: Application/frontend
   API_WORKING_DIRECTORY: Application/backend
   CONSUMER_WORKING_DIRECTORY: Application/consumer
-  # Use GitHub Container Registry (GHCR) and Git SHA for tagging
   FRONT_LOCATION: ghcr.io/noureddine-t/calculatrice-front:${{ github.sha }}
   API_LOCATION: ghcr.io/noureddine-t/calculatrice-api:${{ github.sha }}
   CONSUMER_LOCATION: ghcr.io/noureddine-t/calculatrice-consumer:${{ github.sha }}
 
-  REDIS_PATH: Kubernetes/redis
-  RABBITMQ_PATH: Kubernetes/rabbitMQ
-  FRONT_PATH: Kubernetes/front
-  NGINX_INGRESS_PATH: "Kubernetes/ingress-nginx"
-  API_PATH: Kubernetes/api
-  CONSUMER_PATH: Kubernetes/consumer
-  NAMESPACE: taleb
-
 jobs:
+  # Étape 1 : Détecter quels dossiers ont été modifiés
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+      backend: ${{ steps.filter.outputs.backend }}
+      consumer: ${{ steps.filter.outputs.consumer }}
+      helm: ${{ steps.filter.outputs.helm }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - 'Application/frontend/**'
+            backend:
+              - 'Application/backend/**'
+            consumer:
+              - 'Application/consumer/**'
+            helm:
+              - 'Helm/**'
+
   build-and-push-front:
+    needs: detect-changes
+    if: ${{ needs.detect-changes.outputs.frontend == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
     steps:
       - uses: actions/checkout@v4
-      - name: Set up QEMU (pour architecture ARM)
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -49,7 +60,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push Frontend (ARM64)
+      - name: Build and push Frontend
         uses: docker/build-push-action@v5
         with:
           context: ${{ env.FRONT_WORKING_DIRECTORY }}
@@ -58,6 +69,8 @@ jobs:
           tags: ${{ env.FRONT_LOCATION }}
 
   build-and-push-api:
+    needs: detect-changes
+    if: ${{ needs.detect-changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -74,7 +87,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push API (ARM64)
+      - name: Build and push API
         uses: docker/build-push-action@v5
         with:
           context: ${{ env.API_WORKING_DIRECTORY }}
@@ -83,6 +96,8 @@ jobs:
           tags: ${{ env.API_LOCATION }}
 
   build-and-push-consumer:
+    needs: detect-changes
+    if: ${{ needs.detect-changes.outputs.consumer == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -99,7 +114,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Build and push Consumer (ARM64)
+      - name: Build and push Consumer
         uses: docker/build-push-action@v5
         with:
           context: ${{ env.CONSUMER_WORKING_DIRECTORY }}
@@ -107,43 +122,28 @@ jobs:
           platforms: linux/arm64
           tags: ${{ env.CONSUMER_LOCATION }}
 
-  deploy-with-kubernetes:
+  update-helm-and-gitops:
+    needs: [detect-changes, build-and-push-front, build-and-push-api, build-and-push-consumer]
+    # S'exécute toujours, même si un build a été skippé (tant qu'aucun n'a échoué)
+    if: |
+      always() && 
+      (needs.build-and-push-front.result == 'success' || needs.build-and-push-front.result == 'skipped') &&
+      (needs.build-and-push-api.result == 'success' || needs.build-and-push-api.result == 'skipped') &&
+      (needs.build-and-push-consumer.result == 'success' || needs.build-and-push-consumer.result == 'skipped') &&
+      (needs.detect-changes.outputs.frontend == 'true' || needs.detect-changes.outputs.backend == 'true' || needs.detect-changes.outputs.consumer == 'true')
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    needs: [build-and-push-front, build-and-push-api, build-and-push-consumer]
     steps:
-      - name: "Checkout repository"
-        uses: "actions/checkout@v4"
-
-      - name: "Create .kube directory"
-        run: mkdir -p $HOME/.kube
-
-      - name: "Set up Kubernetes configuration"
+      - uses: actions/checkout@v4
+      - name: Update Helm values.yaml with new tags
         run: |
-          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
-          chmod 600 $HOME/.kube/config
-
-      - name: Update Helm values.yaml with new tags and push to Git
-        run: |
-          # Installation de yq pour manipuler le YAML facilement
           sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
           sudo chmod a+x /usr/local/bin/yq
-
-          # Mise à jour du tag dans values.yaml
           yq e '.image.tag = "${{ github.sha }}"' -i Helm/calculatrice/values.yaml
-
-          # Commit et push (avec [skip ci] pour éviter une boucle infinie de workflows)
+          
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add Helm/calculatrice/values.yaml
           git commit -m "chore: update docker tags to ${{ github.sha }} [skip ci]" || echo "No changes to commit"
           git push
-
-      - name: "Bootstrap ArgoCD and apply dependencies"
-        run: |
-          # Installer cert-manager (pour HTTPS) car ArgoCD gère l'application, pas les certs globaux
-          kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.16.1/cert-manager.yaml
-          
-          # Initialiser l'application ArgoCD (GitOps)
-          kubectl apply -f GitOps/argocd-app.yaml
