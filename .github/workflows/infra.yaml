@@ -47,6 +47,8 @@ jobs:
           OCI_CLI_TENANCY: ${{ secrets.OCI_TENANCY_OCID }}
           OCI_CLI_FINGERPRINT: ${{ secrets.OCI_FINGERPRINT }}
           OCI_CLI_KEY_FILE: "oci_api_key.pem"
+          OCI_CLI_REGION: "eu-paris-1"
+          OCI_CLI_CONFIG_FILE: "/dev/null"
         run: |
           # Installation/Setup OCI CLI (déjà présent sur ubuntu-latest, on récupère juste le namespace)
           export OCI_CLI_NAMESPACE=$(oci os ns get --auth api_key --query "data" --raw-output)
@@ -72,6 +74,8 @@ jobs:
           OCI_CLI_TENANCY: ${{ secrets.OCI_TENANCY_OCID }}
           OCI_CLI_FINGERPRINT: ${{ secrets.OCI_FINGERPRINT }}
           OCI_CLI_KEY_FILE: "oci_api_key.pem"
+          OCI_CLI_REGION: "eu-paris-1"
+          OCI_CLI_CONFIG_FILE: "/dev/null"
         run: |
           export OCI_CLI_NAMESPACE=$(oci os ns get --auth api_key --query "data" --raw-output)
           oci os object put --namespace $OCI_CLI_NAMESPACE --bucket-name terraform-state-calculatrice --name terraform.tfstate --file terraform.tfstate --force --auth api_key
