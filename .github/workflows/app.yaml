@@ -18,32 +18,7 @@ env:
   CONSUMER_LOCATION: ghcr.io/noureddine-t/calculatrice-consumer:${{ github.sha }}
 
 jobs:
-  # Étape 1 : Détecter quels dossiers ont été modifiés
-  detect-changes:
-    runs-on: ubuntu-latest
-    outputs:
-      frontend: ${{ steps.filter.outputs.frontend }}
-      backend: ${{ steps.filter.outputs.backend }}
-      consumer: ${{ steps.filter.outputs.consumer }}
-      helm: ${{ steps.filter.outputs.helm }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: |
-            frontend:
-              - 'Application/frontend/**'
-            backend:
-              - 'Application/backend/**'
-            consumer:
-              - 'Application/consumer/**'
-            helm:
-              - 'Helm/**'
-
   build-and-push-front:
-    needs: detect-changes
-    if: ${{ needs.detect-changes.outputs.frontend == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -69,8 +44,6 @@ jobs:
           tags: ${{ env.FRONT_LOCATION }}
 
   build-and-push-api:
-    needs: detect-changes
-    if: ${{ needs.detect-changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -96,8 +69,6 @@ jobs:
           tags: ${{ env.API_LOCATION }}
 
   build-and-push-consumer:
-    needs: detect-changes
-    if: ${{ needs.detect-changes.outputs.consumer == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -123,14 +94,7 @@ jobs:
           tags: ${{ env.CONSUMER_LOCATION }}
 
   update-helm-and-gitops:
-    needs: [detect-changes, build-and-push-front, build-and-push-api, build-and-push-consumer]
-    # S'exécute toujours, même si un build a été skippé (tant qu'aucun n'a échoué)
-    if: |
-      always() && 
-      (needs.build-and-push-front.result == 'success' || needs.build-and-push-front.result == 'skipped') &&
-      (needs.build-and-push-api.result == 'success' || needs.build-and-push-api.result == 'skipped') &&
-      (needs.build-and-push-consumer.result == 'success' || needs.build-and-push-consumer.result == 'skipped') &&
-      (needs.detect-changes.outputs.frontend == 'true' || needs.detect-changes.outputs.backend == 'true' || needs.detect-changes.outputs.consumer == 'true')
+    needs: [build-and-push-front, build-and-push-api, build-and-push-consumer]
     runs-on: ubuntu-latest
     permissions:
       contents: write
