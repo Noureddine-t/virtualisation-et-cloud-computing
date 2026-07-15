@@ -94,15 +94,17 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ env.IP }} >> ~/.ssh/known_hosts
           
-          # On attend un peu que K3s soit installé via le cloud-init (max 2 minutes)
-          echo "Attente de l'installation de K3s sur le serveur..."
+          # On attend un peu que l'instance démarre et que K3s soit installé via le cloud-init
+          echo "Attente du démarrage du serveur et de l'installation de K3s..."
           sleep 60
           
           mkdir -p ~/.kube
-          # Récupération du kubeconfig !
-          scp -i ~/.ssh/id_rsa ubuntu@${{ env.IP }}:/home/ubuntu/.kube/config ~/.kube/config
+          # Récupération du kubeconfig avec plusieurs tentatives (le temps que cloud-init finisse)
+          for i in {1..5}; do
+            scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@${{ env.IP }}:/home/ubuntu/.kube/config ~/.kube/config && echo "Kubeconfig récupéré avec succès !" && break || echo "Tentative $i échouée (cloud-init peut-être pas fini), on attend 30s..."
+            sleep 30
+          done
 
       - name: Bootstrap ArgoCD on Kubernetes
         run: |
