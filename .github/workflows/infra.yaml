@@ -87,7 +87,24 @@ jobs:
           SERVER_IP=$(terraform output -raw public_ip)
           echo "IP=$SERVER_IP" >> $GITHUB_ENV
           echo "L'IP PUBLIQUE DU SERVEUR EST : $SERVER_IP"
-          echo "::notice title=Server IP::L'IP de votre nouveau serveur est $SERVER_IP (Mettez à jour DuckDNS avec cette IP !)"
+          echo "::notice title=Server IP::L'IP de votre nouveau serveur est $SERVER_IP"
+
+      - name: Update DuckDNS
+        env:
+          DUCKDNS_TOKEN: ${{ secrets.DUCKDNS_TOKEN }}
+          DUCKDNS_DOMAIN: ${{ secrets.DUCKDNS_DOMAIN }}
+        run: |
+          if [ -n "$DUCKDNS_TOKEN" ] && [ -n "$DUCKDNS_DOMAIN" ]; then
+            echo "Mise à jour de DuckDNS pour le domaine $DUCKDNS_DOMAIN avec l'IP ${{ env.IP }}..."
+            RESPONSE=$(curl -s "https://www.duckdns.org/update?domains=$DUCKDNS_DOMAIN&token=$DUCKDNS_TOKEN&ip=${{ env.IP }}")
+            echo "Réponse DuckDNS : $RESPONSE"
+            if [ "$RESPONSE" != "OK" ]; then
+              echo "Erreur lors de la mise à jour DuckDNS"
+              exit 1
+            fi
+          else
+            echo "Secrets DUCKDNS_TOKEN ou DUCKDNS_DOMAIN non configurés. La mise à jour automatique de DuckDNS est ignorée."
+          fi
 
       - name: Setup SSH Key & Kubeconfig Download
         run: |
