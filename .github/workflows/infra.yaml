@@ -1,0 +1,105 @@
+name: Infrastructure Provisioning & GitOps Setup
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "Foundation/**"
+      - ".github/workflows/infra.yaml"
+
+jobs:
+  terraform-and-gitops:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    
+    env:
+      TF_VAR_tenancy_ocid: ${{ secrets.OCI_TENANCY_OCID }}
+      TF_VAR_user_ocid: ${{ secrets.OCI_USER_OCID }}
+      TF_VAR_fingerprint: ${{ secrets.OCI_FINGERPRINT }}
+      TF_VAR_private_key_path: "./oci_api_key.pem"
+      TF_VAR_region: "eu-paris-1" # À vérifier selon votre région OCI (eu-paris-1, eu-marseille-1, etc.)
+      TF_VAR_compartment_ocid: ${{ secrets.OCI_COMPARTMENT_OCID }}
+      TF_VAR_ssh_public_key: ${{ secrets.SSH_PUBLIC_KEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Prepare OCI API Key
+        run: |
+          echo "${{ secrets.OCI_PRIVATE_KEY }}" > Foundation/oci_api_key.pem
+          chmod 600 Foundation/oci_api_key.pem
+
+      - name: Download Terraform state from OCI Bucket
+        working-directory: ./Foundation
+        env:
+          OCI_CLI_USER: ${{ secrets.OCI_USER_OCID }}
+          OCI_CLI_TENANCY: ${{ secrets.OCI_TENANCY_OCID }}
+          OCI_CLI_FINGERPRINT: ${{ secrets.OCI_FINGERPRINT }}
+          OCI_CLI_KEY_FILE: "oci_api_key.pem"
+        run: |
+          # Installation/Setup OCI CLI (déjà présent sur ubuntu-latest, on récupère juste le namespace)
+          export OCI_CLI_NAMESPACE=$(oci os ns get --auth api_key --query "data" --raw-output)
+          echo "Namespace trouvé : $OCI_CLI_NAMESPACE"
+          
+          # Téléchargement du state
+          echo "Téléchargement du state terraform..."
+          oci os object get --namespace $OCI_CLI_NAMESPACE --bucket-name terraform-state-calculatrice --name terraform.tfstate --file terraform.tfstate --auth api_key || echo "Aucun state distant trouvé, création d'un nouveau state."
+
+      - name: Terraform Init
+        working-directory: ./Foundation
+        run: terraform init
+
+      - name: Terraform Apply
+        working-directory: ./Foundation
+        run: terraform apply -auto-approve
+
+      - name: Upload Terraform state to OCI Bucket
+        if: always()
+        working-directory: ./Foundation
+        env:
+          OCI_CLI_USER: ${{ secrets.OCI_USER_OCID }}
+          OCI_CLI_TENANCY: ${{ secrets.OCI_TENANCY_OCID }}
+          OCI_CLI_FINGERPRINT: ${{ secrets.OCI_FINGERPRINT }}
+          OCI_CLI_KEY_FILE: "oci_api_key.pem"
+        run: |
+          export OCI_CLI_NAMESPACE=$(oci os ns get --auth api_key --query "data" --raw-output)
+          oci os object put --namespace $OCI_CLI_NAMESPACE --bucket-name terraform-state-calculatrice --name terraform.tfstate --file terraform.tfstate --force --auth api_key
+
+      - name: Extract Server IP
+        id: extract_ip
+        working-directory: ./Foundation
+        run: |
+          SERVER_IP=$(terraform output -raw public_ip)
+          echo "IP=$SERVER_IP" >> $GITHUB_ENV
+          echo "L'IP PUBLIQUE DU SERVEUR EST : $SERVER_IP"
+          echo "::notice title=Server IP::L'IP de votre nouveau serveur est $SERVER_IP (Mettez à jour DuckDNS avec cette IP !)"
+
+      - name: Setup SSH Key & Kubeconfig Download
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ env.IP }} >> ~/.ssh/known_hosts
+          
+          # On attend un peu que K3s soit installé via le cloud-init (max 2 minutes)
+          echo "Attente de l'installation de K3s sur le serveur..."
+          sleep 60
+          
+          mkdir -p ~/.kube
+          # Récupération du kubeconfig !
+          scp -i ~/.ssh/id_rsa ubuntu@${{ env.IP }}:/home/ubuntu/.kube/config ~/.kube/config
+
+      - name: Bootstrap ArgoCD on Kubernetes
+        run: |
+          # Test de la connexion Kubernetes
+          kubectl get nodes
+          
+          # L'installation d'ArgoCD est déjà gérée par le cloud-init dans main.tf
+          # Ici, nous appliquons simplement l'Application GitOps pour lier ArgoCD à ce dépôt Git
+          kubectl apply -f GitOps/argocd-app.yaml
