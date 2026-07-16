@@ -90,12 +90,59 @@
             <p class="infra-desc">Visualisez le traitement asynchrone de votre requête à travers notre cluster Kubernetes.</p>
             
             <div class="infra-flow">
+                <!-- Node 0a: Terraform & OCI -->
+                <div class="infra-node success" id="node-tf">
+                    <div class="node-icon"><i class="fa-solid fa-cloud"></i></div>
+                    <div class="node-info">
+                        <h4>Infrastructure (Terraform & Oracle Cloud)</h4>
+                        <span class="status">Provisionné avec succès</span>
+                    </div>
+                    <div class="tech-logos">
+                        <img src="images/Terraform.png" alt="Terraform" style="height: 45px;">
+                        <img src="images/OCI.png" alt="OCI" style="height: 45px;">
+                    </div>
+                </div>
+
+                <div class="connector success"></div>
+
+                <!-- Node 0b: Kubernetes & Helm -->
+                <div class="infra-node success" id="node-k8s-helm">
+                    <div class="node-icon"><i class="fa-solid fa-dharmachakra"></i></div>
+                    <div class="node-info">
+                        <h4>Orchestration & Templating</h4>
+                        <span class="status">K3s opérationnel | Chart Helm déployé</span>
+                    </div>
+                    <div class="tech-logos">
+                        <img src="images/Kubernetes.svg.png" alt="Kubernetes" style="height: 45px;">
+                        <img src="images/helm.svg" alt="Helm" style="height: 45px;">
+                    </div>
+                </div>
+
+                <div class="connector success"></div>
+
+                <!-- Node 0d: ArgoCD -->
+                <div class="infra-node success" id="node-argocd">
+                    <div class="node-icon"><i class="fa-solid fa-rotate"></i></div>
+                    <div class="node-info">
+                        <h4>GitOps Sync (ArgoCD)</h4>
+                        <span class="status">Synchronisé & Prêt</span>
+                    </div>
+                    <div class="tech-logos">
+                        <img src="images/argocd.png" alt="ArgoCD" style="height: 52px;">
+                    </div>
+                </div>
+
+                <div class="connector success"></div>
+
                 <!-- Node 1: API -->
                 <div class="infra-node" id="node-api">
                     <div class="node-icon"><i class="fa-brands fa-python"></i></div>
                     <div class="node-info">
                         <h4>API Gateway (Flask)</h4>
                         <span class="status">En attente...</span>
+                    </div>
+                    <div class="tech-logos">
+                        <img src="images/flask.webp" alt="Flask">
                     </div>
                 </div>
 
@@ -108,6 +155,9 @@
                         <h4>Message Broker (RabbitMQ)</h4>
                         <span class="status">En attente...</span>
                     </div>
+                    <div class="tech-logos">
+                        <img src="images/rabbitMQ.png" alt="RabbitMQ">
+                    </div>
                 </div>
 
                 <div class="connector connector-2" id="conn-2"></div>
@@ -119,6 +169,9 @@
                         <h4>Consumer (Worker)</h4>
                         <span class="status">En attente...</span>
                     </div>
+                    <div class="tech-logos">
+                        <i class="fa-brands fa-python" style="font-size: 2.2rem; color: #3b82f6;"></i>
+                    </div>
                 </div>
 
                 <div class="connector connector-3" id="conn-3"></div>
@@ -129,6 +182,9 @@
                     <div class="node-info">
                         <h4>Cache (Redis)</h4>
                         <span class="status">En attente...</span>
+                    </div>
+                    <div class="tech-logos">
+                        <img src="images/redis.png" alt="Redis" style="height: 60px;">
                     </div>
                 </div>
             </div>
