@@ -8,11 +8,12 @@ import pika
 app = Flask(__name__)
 CORS(app)
 
-# Connection to RabbitMQ
-connection = pika.BlockingConnection(pika.ConnectionParameters('svc-rabbitmq', heartbeat=60))
-channel = connection.channel()
-
-channel.queue_declare(queue='calculation_queue')
+# Fonction utilitaire pour se connecter à RabbitMQ
+def get_rabbitmq_channel():
+    connection = pika.BlockingConnection(pika.ConnectionParameters('svc-rabbitmq', heartbeat=60))
+    channel = connection.channel()
+    channel.queue_declare(queue='calculation_queue')
+    return connection, channel
 
 """End point to send a calculation to the consumer"""
 
@@ -35,8 +36,14 @@ def calculate():
         "operator": operator,
         "calc_id": calc_id
     }
-    channel.basic_publish(exchange='', routing_key='calculation_queue', body=json.dumps(message))
-    print(" [x] Sent 'Calculation data'")
+    
+    # Ouvrir la connexion juste pour cette requête
+    connection, channel = get_rabbitmq_channel()
+    try:
+        channel.basic_publish(exchange='', routing_key='calculation_queue', body=json.dumps(message))
+        print(" [x] Sent 'Calculation data'")
+    finally:
+        connection.close()
 
     return jsonify({"id": calc_id}), 200
 
