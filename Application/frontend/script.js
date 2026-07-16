@@ -89,7 +89,7 @@ document.getElementById('calcForm').addEventListener('submit', async function(ev
                 document.getElementById('resultForm').style.display = 'block';
                 
                 // On simule que le worker prend le message en tâche de fond
-                setTimeout(() => {
+                window.workerAnimationTimeout = setTimeout(() => {
                     setNodeStatus('rmq', 'Message dépilé', 'success');
                     setNodeStatus('worker', 'Calcul asynchrone en cours...', 'active');
                     setConnectorState(2, 'success');
@@ -130,6 +130,15 @@ document.getElementById('resultForm').addEventListener('submit', async function(
     
     fetchBtn.disabled = true;
     fetchBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Interrogation en cours...';
+
+    // Annuler l'animation asynchrone du worker si l'utilisateur a cliqué très vite
+    if (window.workerAnimationTimeout) {
+        clearTimeout(window.workerAnimationTimeout);
+    }
+
+    // Forcer la transition de RabbitMQ à success pour garder la cohérence visuelle
+    setNodeStatus('rmq', 'Message dépilé', 'success');
+    setConnectorState(2, 'success');
 
     // Animation: Worker -> Redis
     setNodeStatus('worker', 'Calcul terminé, stockage DB', 'success');
