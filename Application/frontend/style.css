@@ -306,51 +306,75 @@ code {
 .infra-flow {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    padding: 1rem 0;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
 }
 
 .infra-node {
     display: flex;
     align-items: center;
-    gap: 1.5rem;
-    padding: 1.25rem;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.8rem 1rem;
     background: rgba(0, 0, 0, 0.2);
     border: 1px solid var(--panel-border);
-    border-radius: 16px;
+    border-radius: 12px;
     transition: all 0.4s ease;
 }
 
 .node-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
     background: rgba(255, 255, 255, 0.05);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: var(--text-secondary);
     transition: all 0.4s ease;
+    flex-shrink: 0;
+}
+
+.node-info {
+    flex: 1;
 }
 
 .node-info h4 {
-    font-size: 1.1rem;
-    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+    margin-bottom: 0.15rem;
 }
 
 .status {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: var(--text-secondary);
     font-family: 'JetBrains Mono', monospace;
     transition: color 0.4s ease;
 }
 
+.tech-logos {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.tech-logos img {
+    height: 38px;
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+    transition: transform 0.3s ease;
+}
+
+.tech-logos img:hover {
+    transform: scale(1.15);
+}
+
 .connector {
     width: 2px;
-    height: 30px;
+    height: 15px;
     background: rgba(255, 255, 255, 0.1);
-    margin: 0 0 0 38px;
+    margin: 0 0 0 35px;
     position: relative;
     overflow: hidden;
 }
