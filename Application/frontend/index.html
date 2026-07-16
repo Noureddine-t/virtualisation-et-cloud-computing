@@ -1,48 +1,140 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Calculatrice PoDi</title>
-        <link rel="stylesheet" href="style.css">
-        <link rel="icon" type="image/png" sizes="16x16" href="images/icone-calculatrice-bouton-de-l-application-removebg-preview.png">
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculatrice Cloud-Native | Polytech Dijon</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/icone-calculatrice-bouton-de-l-application-removebg-preview.png">
+</head>
+<body>
+    <div class="background-effects">
+        <div class="glow glow-1"></div>
+        <div class="glow glow-2"></div>
+    </div>
 
-    </head>
-    <body>
-        <h1>Calculatrice Polytech Dijon</h1>
+    <div class="container">
+        <!-- Left Panel: Calculator UI -->
+        <div class="glass-panel calc-panel">
+            <header>
+                <h1>Calculatrice <span>PoDi</span></h1>
+                <p class="subtitle">Propulsé par Kubernetes & GitOps</p>
+            </header>
 
-        <form id="calcForm" method="post">
-            <label>Nombre 1:</label>
-            <input type="text" name="number1" placeholder="Number 1" required>
-            <br>
-            <label>Nombre 2:</label>
-            <input type="text" name="number2" placeholder="Number 2" required>
-            <br>
-            <label>Opérateur:</label>
-            <select name="operator">
+            <form id="calcForm" method="post">
+                <div class="input-group">
+                    <div class="input-field">
+                        <label>Nombre 1</label>
+                        <input type="number" step="any" name="number1" placeholder="Ex: 42" required>
+                    </div>
+                    
+                    <div class="input-field select-field">
+                        <label>Opération</label>
+                        <select name="operator">
+                            <option value="add">+</option>
+                            <option value="subtract">-</option>
+                            <option value="multiply">×</option>
+                            <option value="divide">÷</option>
+                        </select>
+                    </div>
 
-                <option value="add">Addition</option>
-                <option value="subtract">Soustraction</option>
-                <option value="multiply">Multiplication</option>
-                <option value="divide">Division</option>
-            </select>
-            <br>
-            <button type="submit" name="submit">Calculer</button>
-        </form>
+                    <div class="input-field">
+                        <label>Nombre 2</label>
+                        <input type="number" step="any" name="number2" placeholder="Ex: 7" required>
+                    </div>
+                </div>
 
-        <p id="resultId"></p>
+                <button type="submit" class="btn-primary" id="calcSubmitBtn">
+                    <i class="fa-solid fa-microchip"></i> Lancer le calcul
+                </button>
+            </form>
 
-        <button id="copyIdButton" style="display: none;">Copier l'ID</button>
+            <div class="status-box" id="statusBox" style="display: none;">
+                <div class="status-header">
+                    <i class="fa-solid fa-circle-check status-icon"></i>
+                    <span id="statusMessage">Tâche créée avec succès</span>
+                </div>
+                <div class="id-container">
+                    <code id="resultIdText"></code>
+                    <button class="btn-icon" id="copyIdButton" title="Copier l'ID"><i class="fa-regular fa-copy"></i></button>
+                </div>
+            </div>
 
-        <form id="resultForm" style="display: none;" method="get">
-            <h2>Obtenir un résultat</h2>
-            <label>ID de l'opération:</label>
-            <input type="text" name="operationId" required>
-            <br>
-            <button type="submit">Récupérer le résultat</button>
-        </form>
+            <form id="resultForm" style="display: none;" method="get">
+                <input type="hidden" name="operationId" id="hiddenOperationId">
+                <button type="submit" class="btn-secondary" id="fetchResultBtn">
+                    <i class="fa-solid fa-database"></i> Interroger Redis pour le résultat
+                </button>
+            </form>
 
-        <p id="finalResult"></p>
+            <div class="final-result-box" id="finalResultBox" style="display: none;">
+                <h3>Résultat Final</h3>
+                <div class="result-value" id="finalResult"></div>
+            </div>
+            
+            <div class="error-toast" id="errorToast"></div>
+        </div>
 
-        <script src="script.js" type="module"></script>
-    </body>
+        <!-- Right Panel: Infrastructure Visualization -->
+        <div class="glass-panel infra-panel">
+            <h2>Live Infrastructure <span>Tracker</span></h2>
+            <p class="infra-desc">Visualisez le traitement asynchrone de votre requête à travers notre cluster Kubernetes.</p>
+            
+            <div class="infra-flow">
+                <!-- Node 1: API -->
+                <div class="infra-node" id="node-api">
+                    <div class="node-icon"><i class="fa-brands fa-python"></i></div>
+                    <div class="node-info">
+                        <h4>API Gateway (Flask)</h4>
+                        <span class="status">En attente...</span>
+                    </div>
+                </div>
+
+                <div class="connector connector-1" id="conn-1"></div>
+
+                <!-- Node 2: RabbitMQ -->
+                <div class="infra-node" id="node-rmq">
+                    <div class="node-icon"><i class="fa-solid fa-envelope-open-text"></i></div>
+                    <div class="node-info">
+                        <h4>Message Broker (RabbitMQ)</h4>
+                        <span class="status">En attente...</span>
+                    </div>
+                </div>
+
+                <div class="connector connector-2" id="conn-2"></div>
+
+                <!-- Node 3: Worker -->
+                <div class="infra-node" id="node-worker">
+                    <div class="node-icon"><i class="fa-solid fa-gears"></i></div>
+                    <div class="node-info">
+                        <h4>Consumer (Worker)</h4>
+                        <span class="status">En attente...</span>
+                    </div>
+                </div>
+
+                <div class="connector connector-3" id="conn-3"></div>
+
+                <!-- Node 4: Redis -->
+                <div class="infra-node" id="node-redis">
+                    <div class="node-icon"><i class="fa-solid fa-server"></i></div>
+                    <div class="node-info">
+                        <h4>Cache (Redis)</h4>
+                        <span class="status">En attente...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js" type="module"></script>
+</body>
 </html>
