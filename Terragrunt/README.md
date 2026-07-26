@@ -20,7 +20,7 @@ Terragrunt garde le code Terraform "DRY" (Don't Repeat Yourself) en référença
 
 ## Structure du dossier
 
-```
+```text
 Terragrunt/
 ├── terragrunt.hcl        # Configuration racine (héritée par les environnements)
 ├── dev/

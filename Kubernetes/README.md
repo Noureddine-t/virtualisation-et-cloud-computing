@@ -165,7 +165,7 @@ kubectl apply -f front-service.yaml
 #### Déploiement Ingress
 
 ```shell
-kubectl apply -f nginx-ingress.yaml
+kubectl apply -f traefik-ingress.yaml
 ```
 
 #### Déploiement Backend API
@@ -208,7 +208,7 @@ kubectl describe ingress
 #### Suppression des replicasets
 
 ```shell
-kubectl delete -f nginx-ingress.yaml
+kubectl delete -f traefik-ingress.yaml
 ```
 ```shell
 kubectl delete -f front-replicaset.yaml

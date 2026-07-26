@@ -25,6 +25,7 @@ Contient le projet du module de Virtualisation & Cloud Computing et les travaux 
 - [Description](#description)
 - [Technologies utilisées](#technologies-utilisées)
 - [Contenu du Dépôt](#contenu-du-dépôt)
+  - [Structure du projet complète](#structure-du-projet-complète)
 - [Architecture Globale](#architecture-globale)
   - [1. Infrastructure et Provisionnement (Terraform)](#1-infrastructure-et-provisionnement-terraform)
   - [2. Déploiement Applicatif et GitOps (ArgoCD & GitHub Actions)](#2-déploiement-applicatif-et-gitops-argocd--github-actions)
@@ -64,6 +65,96 @@ Le projet est découpé en plusieurs dossiers, chacun documenté par son propre 
 - [`Kubernetes/`](./Kubernetes) : *[Historique/Déprécié]* Les anciens manifestes Kubernetes bruts, remplacés par Helm.
 - [`Terragrunt/`](./Terragrunt) : *[Exemple pédagogique]* Structure démontrant l'utilisation de Terragrunt pour séparer des environnements virtuels (Dev, Preprod, Prod) sans dupliquer le code Terraform.
 - [`.github/workflows/`](./.github/workflows) : Pipelines d'intégration et de déploiement continus (CI/CD).
+
+### Structure du projet complète
+
+```text
+.
+├── .github/                                  # Workflows GitHub Actions (CI/CD)
+│   └── workflows/
+│       ├── app.yaml                          # Pipeline CI/CD : Build Docker & Update Helm
+│       └── infra.yaml                        # Pipeline IaC : Déploiement Terraform OCI
+├── Application/                              # Code source de l'application Cloud Native
+│   ├── backend/                              # API développée avec Flask (Python)
+│   │   ├── Dockerfile                        # Dockerfile pour l'API
+│   │   ├── requirements.txt                  # Dépendances Python pour l'API
+│   │   └── send.py                           # Script pour envoyer des messages à RabbitMQ
+│   ├── consumer/                             # Worker asynchrone pour traiter les calculs
+│   │   ├── consumer.py                       # Script Python qui écoute RabbitMQ
+│   │   ├── Dockerfile                        # Dockerfile pour le worker
+│   │   └── requirements.txt                  # Dépendances Python pour le worker
+│   ├── frontend/                             # Interface web (HTML/CSS/JS)
+│   │   ├── images/                           # Ressources graphiques de l'interface
+│   │   ├── Dockerfile                        # Dockerfile pour l'interface web
+│   │   ├── index.html                        # Page principale de l'application
+│   │   ├── script.js                         # Logique JavaScript (requêtes API)
+│   │   └── style.css                         # Styles de l'interface utilisateur
+│   ├── docker-compose.yml                    # Fichier pour tester l'architecture en local
+│   └── README.md                             # Documentation détaillée de l'application
+├── docs/                                     # Ressources diverses (images, mémos de cours)
+├── Foundation/                               # Code Terraform pour l'infrastructure OCI
+│   ├── .terraform.lock.hcl                   # Fichier de verrouillage des versions Terraform
+│   ├── main.tf                               # Définition des ressources Cloud (VCN, Instance ARM)
+│   ├── outputs.tf                            # Variables de sortie (ex: IP publique de l'instance)
+│   ├── README.md                             # Documentation de l'infrastructure
+│   ├── terraform.tfvars                      # Contient les variables sensibles (ex: identifiants OCI) et est ignoré par Git
+│   └── variables.tf                          # Déclaration des variables d'entrée Terraform
+├── GitOps/                                   # Configuration pour le déploiement continu
+│   ├── argocd-app.yaml                       # Manifeste de l'application ArgoCD pointant vers Helm
+│   ├── argocd_interface.md                   # Guide pour accéder et utiliser l'interface ArgoCD
+│   └── README.md                             # Documentation de l'approche GitOps
+├── Helm/                                     # Packaging des ressources Kubernetes
+│   ├── calculatrice/                         # Dossier du Chart Helm principal
+│   │   ├── templates/                        # Modèles YAML dynamiques
+│   │   │   ├── api-deployment.yaml           # Déploiement K8s pour l'API
+│   │   │   ├── api-service.yaml              # Service K8s pour l'API
+│   │   │   ├── cluster-issuer.yaml           # Configuration Let's Encrypt pour les certificats
+│   │   │   ├── consumer-deployment.yaml      # Déploiement K8s pour le Worker
+│   │   │   ├── front-deployment.yaml         # Déploiement K8s pour le Frontend
+│   │   │   ├── front-service.yaml            # Service K8s pour le Frontend
+│   │   │   ├── ingress.yaml                  # Règles de routage externe HTTP/HTTPS (Traefik)
+│   │   │   ├── rabbitmq-deployment.yaml      # Déploiement K8s pour RabbitMQ
+│   │   │   ├── rabbitmq-service.yaml         # Service K8s pour RabbitMQ
+│   │   │   ├── redis-deployment.yaml         # Déploiement K8s pour Redis
+│   │   │   └── redis-service.yaml            # Service K8s pour Redis
+│   │   ├── Chart.yaml                        # Métadonnées du Chart Helm (nom, version)
+│   │   └── values.yaml                       # Valeurs par défaut pour les templates (tags d'images)
+│   └── README.md                             # Documentation du Chart Helm
+├── Kubernetes/                               # (Historique) Manifestes K8s bruts (remplacés par Helm)
+│   ├── api/                                  # Anciens manifestes pour l'API
+│   │   ├── api-replicaset.yaml               # Ancien ReplicaSet API
+│   │   ├── api-service.yaml                  # Ancien Service API
+│   │   └── img.png                           # Capture d'écran d'erreur
+│   ├── cert-manager/                         # Anciens manifestes Cert-Manager
+│   │   └── cluster-issuer.yaml               # Ancien ClusterIssuer
+│   ├── consumer/                             # Anciens manifestes Consumer
+│   │   └── consumer-replicaset.yaml          # Ancien ReplicaSet Consumer
+│   ├── front/                                # Anciens manifestes Frontend
+│   │   ├── front-replicaset.yaml             # Ancien ReplicaSet Frontend
+│   │   └── front-service.yaml                # Ancien Service Frontend
+│   ├── ingress-traefik/                      # Anciens manifestes Ingress
+│   │   └── traefik-ingress.yaml              # Ancienne ressource Ingress
+│   ├── rabbitMQ/                             # Anciens manifestes RabbitMQ
+│   │   ├── rabbitmq-replicaset.yaml          # Ancien ReplicaSet RabbitMQ
+│   │   └── rabbitmq-service.yaml             # Ancien Service RabbitMQ
+│   ├── redis/                                # Anciens manifestes Redis
+│   │   ├── redis-replicaset.yaml             # Ancien ReplicaSet Redis
+│   │   └── redis-service.yaml                # Ancien Service Redis
+│   └── README.md                             # Note de dépréciation de ces fichiers
+├── TD/                                       # Travaux Dirigés réalisés pendant les cours
+├── Terragrunt/                               # Exemple de gestion multi-environnement (IaC)
+│   ├── dev/                                  # Variables pour l'environnement de développement
+│   │   └── terragrunt.hcl                    # Fichier Terragrunt Dev
+│   ├── preprod/                              # Variables pour l'environnement de préproduction
+│   │   └── terragrunt.hcl                    # Fichier Terragrunt Preprod
+│   ├── prod/                                 # Variables pour l'environnement de production
+│   │   └── terragrunt.hcl                    # Fichier Terragrunt Prod
+│   ├── README.md                             # Documentation pédagogique sur Terragrunt
+│   ├── secrets.tfvars                        # Contient les variables sensibles (ex: identifiants OCI) et est ignoré par Git
+│   └── terragrunt.hcl                        # Configuration racine Terragrunt (héritée par les envs)
+├── README.md                                 # Documentation principale du projet (ce fichier)
+└── Sujet.md                                  # Description des exigences de l'examen pratique
+```
 
 ---
 
