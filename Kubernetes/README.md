@@ -1,7 +1,11 @@
 # Kubernetes
 [![k8s](https://img.shields.io/badge/kubernetes-326CE5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)](https://kubernetes.io/docs/home/)
 [![GitHub Actions](https://img.shields.io/badge/GITHUB_ACTIONS-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)](https://docs.github.com/en/actions)
-[![Google Cloud Platform](https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)](https://cloud.google.com/)
+[![OCI](https://img.shields.io/badge/oracle-F80000?style=for-the-badge&logo=oracle&logoColor=white)](https://registry.terraform.io/providers/oracle/oci/latest/docs)
+
+> [!WARNING]
+> **Historique / Déprécié :** Ce dossier contient les manifestes Kubernetes bruts (fichiers YAML individuels). Cette méthode manuelle n'est plus utilisée activement dans le cycle de vie du projet. Elle a été entièrement remplacée par le Chart **[Helm](../Helm)**, qui est lui-même déployé automatiquement via **[ArgoCD](../GitOps)**. 
+> Ces fichiers sont conservés ici uniquement à des fins d'historique et de pédagogie.
 
 ## Sommaire
 
@@ -14,6 +18,7 @@
 - [Commandes utiles](#commandes-utiles)
     - [Autres commandes utiles](#autres-commandes-utiles)
 - [Voir aussi](#voir-aussi)
+
 ## Schema récapitulatif (services et replicasets)
 
 ```mermaid
@@ -48,10 +53,11 @@ graph LR
             pod-consumer -.-> svc-redis
             pod-api -.-> svc-redis
             pod-api -.-> svc-rabbitmq
-            ing -->|"calculatrice-taleb.polytech-dijon.kiowy.net/api"| svc-api
-            ing(Ingress NGINX rules) -->|"calculatrice-taleb.polytech-dijon.kiowy.net/"| svc-front
+            ing -->|"<domaine>.duckdns.org/api"| svc-api
+            ing(Ingress NGINX <br> + Cert-Manager TLS) -->|"<domaine>.duckdns.org/"| svc-front
             svc-front([svc-front]) --> pod-front
         end
+        CertManager["Cert-Manager <br> (Let's Encrypt)"] -.->|"Génère et injecte le certificat TLS"| ing
     end
 ```
 ## Fonctionnement
@@ -104,10 +110,10 @@ const response = await fetch(`http://svc-api:5000/api/result/${operationId}`, {
 - Problème de communication entre le Frontend et le Backend.
 - **Solution :** Utilisation de l'Ingress NGINX pour rediriger les requêtes arrivant sur l'URL du Frontend quand le chemin est "/api" vers le service API. Plus de details [ici](../docs/Autre/Modification.md).
 ```javascript
-const response = await fetch(`http://calculatrice-taleb.polytech-dijon.kiowy.net/api/calculate`, {
+const response = await fetch(`http://<domaine>.duckdns.org/api/calculate`, {
     // ...
 });
-const response = await fetch(`http://calculatrice-taleb.polytech-dijon.kiowy.net/api/result/${operationId}`, {
+const response = await fetch(`http://<domaine>.duckdns.org/api/result/${operationId}`, {
     // ...
 });
 ```
@@ -115,7 +121,8 @@ const response = await fetch(`http://calculatrice-taleb.polytech-dijon.kiowy.net
 ## Automatisation du déploiement
 
 > [!NOTE]
-> Le déploiement de l'application est automotisé à l'aide de GitHub Actions. Plus de détails [workflow](../.github/workflows/build_push_deploy.yaml).
+> ~~Le déploiement de l'application est automotisé à l'aide de GitHub Actions. Plus de détails [workflow](../.github/workflows/build_push_deploy.yaml).~~  
+> Cette partie n'est plus conservée. Voir le déploiement automatisé via **[Helm](../Helm)**, **[ArgoCD](../GitOps)** et **[GitHub Actions](../.github/workflows/app.yaml)**.
 
 ## Commandes utiles
 
@@ -255,11 +262,16 @@ kubectl port-forward service/svc-front 8080:80
 ```
 
 ## Voir aussi
-- [`Application/`](../Application) : Fichiers de l'application web (front-end, back-end, consumer), Dockerfiles associés et docker-compose.
 - [`Foundation/`](../Foundation) : Terraform (provisionnement de l'infrastructure).
-- [`.github/workflows/`](../.github/workflows) : Fichier GitHub Actions pour automatiser le déploiement de l'application.
-- [`Projet.md`](../README.md) : Description du projet.
+- [`Application/`](../Application) : Fichiers de l'application web (front-end, back-end, consumer), Dockerfiles associés et docker-compose.
+- [`Helm/`](../Helm) : Le chart Helm qui est surveillé et déployé par ArgoCD.
+- [`GitOps/`](../GitOps) : Configuration ArgoCD pour la synchronisation du cluster (déploiement continu).
+- [`.github/workflows/`](../.github/workflows) : Fichier GitHub Actions pour automatiser le provisionnement de l'infrastructure et le déploiement de l'application.
+- [`Terragrunt/`](../Terragrunt) : Configuration Terragrunt pour gérer plusieurs environnements (Dev, Preprod, Prod).
 - [`Sujet.md`](../Sujet.md) ou [source](https://github.com/JeromeMSD/module_virtualisation-et-cloud-computing/blob/main/projet.md).
+- [🏠 Retourner à la racine du projet](../README.md)
+
+
 - [🔼 Back to Top](#kubernetes)
 
 
