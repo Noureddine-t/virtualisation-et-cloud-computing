@@ -54,7 +54,7 @@ graph LR
             pod-api -.-> svc-redis
             pod-api -.-> svc-rabbitmq
             ing -->|"<domaine>.duckdns.org/api"| svc-api
-            ing(Ingress NGINX <br> + Cert-Manager TLS) -->|"<domaine>.duckdns.org/"| svc-front
+            ing(Ingress Traefik <br> + Cert-Manager TLS) -->|"<domaine>.duckdns.org/"| svc-front
             svc-front([svc-front]) --> pod-front
         end
         CertManager["Cert-Manager <br> (Let's Encrypt)"] -.->|"Génère et injecte le certificat TLS"| ing
@@ -108,7 +108,7 @@ const response = await fetch(`http://svc-api:5000/api/result/${operationId}`, {
 ### Accès à l'application depuis l'extérieur :
 
 - Problème de communication entre le Frontend et le Backend.
-- **Solution :** Utilisation de l'Ingress NGINX pour rediriger les requêtes arrivant sur l'URL du Frontend quand le chemin est "/api" vers le service API. Plus de details [ici](../docs/Autre/Modification.md).
+- **Solution :** Utilisation de l'Ingress Traefik pour rediriger les requêtes arrivant sur l'URL du Frontend quand le chemin est "/api" vers le service API. Plus de details [ici](../docs/Autre/Modification.md).
 ```javascript
 const response = await fetch(`http://<domaine>.duckdns.org/api/calculate`, {
     // ...

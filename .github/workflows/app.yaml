@@ -8,6 +8,7 @@ on:
       - "Application/**"
       - "Helm/**"
       - ".github/workflows/app.yaml"
+      - "!**/README.md"
 
 env:
   FRONT_WORKING_DIRECTORY: Application/frontend

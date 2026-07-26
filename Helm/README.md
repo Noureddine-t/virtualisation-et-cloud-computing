@@ -49,7 +49,7 @@ graph LR
             pod-api -.-> svc-redis
             pod-api -.-> svc-rabbitmq
             ing -->|"<domaine>.duckdns.org/api"| svc-api
-            ing(Ingress NGINX <br> + Cert-Manager TLS) -->|"<domaine>.duckdns.org/"| svc-front
+            ing(Ingress Traefik <br> + Cert-Manager TLS) -->|"<domaine>.duckdns.org/"| svc-front
             svc-front([svc-front]) --> pod-front
         end
         CertManager["Cert-Manager <br> (Let's Encrypt)"] -.->|"Génère et injecte le certificat TLS"| ing

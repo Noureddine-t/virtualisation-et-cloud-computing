@@ -119,7 +119,7 @@ graph TB
         CertManager["Cert-Manager (Opérateur)"]
         
         subgraph Helm ["Release Helm : calculatrice"]
-            Ingress["Ingress NGINX (HTTPS)"]
+            Ingress["Ingress Traefik (HTTPS)"]
             Front["Frontend (UI)"]
             API["Backend (Flask API)"]
             Consumer["Worker (Consumer)"]

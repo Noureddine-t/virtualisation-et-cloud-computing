@@ -129,6 +129,12 @@ resource "oci_core_instance" "arm_instance" {
     source_id   = data.oci_core_images.ubuntu_arm.images[0].id
   }
 
+  lifecycle {
+    ignore_changes = [
+      source_details[0].source_id,
+    ]
+  }
+
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
     # Cloud-init : Installation automatique et configuration
