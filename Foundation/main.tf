@@ -190,3 +190,5 @@ EOF
 #   message        = "ATTENTION : Le budget de 1 a été atteint sur OCI !"
 #   recipients     = var.alert_email
 # }
+
+# Trigger GHA

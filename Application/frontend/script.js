@@ -173,3 +173,5 @@ document.getElementById('resultForm').addEventListener('submit', async function(
         fetchBtn.innerHTML = '<i class="fa-solid fa-database"></i> Interroger Redis pour le résultat';
     }
 });
+
+// Trigger GHA
