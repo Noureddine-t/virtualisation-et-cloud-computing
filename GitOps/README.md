@@ -9,6 +9,7 @@
 - [Schéma de Fonctionnement](#schéma-de-fonctionnement)
 - [Configuration de l'Application](#configuration-de-lapplication)
 - [Déploiement](#déploiement)
+- [Guide d'accès à l'interface graphique d'ArgoCD](#guide-daccès-à-linterface-graphique-dargoCD)
 - [Voir aussi](#voir-aussi)
 
 ## Introduction
@@ -62,6 +63,9 @@ kubectl apply -f argocd-app.yaml -n argocd
 ```
 
 Une fois cette commande exécutée, ArgoCD prend le relais, synchronise le Chart Helm et maintient l'infrastructure à jour !
+
+## Guide d'accès à l'interface graphique d'ArgoCD
+Voir [`argocd_interface.md`](./argocd_interface.md) pour accéder à l'interface web d'ArgoCD et visualiser l'état de l'application.
 
 ## Voir aussi
 - [`Foundation/`](../Foundation) : Terraform (provisionnement de l'infrastructure).

@@ -38,3 +38,5 @@ Ouvrez votre navigateur web sur votre ordinateur et naviguez vers l'adresse loca
 - **Password :** *Le mot de passe récupéré à l'étape 1*
 
 Vous avez maintenant accès au tableau de bord complet de GitOps ! Vous pourrez y voir le statut de synchronisation (Sync Status), l'état de santé de vos pods (Health), et toute l'architecture de votre application sous forme d'arbre.
+
+[◀️ Go back to ArgoCD ](./README.md)
