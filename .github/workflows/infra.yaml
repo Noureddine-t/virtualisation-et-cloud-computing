@@ -141,5 +141,5 @@ jobs:
           kubectl apply -f Kubernetes/cert-manager/cluster-issuer.yaml
           
           # L'installation d'ArgoCD est déjà gérée par le cloud-init dans main.tf
-          # Ici, nous appliquons l'Application GitOps pour lier ArgoCD à ce dépôt Git
-          kubectl apply -f GitOps/argocd-app.yaml
+          # Ici, nous appliquons appofapps pour lier ArgoCD à ce dépôt Git
+          kubectl apply -f ArgoCD/root-app.yaml

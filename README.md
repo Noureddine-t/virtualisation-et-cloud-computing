@@ -61,7 +61,7 @@ Le projet est découpé en plusieurs dossiers, chacun documenté par son propre 
 - [`Foundation/`](./Foundation) : Code Terraform pour le provisionnement de l'infrastructure sur Oracle Cloud Infrastructure (OCI).
 - [`Application/`](./Application) : Code source (Frontend, Backend API, Consumer RabbitMQ) et Dockerfiles de l'application.
 - [`Helm/`](./Helm) : Le chart Helm permettant de packager l'ensemble des ressources Kubernetes de l'application.
-- [`GitOps/`](./GitOps) : Configuration ArgoCD pour synchroniser automatiquement le cluster Kubernetes avec ce dépôt.
+- [`ArgoCD/`](./ArgoCD) : Configuration ArgoCD pour synchroniser automatiquement le cluster Kubernetes avec ce dépôt.
 - [`Kubernetes/`](./Kubernetes) : *[Historique/Déprécié]* Les anciens manifestes Kubernetes bruts, remplacés par Helm.
 - [`Terragrunt/`](./Terragrunt) : *[Exemple pédagogique]* Structure démontrant l'utilisation de Terragrunt pour séparer des environnements virtuels (Dev, Preprod, Prod) sans dupliquer le code Terraform.
 - [`.github/workflows/`](./.github/workflows) : Pipelines d'intégration et de déploiement continus (CI/CD).
@@ -99,27 +99,19 @@ Le projet est découpé en plusieurs dossiers, chacun documenté par son propre 
 │   ├── README.md                             # Documentation de l'infrastructure
 │   ├── terraform.tfvars                      # Contient les variables sensibles (ex: identifiants OCI) et est ignoré par Git
 │   └── variables.tf                          # Déclaration des variables d'entrée Terraform
-├── GitOps/                                   # Configuration pour le déploiement continu
-│   ├── argocd-app.yaml                       # Manifeste de l'application ArgoCD pointant vers Helm
+├── ArgoCD/                                   # Configuration pour le déploiement continu (App of Apps)
+│   ├── apps/                                 # Manifestes des sous-applications (front, api, redis, etc.)
+│   ├── root-app.yaml                         # Application racine ArgoCD pointant vers le dossier apps/
 │   ├── argocd_interface.md                   # Guide pour accéder et utiliser l'interface ArgoCD
 │   └── README.md                             # Documentation de l'approche GitOps
 ├── Helm/                                     # Packaging des ressources Kubernetes
-│   ├── calculatrice/                         # Dossier du Chart Helm principal
-│   │   ├── templates/                        # Modèles YAML dynamiques
-│   │   │   ├── api-deployment.yaml           # Déploiement K8s pour l'API
-│   │   │   ├── api-service.yaml              # Service K8s pour l'API
-│   │   │   ├── cluster-issuer.yaml           # Configuration Let's Encrypt pour les certificats
-│   │   │   ├── consumer-deployment.yaml      # Déploiement K8s pour le Worker
-│   │   │   ├── front-deployment.yaml         # Déploiement K8s pour le Frontend
-│   │   │   ├── front-service.yaml            # Service K8s pour le Frontend
-│   │   │   ├── ingress.yaml                  # Règles de routage externe HTTP/HTTPS (Traefik)
-│   │   │   ├── rabbitmq-deployment.yaml      # Déploiement K8s pour RabbitMQ
-│   │   │   ├── rabbitmq-service.yaml         # Service K8s pour RabbitMQ
-│   │   │   ├── redis-deployment.yaml         # Déploiement K8s pour Redis
-│   │   │   └── redis-service.yaml            # Service K8s pour Redis
-│   │   ├── Chart.yaml                        # Métadonnées du Chart Helm (nom, version)
-│   │   └── values.yaml                       # Valeurs par défaut pour les templates (tags d'images)
-│   └── README.md                             # Documentation du Chart Helm
+│   ├── api/                                  # Chart Helm pour l'API Backend
+│   ├── cert-manager-config/                  # Chart Helm pour la configuration Let's Encrypt (ClusterIssuer)
+│   ├── consumer/                             # Chart Helm pour le Worker Asynchrone
+│   ├── front/                                # Chart Helm pour le Frontend
+│   ├── rabbitmq/                             # Chart Helm pour RabbitMQ
+│   ├── redis/                                # Chart Helm pour Redis
+│   └── README.md                             # Documentation de l'approche microservices
 ├── Kubernetes/                               # (Historique) Manifestes K8s bruts (remplacés par Helm)
 │   ├── api/                                  # Anciens manifestes pour l'API
 │   │   ├── api-replicaset.yaml               # Ancien ReplicaSet API
@@ -177,7 +169,7 @@ graph TB
         Bucket["Object Storage (terraform.tfstate)"]
         subgraph VCN ["VCN (Réseau Virtuel)"]
             subgraph Subnet ["Public Subnet"]
-                VM["Instance ARM (A1.Flex) <br> avec K3s & ArgoCD (Cloud-Init)"]
+                VM["Instance ARM (A1.Flex) <br> avec K3s (Cloud-Init)"]
             end
         end
     end
@@ -188,6 +180,8 @@ graph TB
     gha -->|"2. terraform apply"| VCN
     gha -->|"3. Déploiement"| VM
     gha -->|"4. Mise à jour IP"| DuckDNS
+    gha -->|"5. Setup SSH & Kubeconfig Download"| VM
+    gha -->|"6. Bootstrap ArgoCD (App of Apps)"| VM
 ```
 
 ### 2. Déploiement Applicatif et GitOps (ArgoCD & GitHub Actions)
@@ -209,7 +203,7 @@ graph TB
         ArgoCD["ArgoCD (Opérateur GitOps)"]
         CertManager["Cert-Manager (Opérateur)"]
         
-        subgraph Helm ["Release Helm : calculatrice"]
+        subgraph Helm ["Releases Helm (Architecture Microservices)"]
             Ingress["Ingress Traefik (HTTPS)"]
             Front["Frontend (UI)"]
             API["Backend (Flask API)"]
@@ -262,7 +256,7 @@ Le projet a évolué par itérations successives pour atteindre l'état de l'art
 - [`Application/`](./Application) : Fichiers de l'application web (front-end, back-end, consumer), Dockerfiles associés et docker-compose.
 - [`Foundation/`](./Foundation) : Terraform (provisionnement de l'infrastructure).
 - [`Helm/`](./Helm) : Le chart Helm qui est surveillé et déployé par ArgoCD.
-- [`GitOps/`](./GitOps) : Configuration ArgoCD pour la synchronisation du cluster (déploiement continu).
+- [`ArgoCD/`](./ArgoCD) : Configuration ArgoCD pour la synchronisation du cluster (déploiement continu).
 - [`.github/workflows/`](./.github/workflows) : Fichier GitHub Actions pour automatiser le provisionnement de l'infrastructure et le déploiement de l'application.
 - [`Kubernetes/`](./Kubernetes) : Manifests Kubernetes bruts (historique).
 - [`Terragrunt/`](./Terragrunt) : Configuration Terragrunt pour gérer plusieurs environnements (Dev, Preprod, Prod).

@@ -1,13 +1,13 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: calculatrice-app
+  name: root-app
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: 'https://github.com/Noureddine-t/virtualisation-et-cloud-computing.git'
-    path: Helm/calculatrice
+    path: ArgoCD/apps
     targetRevision: main
   destination:
     server: 'https://kubernetes.default.svc'

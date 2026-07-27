@@ -247,7 +247,7 @@ app.run(host='0.0.0.0', port=5000, debug=True)
 ## Voir aussi
 - [`Foundation/`](../Foundation) : Terraform (provisionnement de l'infrastructure).
 - [`Helm/`](../Helm) : Le chart Helm qui est surveillé et déployé par ArgoCD.
-- [`GitOps/`](../GitOps) : Configuration ArgoCD pour la synchronisation du cluster (déploiement continu).
+- [`ArgoCD/`](../ArgoCD) : Configuration ArgoCD pour la synchronisation du cluster (déploiement continu).
 - [`.github/workflows/`](../.github/workflows) : Fichier GitHub Actions pour automatiser le provisionnement de l'infrastructure et le déploiement de l'application.
 - [`Kubernetes/`](../Kubernetes) : Manifests Kubernetes bruts (historique).
 - [`Terragrunt/`](../Terragrunt) : Configuration Terragrunt pour gérer plusieurs environnements (Dev, Preprod, Prod).

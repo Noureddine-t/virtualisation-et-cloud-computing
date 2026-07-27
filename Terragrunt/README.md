@@ -57,7 +57,7 @@ terragrunt run-all apply
 - [`Foundation/`](../Foundation) : Terraform (provisionnement de l'infrastructure).
 - [`Application/`](../Application) : Fichiers de l'application web (front-end, back-end, consumer), Dockerfiles associés et docker-compose.
 - [`Helm/`](../Helm) : Le chart Helm qui est surveillé et déployé par ArgoCD.
-- [`GitOps/`](../GitOps) : Configuration ArgoCD pour la synchronisation du cluster (déploiement continu).
+- [`ArgoCD/`](../ArgoCD) : Configuration ArgoCD pour la synchronisation du cluster (déploiement continu).
 - [`.github/workflows/`](../.github/workflows) : Fichier GitHub Actions pour automatiser le provisionnement de l'infrastructure et le déploiement de l'application.
 - [`Kubernetes/`](../Kubernetes) : Manifests Kubernetes bruts (historique).
 - [`Sujet.md`](../Sujet.md) ou [source](https://github.com/JeromeMSD/module_virtualisation-et-cloud-computing/blob/main/projet.md).

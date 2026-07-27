@@ -1,0 +1,5 @@
+ingress:
+  enabled: true
+  className: traefik
+  host: calculatrice-taleb.duckdns.org
+  certManagerIssuer: letsencrypt-prod

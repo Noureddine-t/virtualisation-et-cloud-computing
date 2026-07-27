@@ -1,0 +1,10 @@
+replicaCount: 1
+image:
+  repositoryPrefix: "ghcr.io/noureddine-t"
+  tag: "492763a37a221218ec9cf5b685dbc8bf409745f0"
+  pullPolicy: Always
+ingress:
+  enabled: true
+  className: traefik
+  host: calculatrice-taleb.duckdns.org
+  certManagerIssuer: letsencrypt-prod

@@ -105,10 +105,12 @@ jobs:
         run: |
           sudo wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
           sudo chmod a+x /usr/local/bin/yq
-          yq e '.image.tag = "${{ github.sha }}"' -i Helm/calculatrice/values.yaml
+          yq e '.image.tag = "${{ github.sha }}"' -i Helm/front/values.yaml
+          yq e '.image.tag = "${{ github.sha }}"' -i Helm/api/values.yaml
+          yq e '.image.tag = "${{ github.sha }}"' -i Helm/consumer/values.yaml
           
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add Helm/calculatrice/values.yaml
+          git add Helm/front/values.yaml Helm/api/values.yaml Helm/consumer/values.yaml
           git commit -m "chore: update docker tags to ${{ github.sha }} [skip ci]" || echo "No changes to commit"
           git push

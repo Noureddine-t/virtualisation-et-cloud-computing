@@ -87,6 +87,7 @@ sequenceDiagram
     participant OCI_Storage as OCI Object Storage (Bucket)
     participant OCI as Oracle Cloud (IaaS)
     participant DuckDNS as DuckDNS (DNS)
+    participant K8s as Kubernetes (K3s)
 
     Dev->>GitHub: Push sur `main` (Fichiers Foundation/)
     note over GitHub: Trigger: Workflow infra.yaml
@@ -96,6 +97,8 @@ sequenceDiagram
     GitHub->>OCI_Storage: 4. Sauvegarde du nouveau terraform.tfstate
     GitHub->>GitHub: 5. terraform output -raw public_ip
     GitHub->>DuckDNS: 6. Mise à jour de l'IP du nom de domaine
+    GitHub->>OCI: 7. Setup SSH Key & Kubeconfig Download
+    GitHub->>K8s: 8. Bootstrap ArgoCD on Kubernetes
 ```
 
 ## Résultat de terraform Plan
@@ -361,7 +364,7 @@ Changes to Outputs:
 ## Voir aussi
 - [`Application/`](../Application) : Fichiers de l'application web (front-end, back-end, consumer), Dockerfiles associés et docker-compose.
 - [`Helm/`](../Helm) : Le chart Helm qui est surveillé et déployé par ArgoCD.
-- [`GitOps/`](../GitOps) : Configuration ArgoCD pour la synchronisation du cluster (déploiement continu).
+- [`ArgoCD/`](../ArgoCD) : Configuration ArgoCD pour la synchronisation du cluster (déploiement continu).
 - [`.github/workflows/`](../.github/workflows) : Fichier GitHub Actions pour automatiser le provisionnement de l'infrastructure et le déploiement de l'application.
 - [`Kubernetes/`](../Kubernetes) : Manifests Kubernetes bruts (historique).
 - [`Terragrunt/`](../Terragrunt) : Configuration Terragrunt pour gérer plusieurs environnements (Dev, Preprod, Prod).

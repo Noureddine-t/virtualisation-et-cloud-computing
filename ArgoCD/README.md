@@ -41,28 +41,29 @@ sequenceDiagram
     note over ArgoCD,Cluster: Self-Heal : Si une ressource est modifiée manuellement sur le cluster,<br>ArgoCD écrase la modification pour forcer l'état défini sur Git.
 ```
 
-## Configuration de l'Application
+## Configuration de l'Application (Pattern App of Apps)
 
-Ce dossier contient le fichier `argocd-app.yaml`. Il s'agit d'un manifeste Kubernetes de type `Application` (une Custom Resource spécifique à ArgoCD) qui donne les instructions suivantes :
+Ce dossier utilise le pattern **App of Apps** pour gérer une architecture microservices.
 
-1. **La Source :** "Surveille le dépôt `virtualisation-et-cloud-computing.git` sur la branche `main`, et cible plus précisément le dossier `Helm/calculatrice`".
-2. **La Destination :** "Déploie ce chart Helm localement sur le cluster en cours d'exécution (`https://kubernetes.default.svc`) dans le namespace `taleb`".
-3. **La Synchronisation (SyncPolicy) :**
-   - **Automated / SelfHeal :** Si quelqu'un modifie manuellement une ressource sur le cluster (ex: modification sauvage avec `kubectl`), ArgoCD écrasera sa modification pour restaurer la version définie sur Git.
-   - **Prune :** Si on supprime un fichier ou un déploiement dans le dépôt Git, ArgoCD le supprimera du cluster.
-   - **CreateNamespace :** Créera automatiquement le namespace `taleb` s'il n'existe pas encore.
+1. **Le fichier racine (`root-app.yaml`) :** C'est une application "parapluie". Au lieu de pointer vers un Chart Helm, elle pointe vers le dossier `ArgoCD/apps` de notre dépôt Git. Son seul rôle est de déployer d'autres applications ArgoCD.
+2. **Le dossier des sous-applications (`apps/`) :** Ce dossier contient un manifeste `Application` pour chaque microservice (ex: `front-app.yaml`, `api-app.yaml`, `redis-app.yaml`, etc.). Chacun de ces manifestes pointe vers son propre Chart Helm dans le dossier `Helm/`.
 
-En résumé, grâce à ce fichier, **toute modification poussée (Push) sur la branche `main` dans le dossier `Helm` est détectée et déployée automatiquement**, sans aucune intervention humaine !
+Les règles de synchronisation (SyncPolicy) appliquées :
+- **Automated / SelfHeal :** Si quelqu'un modifie manuellement une ressource sur le cluster (ex: modification sauvage avec `kubectl`), ArgoCD écrasera sa modification pour restaurer la version définie sur Git.
+- **Prune :** Si on supprime un fichier ou un déploiement dans le dépôt Git, ArgoCD le supprimera du cluster.
+- **CreateNamespace :** Créera automatiquement le namespace `taleb` s'il n'existe pas encore.
+
+En résumé, l'**App of Apps** permet d'ajouter ou supprimer de nouveaux microservices (nouveaux fichiers dans `apps/`) sans jamais avoir besoin d'intervenir manuellement sur le cluster.
 
 ## Déploiement
 
-Pour activer l'automatisation GitOps, il suffit d'appliquer ce manifeste une seule fois sur le cluster Kubernetes (dans le namespace où ArgoCD a été installé) :
+Pour activer l'automatisation GitOps, il suffit d'appliquer l'application racine une seule fois sur le cluster Kubernetes :
 
 ```shell
-kubectl apply -f argocd-app.yaml -n argocd
+kubectl apply -f root-app.yaml -n argocd
 ```
 
-Une fois cette commande exécutée, ArgoCD prend le relais, synchronise le Chart Helm et maintient l'infrastructure à jour !
+Une fois cette commande exécutée, ArgoCD déploie les sous-applications, qui elles-mêmes déploient les microservices via les charts Helm !
 
 ## Guide d'accès à l'interface graphique d'ArgoCD
 Voir [`argocd_interface.md`](./argocd_interface.md) pour accéder à l'interface web d'ArgoCD et visualiser l'état de l'application.

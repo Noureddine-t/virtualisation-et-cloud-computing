@@ -1,0 +1,5 @@
+replicaCount: 1
+image:
+  repositoryPrefix: "ghcr.io/noureddine-t"
+  tag: "492763a37a221218ec9cf5b685dbc8bf409745f0"
+  pullPolicy: Always

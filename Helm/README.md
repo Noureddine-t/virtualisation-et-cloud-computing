@@ -20,39 +20,39 @@
 graph LR
     
     subgraph "Kubernetes"
-        subgraph "Helm Release: calculatrice"
-            subgraph "front-replicaset"
-                pod-front
-            end
-            
-            subgraph "api-replicaset"
-                pod-api
-            end
-            
-            subgraph "redis-replicaset"
-                pod-redis[("Redis <br> pod")]
-            end
-            
-            subgraph "rabbitmq-replicaset"
-                pod-rabbitmq[\" RabbitMQ <br> pod"/]
-            end
-            
-            subgraph "consumer-replicaset"
-                pod-consumer
-            end
-            
-            svc-api([svc-api]) --> pod-api
-            svc-redis([svc-redis]) --> pod-redis
-            svc-rabbitmq([svc-rabbitmq]) --> pod-rabbitmq
-            pod-consumer -.-> svc-rabbitmq
-            pod-consumer -.-> svc-redis
-            pod-api -.-> svc-redis
-            pod-api -.-> svc-rabbitmq
-            ing -->|"<domaine>.duckdns.org/api"| svc-api
-            ing(Ingress Traefik <br> + Cert-Manager TLS) -->|"<domaine>.duckdns.org/"| svc-front
+        subgraph "Release Helm: front"
+            pod-front
             svc-front([svc-front]) --> pod-front
+            ing(Ingress Traefik <br> + Cert-Manager TLS) -->|"<domaine>.duckdns.org/"| svc-front
         end
+        
+        subgraph "Release Helm: api"
+            pod-api
+            svc-api([svc-api]) --> pod-api
+            ing_api(Ingress Traefik) -->|"<domaine>.duckdns.org/api"| svc-api
+        end
+        
+        subgraph "Release Helm: redis"
+            pod-redis[("Redis <br> pod")]
+            svc-redis([svc-redis]) --> pod-redis
+        end
+        
+        subgraph "Release Helm: rabbitmq"
+            pod-rabbitmq[\" RabbitMQ <br> pod"/]
+            svc-rabbitmq([svc-rabbitmq]) --> pod-rabbitmq
+        end
+        
+        subgraph "Release Helm: consumer"
+            pod-consumer
+        end
+        
+        pod-consumer -.-> svc-rabbitmq
+        pod-consumer -.-> svc-redis
+        pod-api -.-> svc-redis
+        pod-api -.-> svc-rabbitmq
+        
         CertManager["Cert-Manager <br> (Let's Encrypt)"] -.->|"Génère et injecte le certificat TLS"| ing
+        CertManager -.->|"Génère et injecte le certificat TLS"| ing_api
     end
 ```
 ## Fonctionnement
@@ -101,23 +101,26 @@ sequenceDiagram
     Dev->>Git: 1. Push du code (Application/*)
     note over GitHub: Trigger: Workflow app.yaml
     GitHub->>Registry: 2. Build & Push des images Docker (Front, API, Consumer)
-    GitHub->>GitHub: 3. Modifie Helm/calculatrice/values.yaml avec yq
+    GitHub->>GitHub: 3. Modifie Helm/front/values.yaml, api/values.yaml, etc. avec yq
     GitHub->>Git: 4. Commit et Push du nouveau Tag (github.sha)
-    Git-->>ArgoCD: 5. ArgoCD détecte la modification du fichier values.yaml
+    Git-->>ArgoCD: 5. ArgoCD détecte les modifications
     ArgoCD->>ArgoCD: 6. Synchronise le cluster avec les nouvelles images
 ```
 
-Le fait d'avoir un chart Helm simplifie considérablement la tâche du pipeline : au lieu de devoir modifier des tags dans plusieurs fichiers YAML disparates, le pipeline utilise simplement l'utilitaire `yq` pour mettre à jour la valeur `image.tag` à un seul endroit (`values.yaml`), puis fait un `git commit`. L'orchestration du déploiement est ensuite déléguée à ArgoCD.
+Le fait d'avoir des charts Helm simplifie considérablement la tâche du pipeline : au lieu de devoir modifier des tags dans plusieurs fichiers YAML disparates, le pipeline utilise simplement l'utilitaire `yq` pour mettre à jour la valeur `image.tag` de chaque chart concerné, puis fait un `git commit`. L'orchestration du déploiement est ensuite déléguée à ArgoCD (App of Apps).
 
 ## Commandes utiles
 
-Toutes les anciennes commandes `kubectl apply -f` ont été remplacées par la gestion centralisée de Helm.
+Toutes les anciennes commandes `kubectl apply -f` ont été remplacées par la gestion centralisée de Helm et ArgoCD.
+En production, il n'est plus nécessaire d'utiliser la commande `helm` manuellement, car ArgoCD gère le cycle de vie de toutes les releases via le pattern **App of Apps**.
 
-#### Installation et Mise à jour du Chart
+Cependant, en développement local, voici quelques commandes utiles :
 
-Pour installer ou mettre à jour l'application (Release nommée `calculatrice`) :
+#### Installation et Mise à jour d'un Chart
+
+Pour installer ou mettre à jour un microservice individuel (ex: `front`) :
 ```shell
-helm upgrade --install calculatrice ./calculatrice --namespace <namespace> --create-namespace
+helm upgrade --install front ./front --namespace <namespace> --create-namespace
 ```
 
 #### Vérification du déploiement
@@ -129,32 +132,32 @@ helm list -n <namespace>
 
 Voir l'historique des versions déployées (utile pour le CI/CD) :
 ```shell
-helm history calculatrice -n <namespace>
+helm history front -n <namespace>
 ```
 
 #### Debugging & Rollback
 
 Pour simuler un déploiement et voir les fichiers YAML finaux qui seront générés (sans rien modifier sur le cluster) :
 ```shell
-helm upgrade --install calculatrice ./calculatrice --dry-run --debug -n <namespace>
+helm upgrade --install front ./front --dry-run --debug -n <namespace>
 ```
 
 Pour revenir à une version précédente (par exemple la révision 1) :
 ```shell
-helm rollback calculatrice 1 -n <namespace>
+helm rollback front 1 -n <namespace>
 ```
 
 #### Désinstallation
 
-Pour supprimer entièrement l'application et toutes ses ressources associées (pods, services, ingress) d'un seul coup :
+Pour supprimer entièrement une application et toutes ses ressources associées (pods, services, ingress) :
 ```shell
-helm uninstall calculatrice -n <namespace>
+helm uninstall front -n <namespace>
 ```
 
 ## Voir aussi
 - [`Foundation/`](../Foundation) : Terraform (provisionnement de l'infrastructure).
 - [`Application/`](../Application) : Fichiers de l'application web (front-end, back-end, consumer), Dockerfiles associés et docker-compose.
-- [`GitOps/`](../GitOps) : Configuration ArgoCD pour la synchronisation du cluster (déploiement continu).
+- [`ArgoCD/`](../ArgoCD) : Configuration ArgoCD pour la synchronisation du cluster (déploiement continu).
 - [`.github/workflows/`](../.github/workflows) : Fichier GitHub Actions pour automatiser le provisionnement de l'infrastructure et le déploiement de l'application.
 - [`Kubernetes/`](../Kubernetes) : Manifests Kubernetes bruts (historique).
 - [`Terragrunt/`](../Terragrunt) : Configuration Terragrunt pour gérer plusieurs environnements (Dev, Preprod, Prod).
